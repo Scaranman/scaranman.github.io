@@ -160,8 +160,8 @@ h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spac
 .chip:hover{ border-color: #34495E8C; background: #34495E29; }
 .card{
   border-radius: var(--r);
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045));
-  border: 1px solid rgba(255,255,255,.12);
+  background: var(--panel);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
 .pad{ padding: 18px; }
@@ -267,11 +267,11 @@ h2{ margin:0; font-size: 22px; letter-spacing: -0.01em; }
   grid-column: span 6;
   padding: 16px;
   border-radius: var(--r);
-  border: 1px solid rgba(255,255,255,.12);
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+  border: 1px solid var(--border);
+  background: var(--panel);
   cursor: pointer;
 }
-.project:hover{ border-color: #34495EA6; box-shadow: 0 16px 55px rgba(0,0,0,.45); }
+.project:hover{ border-color: #34495EA6; box-shadow: 0 16px 55px rgba(0,0,0,.25); }
 .project h3{ margin:0; font-size: 17px; letter-spacing: -0.01em; }
 .project .meta{ margin-top: 6px; display:flex; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
 .pill{
