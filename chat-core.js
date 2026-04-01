@@ -905,28 +905,49 @@ export function wireChatUI({ controller }) {
 
   pushMsg("bot", "Ask me about a project (role, constraints, process, impact) or open a case study from the grid.");
 
+  let chatBusy = false;
+  const submitBtn = chatForm.querySelector('button[type="submit"]');
+  const promptChips = () => Array.from(document.querySelectorAll(".chip[data-prompt]"));
+
+  const setChatBusy = (busy) => {
+    chatBusy = busy;
+    chatPrompt.disabled = busy;
+    if (submitBtn instanceof HTMLButtonElement) submitBtn.disabled = busy;
+    if (resetChatBtn instanceof HTMLButtonElement) resetChatBtn.disabled = busy;
+    for (const el of promptChips()) {
+      if (el instanceof HTMLButtonElement) el.disabled = busy;
+    }
+    chatForm.setAttribute("aria-busy", busy ? "true" : "false");
+  };
+
   const runAssistant = async (val) => {
+    if (chatBusy) return;
+    setChatBusy(true);
     const thinking = pushThinking();
     try {
-      const aiText = await callOpenAI({
-        prompt: val,
-        projects: controller.__projects || [],
-        contextProjectId: controller.__contextProjectId || null
-      });
+      try {
+        const aiText = await callOpenAI({
+          prompt: val,
+          projects: controller.__projects || [],
+          contextProjectId: controller.__contextProjectId || null
+        });
+        pushMsg("bot", aiText);
+      } catch (err) {
+        const msg = await controller.send(val);
+        pushMsg("bot", msg.text);
+        console.warn("AI mode failed", err);
+        const safe = redactSecrets(err?.message || String(err));
+        pushMsg("bot", `AI mode failed. Using built-in answers. Details: ${safe}`);
+      }
+    } finally {
       thinking.remove();
-      pushMsg("bot", aiText);
-    } catch (err) {
-      thinking.remove();
-      const msg = await controller.send(val);
-      pushMsg("bot", msg.text);
-      console.warn("AI mode failed", err);
-      const safe = redactSecrets(err?.message || String(err));
-      pushMsg("bot", `AI mode failed. Using built-in answers. Details: ${safe}`);
+      setChatBusy(false);
     }
   };
 
   chatForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (chatBusy) return;
     const val = chatPrompt.value.trim();
     if (!val) return;
     chatPrompt.value = "";
@@ -935,6 +956,7 @@ export function wireChatUI({ controller }) {
   });
 
   resetChatBtn?.addEventListener("click", () => {
+    if (chatBusy) return;
     chatLog.innerHTML = "";
     const msg = controller.reset();
     pushMsg("bot", msg.text);
@@ -942,6 +964,7 @@ export function wireChatUI({ controller }) {
 
   for (const chip of Array.from(document.querySelectorAll(".chip[data-prompt]"))) {
     chip.addEventListener("click", async () => {
+      if (chatBusy) return;
       const p = chip.getAttribute("data-prompt") || "";
       if (!p) return;
       pushMsg("user", p);

@@ -240,6 +240,13 @@ h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spac
 .bubble a{ color: var(--contact-link); text-decoration:none; }
 .bubble a:hover{ text-decoration: underline; }
 .chat-input{ display:flex; gap: 10px; padding: 12px 14px 0; }
+.chat-input input:disabled,
+.chat-input .primary-btn:disabled,
+.hero-chips .chip:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+}
+.ghost-btn:disabled{ opacity: .55; cursor: not-allowed; }
 input[type="text"], input[type="email"], input[type="search"]{
   width: 100%;
   border-radius: 14px;
