@@ -176,6 +176,7 @@ h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spac
   border-bottom: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.15);
 }
+.chat-actions{ display:flex; align-items:center; gap: 8px; }
 .status-pill{ display:inline-flex; align-items:center; gap: 8px; font-weight: 650; font-size: 14px; color: var(--text); }
 .dot{ width: 9px; height: 9px; border-radius: 999px; background: var(--good); box-shadow: 0 0 0 4px rgba(52,211,153,.14); }
 .ghost-btn{
@@ -189,6 +190,14 @@ h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spac
 .ghost-btn:hover{ background: var(--panel-2); }
 .chat-log{ padding: 14px; display:flex; flex-direction: column; gap: 10px; height: 340px; overflow:auto; scroll-behavior:smooth; }
 .msg{ display:flex; gap: 10px; align-items:flex-start; }
+.msg.user{
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+.msg.user .avatar{ display:none; }
+.msg.user .bubble{ margin-left: auto; }
+.msg.bot .bubble{ margin-right: auto; }
+.bubble{ width: fit-content; }
 .avatar{
   flex: 0 0 auto;
   width: 28px; height: 28px;
@@ -203,6 +212,28 @@ h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spac
 .bubble{ padding: 10px 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,.10); max-width: min(700px, 100%); }
 .msg.user .bubble{ background: #34495E38; border-color: #34495E8C; }
 .msg.bot .bubble{ background: rgba(255,255,255,.04); }
+.msg.thinking .bubble{
+  opacity: .9;
+}
+.thinking-dots{
+  display:inline-flex;
+  gap: 6px;
+  align-items:center;
+  height: 14px;
+}
+.thinking-dots span{
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--muted);
+  animation: thinking-bounce 1s infinite ease-in-out;
+}
+.thinking-dots span:nth-child(2){ animation-delay: 120ms; }
+.thinking-dots span:nth-child(3){ animation-delay: 240ms; }
+@keyframes thinking-bounce{
+  0%, 80%, 100%{ transform: translateY(0); opacity: .55; }
+  40%{ transform: translateY(-4px); opacity: 1; }
+}
 .bubble p{ margin:0; color: var(--text); }
 .bubble p + p{ margin-top: 10px; }
 .bubble ul{ margin: 8px 0 0; padding-left: 18px; color: var(--text); }

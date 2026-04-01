@@ -36,6 +36,56 @@ function pickProjectByQuery(projects, q) {
   );
 }
 
+function pickProjectsByQuery(projects, q, { limit = 3 } = {}) {
+  const nq = normalize(q);
+  if (!nq) return [];
+
+  const tokens = nq
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/g)
+    .filter(Boolean)
+    .filter((t) => t.length >= 3);
+
+  const scoreProject = (p) => {
+    let score = 0;
+    const title = normalize(p.title || "");
+    const problem = normalize(p.problem || "");
+    const tags = normalize((p.tags || []).join(" "));
+    const skills = normalize((p.skills || []).join(" "));
+    const blob = `${title} ${problem} ${tags} ${skills}`;
+
+    for (const t of tokens) {
+      if (!t) continue;
+      if (title.includes(t)) score += 6;
+      if (tags.includes(t)) score += 4;
+      if (skills.includes(t)) score += 3;
+      if (problem.includes(t)) score += 2;
+      if (blob.includes(t)) score += 1;
+    }
+
+    // boost for obvious multi-match intents
+    if (nq.includes("projects") || nq.includes("show me") || nq.includes("examples") || nq.includes("list")) score += 1;
+    return score;
+  };
+
+  const ranked = projects
+    .map((p) => ({ p, score: scoreProject(p) }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  // if prompt is very specific (e.g. exact title), prefer a single result
+  const exact = projects.find((p) => normalize(p.title) === nq);
+  if (exact) return [exact];
+
+  const topScore = ranked[0]?.score ?? 0;
+  if (topScore <= 0) return [];
+
+  // keep only reasonably relevant matches
+  const cutoff = Math.max(3, Math.floor(topScore * 0.55));
+  const filtered = ranked.filter((x) => x.score >= cutoff).slice(0, limit).map((x) => x.p);
+  return filtered;
+}
+
 function formatProjectSummary(p) {
   const lines = [];
   lines.push(`**${p.title}** (${p.type} • ${p.year})`);
@@ -47,6 +97,10 @@ function formatProjectSummary(p) {
 
 export function createChatController({ projects, initialContextProjectId }) {
   const contextProject = initialContextProjectId ? projects.find((p) => p.id === initialContextProjectId) : null;
+  /** @type {{ id: string, title: string }[] | null} */
+  let lastSuggested = null;
+  /** @type {{ id: string, title: string } | null} */
+  let lastFocused = null;
 
   const tokenize = (s) => {
     const raw = normalize(s).replace(/[^a-z0-9\s]/g, " ");
@@ -274,18 +328,198 @@ export function createChatController({ projects, initialContextProjectId }) {
   }
 
   return {
+    __projects: projects,
+    __contextProjectId: initialContextProjectId || null,
     async send(prompt) {
       if (contextProject) return { role: "bot", text: answerForProject(contextProject, prompt) };
 
-      const p = pickProjectByQuery(projects, prompt);
-      if (p) {
-        const href = `project.html?id=${encodeURIComponent(p.id)}`;
-        return {
-          role: "bot",
-          text: `${formatProjectSummary(p)}\n\n[View the full case study](${href})`
+      const np = normalize(prompt);
+
+      const projectLabel = (p) => `**${p.title}** (${p.type} • ${p.year})`;
+
+      const findByTitleLoose = (title) => {
+        const nt = normalize(title);
+        if (!nt) return null;
+        return (
+          projects.find((p) => normalize(p.title) === nt) ||
+          projects.find((p) => normalize(p.title).includes(nt)) ||
+          projects.find((p) => nt.includes(normalize(p.title)))
+        );
+      };
+
+      const acronymForTitle = (title) =>
+        String(title || "")
+          .split(/[\s-]+/g)
+          .filter(Boolean)
+          .map((w) => w[0])
+          .join("")
+          .toLowerCase();
+
+      const matchesProjectMention = (p) => {
+        const nPrompt = normalize(prompt);
+        const nTitle = normalize(p.title);
+        if (nTitle && nPrompt.includes(nTitle)) return true;
+        const nId = normalize(String(p.id || "").replace(/[-_]/g, " "));
+        if (nId && nPrompt.includes(nId)) return true;
+        const ac = acronymForTitle(p.title);
+        if (ac && new RegExp(`\\b${ac}\\b`, "i").test(prompt)) return true;
+        return false;
+      };
+
+      const resolveCompareTargets = () => {
+        // Prefer explicit "compare X and Y" where X/Y are project titles.
+        // Also support "compare the first two" based on the last suggested list.
+        if (!np.includes("compare")) return null;
+
+        const list = Array.isArray(lastSuggested) ? lastSuggested : null;
+
+        if (list && (np.includes("them") || np.includes("those") || np.includes("these") || np.includes("both"))) {
+          const p1 = projects.find((p) => p.id === list[0]?.id);
+          const p2 = projects.find((p) => p.id === list[1]?.id);
+          if (p1 && p2) return [p1, p2];
+        }
+
+        if (list && (np.includes("first two") || np.includes("first 2"))) {
+          const p1 = projects.find((p) => p.id === list[0]?.id);
+          const p2 = projects.find((p) => p.id === list[1]?.id);
+          if (p1 && p2) return [p1, p2];
+        }
+        if (list && (np.includes("top two") || np.includes("top 2"))) {
+          const p1 = projects.find((p) => p.id === list[0]?.id);
+          const p2 = projects.find((p) => p.id === list[1]?.id);
+          if (p1 && p2) return [p1, p2];
+        }
+
+        // Attempt to match any of the last suggested titles mentioned in the prompt.
+        if (list) {
+          const matched = list
+            .map((s) => projects.find((p) => p.id === s.id))
+            .filter(Boolean)
+            .filter((p) => matchesProjectMention(p));
+          if (matched.length >= 2) return [matched[0], matched[1]];
+        }
+
+        // Fallback: parse "compare A and B" / "compare A vs B"
+        const m = prompt.match(/compare\s+(.+?)\s+(?:vs\.?|versus|and)\s+(.+)$/i);
+        if (m) {
+          const a = findByTitleLoose(m[1]);
+          const b = findByTitleLoose(m[2]);
+          if (a && b && a.id !== b.id) return [a, b];
+        }
+
+        return null;
+      };
+
+      const resolveFollowupProject = () => {
+        const list = Array.isArray(lastSuggested) ? lastSuggested : null;
+        const focused = lastFocused ? projects.find((p) => p.id === lastFocused.id) : null;
+
+        const byOrdinal = (idx) => {
+          if (!list || !list[idx]) return null;
+          return projects.find((p) => p.id === list[idx].id) || null;
         };
+
+        // If the user says "first/second/third", pick from the last suggestion list.
+        if (np.includes("first")) return byOrdinal(0);
+        if (np.includes("second")) return byOrdinal(1);
+        if (np.includes("third")) return byOrdinal(2);
+        if (np.includes("fourth")) return byOrdinal(3);
+
+        // If they say "that one/this one/it", use the last focused project (single result or explicit pick).
+        if (focused && (np.includes("that") || np.includes("this") || np === "it" || np.includes("go deeper") || np.includes("tell me more"))) return focused;
+
+        // If they mention a title from the last list, use that.
+        if (list) {
+          for (const s of list) {
+            if (normalize(prompt).includes(normalize(s.title))) {
+              const p = projects.find((p) => p.id === s.id);
+              if (p) return p;
+            }
+          }
+        }
+
+        return null;
+      };
+
+      // Make suggested follow-ups work: "go deeper on one" / "tell me more"
+      const followupProject = resolveFollowupProject();
+      const asksAngle =
+        np.includes("role") ||
+        np.includes("team") ||
+        np.includes("constraint") ||
+        np.includes("process") ||
+        np.includes("approach") ||
+        np.includes("impact") ||
+        np.includes("result") ||
+        np.includes("outcome") ||
+        np.includes("skill") ||
+        np.includes("tool") ||
+        np.includes("artifact") ||
+        np.includes("link") ||
+        np.includes("problem") ||
+        np.includes("challenge");
+      if (followupProject && (asksAngle || np.includes("go deeper") || np.includes("tell me more") || np.includes("more detail"))) {
+        lastFocused = { id: followupProject.id, title: followupProject.title };
+        return { role: "bot", text: answerForProject(followupProject, prompt) };
       }
 
+      const compareProjects = (a, b) => {
+        const lines = [];
+        lines.push(`Comparison: ${a.title} vs ${b.title}`);
+        lines.push("");
+        lines.push(`- ${projectLabel(a)}`);
+        lines.push(`  - Role: ${(a.role || []).join(", ") || "—"}`);
+        lines.push(`  - Team: ${a.team || "—"}`);
+        lines.push(`  - Skills: ${(a.skills || []).join(", ") || "—"}`);
+        lines.push(`  - Constraints: ${(a.constraints || []).join("; ") || "—"}`);
+        lines.push(`  - Process: ${(a.process || []).join("; ") || "—"}`);
+        lines.push(`  - Impact: ${(a.impact || []).join("; ") || "—"}`);
+        lines.push(`  - [Open case study](project.html?id=${encodeURIComponent(a.id)})`);
+        lines.push("");
+        lines.push(`- ${projectLabel(b)}`);
+        lines.push(`  - Role: ${(b.role || []).join(", ") || "—"}`);
+        lines.push(`  - Team: ${b.team || "—"}`);
+        lines.push(`  - Skills: ${(b.skills || []).join(", ") || "—"}`);
+        lines.push(`  - Constraints: ${(b.constraints || []).join("; ") || "—"}`);
+        lines.push(`  - Process: ${(b.process || []).join("; ") || "—"}`);
+        lines.push(`  - Impact: ${(b.impact || []).join("; ") || "—"}`);
+        lines.push(`  - [Open case study](project.html?id=${encodeURIComponent(b.id)})`);
+        lines.push("");
+        lines.push("Want me to compare a specific angle (scope, research, IA, interaction patterns, outcomes)?");
+        return lines.join("\n");
+      };
+
+      const compareTargets = resolveCompareTargets();
+      if (compareTargets) {
+        const [a, b] = compareTargets;
+        lastFocused = null;
+        return { role: "bot", text: compareProjects(a, b) };
+      }
+
+      const matches = pickProjectsByQuery(projects, prompt, { limit: 4 });
+      if (matches.length === 1) {
+        const p = matches[0];
+        const href = `project.html?id=${encodeURIComponent(p.id)}`;
+        lastSuggested = null;
+        lastFocused = { id: p.id, title: p.title };
+        return { role: "bot", text: `${formatProjectSummary(p)}\n\n[View the full case study](${href})` };
+      }
+      if (matches.length > 1) {
+        lastSuggested = matches.map((p) => ({ id: p.id, title: p.title }));
+        lastFocused = null;
+        const lines = [];
+        lines.push(`Here are a few projects that match:`);
+        for (const p of matches) {
+          const href = `project.html?id=${encodeURIComponent(p.id)}`;
+          const impact = p.impact && p.impact[0] ? ` — Impact: ${p.impact[0]}` : "";
+          lines.push(`- **${p.title}** (${p.type} • ${p.year})${impact}\n  - [Open case study](${href})`);
+        }
+        lines.push(`\nWant me to compare two of these, or go deeper on one (role, constraints, process, impact)?`);
+        return { role: "bot", text: lines.join("\n") };
+      }
+
+      lastSuggested = null;
+      lastFocused = null;
       return {
         role: "bot",
         text:
@@ -368,18 +602,224 @@ export function wireChatUI({ controller }) {
   const chatForm = document.getElementById("chatForm");
   const chatPrompt = document.getElementById("chatPrompt");
   const resetChatBtn = document.getElementById("resetChatBtn");
+  const aiKeyBtn = document.getElementById("aiKeyBtn");
 
   if (!(chatLog && chatForm && chatPrompt)) return;
 
-  const pushMsg = (role, text) => {
+  const STORAGE_KEY = "OPENAI_API_KEY";
+  const STORAGE_ENDPOINT = "OPENAI_API_ENDPOINT";
+  const DEFAULT_AI_ENDPOINT = "https://portfolio-openai-proxy.jacobscarani.workers.dev/v1/responses";
+  const redactSecrets = (s) =>
+    String(s == null ? "" : s)
+      // redact common OpenAI key formats (best-effort)
+      .replace(/\bsk-[a-z0-9_-]{10,}\b/gi, "sk-***")
+      .replace(/\bsk-proj-[a-z0-9_-]{10,}\b/gi, "sk-proj-***");
+  const getKey = () => {
+    try {
+      return String(window.localStorage.getItem(STORAGE_KEY) || "").trim();
+    } catch {
+      return "";
+    }
+  };
+  const getEndpoint = () => {
+    try {
+      return String(window.localStorage.getItem(STORAGE_ENDPOINT) || "").trim();
+    } catch {
+      return "";
+    }
+  };
+  const setKey = (k) => {
+    try {
+      if (!k) window.localStorage.removeItem(STORAGE_KEY);
+      else window.localStorage.setItem(STORAGE_KEY, k);
+    } catch {}
+  };
+  const setEndpoint = (v) => {
+    try {
+      if (!v) window.localStorage.removeItem(STORAGE_ENDPOINT);
+      else window.localStorage.setItem(STORAGE_ENDPOINT, v);
+    } catch {}
+  };
+
+  const callOpenAI = async ({ key, prompt, projects, contextProjectId }) => {
+    const contextProject = contextProjectId ? projects.find((p) => p.id === contextProjectId) : null;
+
+    const allProjectsCompact = projects.map((p) => ({
+      id: p.id,
+      title: p.title,
+      type: p.type,
+      year: p.year,
+      role: p.role,
+      team: p.team,
+      problem: p.problem,
+      constraints: p.constraints,
+      process: p.process,
+      impact: p.impact,
+      skills: p.skills,
+      tags: p.tags,
+      artifacts: (p.artifacts || []).filter((a) => a && a.kind === "url" && a.href).map((a) => ({ label: a.label, href: a.href }))
+    }));
+
+    const getText = (sel) => {
+      const el = document.querySelector(sel);
+      return el ? String(el.textContent || "").replace(/\s+/g, " ").trim() : "";
+    };
+
+    const getTexts = (sel) =>
+      Array.from(document.querySelectorAll(sel))
+        .map((el) => String(el.textContent || "").replace(/\s+/g, " ").trim())
+        .filter(Boolean);
+
+    const getHref = (sel) => {
+      const el = document.querySelector(sel);
+      if (!(el instanceof HTMLAnchorElement)) return "";
+      return String(el.getAttribute("href") || "").trim();
+    };
+
+    const homeContext = (() => {
+      // Only present on index.html, but safe to call anywhere.
+      const name = getText(".brand-name");
+      const tagline = getText(".brand-tag");
+      const hero = getText("main .hero h1");
+      const aboutTitle = getText("#about h2") || "About";
+      const aboutCardText = getTexts("#about .card p").join("\n");
+      const experienceItems = getTexts("#resume .timeline-bullets li");
+      const experienceRoles = getTexts("#resume .timeline-role");
+      const experienceCompanies = getTexts("#resume .timeline-company");
+      const resumeHref = getHref('#resume a.link-btn[href$=".pdf"]');
+      const contactEmail = getText('a.contact-link[href^="mailto:"]') || getText('#contact a[href^="mailto:"]');
+
+      return {
+        name,
+        tagline,
+        heroHeadline: hero,
+        about: { title: aboutTitle, text: aboutCardText },
+        experience: {
+          roles: experienceRoles,
+          timeline: experienceCompanies,
+          highlights: experienceItems
+        },
+        contact: { email: contactEmail, resumeHref }
+      };
+    })();
+
+    const system = [
+      "You are a helpful portfolio assistant for Jacob Scarani.",
+      "Answer only using the provided homepage context and project data. If the answer isn't in the data, say you don't have it and suggest what to ask instead.",
+      "Prefer concise, plain English. When linking to a case study, use markdown link text like [Open case study](project.html?id=...).",
+      "If multiple projects match, return up to 4 and ask a quick clarifying question."
+    ].join("\n");
+
+    const data = {
+      mode: contextProject ? "project" : "portfolio",
+      homepage: homeContext,
+      contextProjectId: contextProject?.id || null,
+      contextProjectTitle: contextProject?.title || null,
+      projects: allProjectsCompact,
+      contextProject: contextProject
+        ? {
+            id: contextProject.id,
+            title: contextProject.title,
+            type: contextProject.type,
+            year: contextProject.year,
+            role: contextProject.role,
+            team: contextProject.team,
+            problem: contextProject.problem,
+            constraints: contextProject.constraints,
+            process: contextProject.process,
+            impact: contextProject.impact,
+            skills: contextProject.skills,
+            tags: contextProject.tags,
+            artifacts: (contextProject.artifacts || []).filter((a) => a && (a.kind === "url" || a.kind === "image" || a.kind === "video"))
+          }
+        : null
+    };
+
+    const user = [
+      "Project data (JSON):",
+      JSON.stringify(data),
+      "",
+      "User question:",
+      prompt
+    ].join("\n");
+
+    const endpoint = getEndpoint() || DEFAULT_AI_ENDPOINT;
+    let res;
+    try {
+      /** @type {Record<string, string>} */
+      const headers = {
+        "Content-Type": "application/json"
+      };
+      // If a key is provided, send it. Otherwise rely on a server-side proxy secret.
+      if (key) headers.Authorization = `Bearer ${key}`;
+
+      res = await fetch(endpoint, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          input: [
+            { role: "system", content: [{ type: "input_text", text: system }] },
+            { role: "user", content: [{ type: "input_text", text: user }] }
+          ]
+        })
+      });
+    } catch (e) {
+      // Most common on static sites: CORS blocks direct calls to api.openai.com
+      throw new Error(
+        `Network/CORS error calling OpenAI. Set an AI endpoint that supports CORS (a small proxy), then retry. (${redactSecrets(
+          e?.message || String(e)
+        )})`
+      );
+    }
+
+    if (!res.ok) {
+      const msg = await res.text().catch(() => "");
+      throw new Error(`OpenAI error (${res.status}): ${msg || res.statusText}`);
+    }
+    const json = await res.json();
+
+    const outputText =
+      (typeof json?.output_text === "string" && json.output_text.trim()) ||
+      (Array.isArray(json?.output)
+        ? json.output
+            .flatMap((item) => item?.content || [])
+            .filter((c) => c && (c.type === "output_text" || c.type === "summary_text") && typeof c.text === "string")
+            .map((c) => c.text)
+            .join("\n")
+            .trim()
+        : "");
+
+    if (outputText) return outputText;
+    throw new Error("OpenAI returned no output text.");
+  };
+
+  const pushMsg = (role, text, { className } = {}) => {
     const wrap = document.createElement("div");
-    wrap.className = `msg ${role}`;
+    wrap.className = `msg ${role}${className ? ` ${className}` : ""}`;
     wrap.innerHTML = `
       <div class="avatar" aria-hidden="true">${role === "user" ? "You" : "JS"}</div>
       <div class="bubble">${renderMarkdownish(text)}</div>
     `;
     chatLog.appendChild(wrap);
     chatLog.scrollTop = chatLog.scrollHeight;
+    return wrap;
+  };
+
+  const pushThinking = () => {
+    const wrap = document.createElement("div");
+    wrap.className = "msg bot thinking";
+    wrap.innerHTML = `
+      <div class="avatar" aria-hidden="true">JS</div>
+      <div class="bubble">
+        <span class="thinking-dots" aria-label="Thinking">
+          <span></span><span></span><span></span>
+        </span>
+      </div>
+    `;
+    chatLog.appendChild(wrap);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    return wrap;
   };
 
   pushMsg("bot", "Ask me about a project (role, constraints, process, impact) or open a case study from the grid.");
@@ -390,8 +830,36 @@ export function wireChatUI({ controller }) {
     if (!val) return;
     chatPrompt.value = "";
     pushMsg("user", val);
-    const msg = await controller.send(val);
-    pushMsg("bot", msg.text);
+    const thinking = pushThinking();
+    try {
+      const key = getKey();
+      const endpoint = getEndpoint() || DEFAULT_AI_ENDPOINT;
+      if (endpoint) {
+        const aiText = await callOpenAI({
+          key,
+          prompt: val,
+          projects: controller.__projects || [],
+          contextProjectId: controller.__contextProjectId || null
+        });
+        thinking.remove();
+        pushMsg("bot", aiText);
+      } else {
+        const msg = await controller.send(val);
+        thinking.remove();
+        pushMsg("bot", msg.text);
+      }
+    } catch (err) {
+      thinking.remove();
+      const msg = await controller.send(val);
+      pushMsg("bot", msg.text);
+      // Avoid dumping raw HTML/error bodies into the chat; keep it actionable and redact secrets.
+      console.warn("AI mode failed", err);
+      const safe = redactSecrets(err?.message || String(err));
+      pushMsg(
+        "bot",
+        `AI mode failed. If you're on a static host, you likely need to set an AI endpoint (proxy) that supports CORS. Details: ${safe}`
+      );
+    }
   });
 
   resetChatBtn?.addEventListener("click", () => {
@@ -400,12 +868,36 @@ export function wireChatUI({ controller }) {
     pushMsg("bot", msg.text);
   });
 
+  aiKeyBtn?.addEventListener("click", () => {
+    const existingEndpoint = getEndpoint();
+    const endpointNext = window.prompt(
+      "AI endpoint (leave blank to use the default Worker endpoint).\n\nDefault:\n" + DEFAULT_AI_ENDPOINT,
+      existingEndpoint || ""
+    );
+    if (endpointNext == null) return;
+    const ep = String(endpointNext).trim();
+    // Prevent accidental pasting of the API key into the endpoint field.
+    if (/\bsk-(proj-)?[a-z0-9_-]{10,}\b/i.test(ep)) {
+      pushMsg("bot", "That looks like an API key, not an endpoint URL. Endpoint was not changed.");
+    } else if (ep && !/^https?:\/\//i.test(ep)) {
+      pushMsg("bot", "Endpoint must start with http(s)://. Endpoint was not changed.");
+    } else {
+      setEndpoint(ep);
+    }
+    // Keys are intentionally not collected in the UI for public deployments.
+    setKey("");
+    const nowEndpoint = getEndpoint() || DEFAULT_AI_ENDPOINT;
+    pushMsg("bot", `AI endpoint saved. Endpoint: ${nowEndpoint}`);
+  });
+
   for (const chip of Array.from(document.querySelectorAll(".chip[data-prompt]"))) {
     chip.addEventListener("click", async () => {
       const p = chip.getAttribute("data-prompt") || "";
       if (!p) return;
       pushMsg("user", p);
+      const thinking = pushThinking();
       const msg = await controller.send(p);
+      thinking.remove();
       pushMsg("bot", msg.text);
     });
   }
