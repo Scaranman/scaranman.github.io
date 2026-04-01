@@ -96,12 +96,9 @@ a{ color: inherit; }
   padding: 10px 12px;
   border-radius: 12px;
   color: var(--muted);
-  border: 1px solid transparent;
 }
 .nav-link:hover{
   color: var(--text);
-  background: rgba(255,255,255,.04);
-  border-color: rgba(255,255,255,.08);
 }
 
 .theme-toggle{
