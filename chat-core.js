@@ -26,6 +26,40 @@ export async function loadProjects() {
   return Array.isArray(json.projects) ? json.projects : [];
 }
 
+/** Flatten case study JSON into plain text for AI context (no HTML). */
+function flattenCaseStudyText(caseStudy, { maxLen = 8000 } = {}) {
+  if (!Array.isArray(caseStudy) || caseStudy.length === 0) return "";
+  const lines = [];
+  const walk = (node, indent = "") => {
+    if (!node) return;
+    if (node.title) lines.push(`${indent}${node.title}`);
+    for (const p of node.paragraphs || []) {
+      if (typeof p === "string" && p.trim()) lines.push(`${indent}${p.trim()}`);
+    }
+    for (const b of node.bullets || []) {
+      const t = String(b || "").trim();
+      if (t) lines.push(`${indent}- ${t}`);
+    }
+    for (const sub of node.subsections || []) walk(sub, `${indent}  `);
+  };
+  for (const s of caseStudy) walk(s);
+  const out = lines.join("\n").replace(/\s+\n/g, "\n").trim();
+  if (out.length <= maxLen) return out;
+  return `${out.slice(0, maxLen)}…`;
+}
+
+/** Relative paths to static HTML in this repo (legacy exports + main pages). */
+const SITE_HTML_PATHS = [
+  "./index.html",
+  "./project.html",
+  "./guestpass.html",
+  "./jrcs.html",
+  "./laundy.html",
+  "./mtg.html",
+  "./vcg.html",
+  "./site.html"
+];
+
 function pickProjectByQuery(projects, q) {
   const nq = normalize(q);
   if (!nq) return null;
@@ -335,6 +369,31 @@ export function createChatController({ projects, initialContextProjectId }) {
 
       const np = normalize(prompt);
 
+      // Hero chip prompts: offline bot scored poorly (e.g. "UX" is 2 chars). Handle explicitly.
+      if (np.includes("strongest") || (np.includes("best") && np.includes("case study"))) {
+        const p = projects.find((x) => x.id === "guest-pass") || projects.slice().sort((a, b) => (b.year || 0) - (a.year || 0))[0];
+        if (p) {
+          lastSuggested = null;
+          lastFocused = { id: p.id, title: p.title };
+          const href = `project.html?id=${encodeURIComponent(p.id)}`;
+          return { role: "bot", text: `${formatProjectSummary(p)}\n\n[View the full case study](${href})` };
+        }
+      }
+      if (np.includes("measurable") && np.includes("impact")) {
+        const ranked = projects
+          .filter((p) => (p.impact || []).some((i) => /\d|released|production|q\d|differentiator|adoption/i.test(String(i).toLowerCase())))
+          .sort((a, b) => (b.year || 0) - (a.year || 0));
+        const p = ranked[0] || projects.find((x) => x.id === "guest-pass") || projects[0];
+        if (p) {
+          lastFocused = { id: p.id, title: p.title };
+          const href = `project.html?id=${encodeURIComponent(p.id)}`;
+          return {
+            role: "bot",
+            text: `${formatProjectSummary(p)}\n\n**Impact**\n- ${(p.impact || []).join("\n- ")}\n\n[View the full case study](${href})`
+          };
+        }
+      }
+
       const projectLabel = (p) => `**${p.title}** (${p.type} • ${p.year})`;
 
       const findByTitleLoose = (title) => {
@@ -605,6 +664,53 @@ export function wireChatUI({ controller }) {
 
   if (!(chatLog && chatForm && chatPrompt)) return;
 
+  /** @type {{ path: string; pageTitle: string; text: string }[] | null} */
+  let sitePagesCorpusCache = null;
+
+  const loadSitePagesCorpus = async () => {
+    if (sitePagesCorpusCache) return sitePagesCorpusCache;
+    const perPageMax = 12000;
+    const totalMax = 52000;
+    const parts = await Promise.all(
+      SITE_HTML_PATHS.map(async (path) => {
+        try {
+          const res = await fetch(path, { cache: "force-cache" });
+          if (!res.ok) return null;
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          const contentRoot =
+            doc.querySelector("main") ||
+            doc.querySelector(".article-style") ||
+            doc.querySelector("article .article-style") ||
+            doc.querySelector("article.article, article.article-project") ||
+            doc.querySelector(".page-body article") ||
+            doc.querySelector("article");
+          const root = contentRoot || doc.body;
+          let text = root ? String(root.innerText || "").replace(/\s+/g, " ").trim() : "";
+          if (text.length > perPageMax) text = `${text.slice(0, perPageMax)}…`;
+          const pageTitle = (doc.querySelector("title") && doc.querySelector("title").textContent.trim()) || path;
+          if (!text) return null;
+          return { path, pageTitle, text };
+        } catch {
+          return null;
+        }
+      })
+    );
+    const ok = /** @type {{ path: string; pageTitle: string; text: string }[]} */ (parts.filter(Boolean));
+    let used = 0;
+    sitePagesCorpusCache = [];
+    for (const p of ok) {
+      if (used + p.text.length > totalMax) {
+        const rest = totalMax - used;
+        if (rest > 500) sitePagesCorpusCache.push({ ...p, text: `${p.text.slice(0, rest)}…` });
+        break;
+      }
+      sitePagesCorpusCache.push(p);
+      used += p.text.length;
+    }
+    return sitePagesCorpusCache;
+  };
+
   const DEFAULT_AI_ENDPOINT = "https://portfolio-openai-proxy.jacobscarani.workers.dev/v1/responses";
   const redactSecrets = (s) =>
     String(s == null ? "" : s)
@@ -614,6 +720,8 @@ export function wireChatUI({ controller }) {
 
   const callOpenAI = async ({ prompt, projects, contextProjectId }) => {
     const contextProject = contextProjectId ? projects.find((p) => p.id === contextProjectId) : null;
+
+    const sitePages = await loadSitePagesCorpus();
 
     const allProjectsCompact = projects.map((p) => ({
       id: p.id,
@@ -628,6 +736,7 @@ export function wireChatUI({ controller }) {
       impact: p.impact,
       skills: p.skills,
       tags: p.tags,
+      caseStudyText: flattenCaseStudyText(p.caseStudy, { maxLen: 8000 }),
       artifacts: (p.artifacts || []).filter((a) => a && a.kind === "url" && a.href).map((a) => ({ label: a.label, href: a.href }))
     }));
 
@@ -676,14 +785,16 @@ export function wireChatUI({ controller }) {
 
     const system = [
       "You are a helpful portfolio assistant for Jacob Scarani.",
-      "Answer only using the provided homepage context and project data. If the answer isn't in the data, say you don't have it and suggest what to ask instead.",
-      "Prefer concise, plain English. When linking to a case study, use markdown link text like [Open case study](project.html?id=...).",
-      "If multiple projects match, return up to 4 and ask a quick clarifying question."
+      "Answer ONLY using the provided knowledge: (1) live homepage summary, (2) structured projects + caseStudyText, (3) plain-text excerpts fetched from the site's HTML pages (sitePages).",
+      "If something isn't covered there, say you don't have that detail on this site and suggest a related question or page.",
+      "Prefer concise, plain English. For case studies use markdown like [Open case study](project.html?id=...). Legacy article pages may be linked by filename when helpful, e.g. [Guest Pass article](guestpass.html).",
+      "If multiple projects match, return up to 4 and ask a short clarifying question."
     ].join("\n");
 
     const data = {
       mode: contextProject ? "project" : "portfolio",
       homepage: homeContext,
+      sitePages,
       contextProjectId: contextProject?.id || null,
       contextProjectTitle: contextProject?.title || null,
       projects: allProjectsCompact,
@@ -701,13 +812,14 @@ export function wireChatUI({ controller }) {
             impact: contextProject.impact,
             skills: contextProject.skills,
             tags: contextProject.tags,
+            caseStudyText: flattenCaseStudyText(contextProject.caseStudy, { maxLen: 12000 }),
             artifacts: (contextProject.artifacts || []).filter((a) => a && (a.kind === "url" || a.kind === "image" || a.kind === "video"))
           }
         : null
     };
 
     const user = [
-      "Project data (JSON):",
+      "Site knowledge (JSON):",
       JSON.stringify(data),
       "",
       "User question:",
@@ -793,12 +905,7 @@ export function wireChatUI({ controller }) {
 
   pushMsg("bot", "Ask me about a project (role, constraints, process, impact) or open a case study from the grid.");
 
-  chatForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const val = chatPrompt.value.trim();
-    if (!val) return;
-    chatPrompt.value = "";
-    pushMsg("user", val);
+  const runAssistant = async (val) => {
     const thinking = pushThinking();
     try {
       const aiText = await callOpenAI({
@@ -812,14 +919,19 @@ export function wireChatUI({ controller }) {
       thinking.remove();
       const msg = await controller.send(val);
       pushMsg("bot", msg.text);
-      // Avoid dumping raw HTML/error bodies into the chat; keep it actionable and redact secrets.
       console.warn("AI mode failed", err);
       const safe = redactSecrets(err?.message || String(err));
-      pushMsg(
-        "bot",
-        `AI mode failed. Using built-in answers. Details: ${safe}`
-      );
+      pushMsg("bot", `AI mode failed. Using built-in answers. Details: ${safe}`);
     }
+  };
+
+  chatForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const val = chatPrompt.value.trim();
+    if (!val) return;
+    chatPrompt.value = "";
+    pushMsg("user", val);
+    await runAssistant(val);
   });
 
   resetChatBtn?.addEventListener("click", () => {
@@ -833,10 +945,7 @@ export function wireChatUI({ controller }) {
       const p = chip.getAttribute("data-prompt") || "";
       if (!p) return;
       pushMsg("user", p);
-      const thinking = pushThinking();
-      const msg = await controller.send(p);
-      thinking.remove();
-      pushMsg("bot", msg.text);
+      await runAssistant(p);
     });
   }
 }
