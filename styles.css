@@ -252,7 +252,15 @@ h2{ margin:0; font-size: 22px; letter-spacing: -0.01em; }
   font-weight: 650;
   font-size: 13px;
 }
-.tag[aria-pressed="true"]{ border-color: #34495EB3; background: #34495E38; }
+.tag[aria-pressed="true"]{
+  border-color: #34495EF0;
+  background: #34495E66;
+  box-shadow: 0 10px 26px rgba(0,0,0,.35), 0 0 0 3px #34495E2E;
+  transform: translateY(-1px);
+}
+.tag[aria-pressed="true"]:hover{
+  background: #34495E7A;
+}
 
 .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
 .project{
