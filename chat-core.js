@@ -602,46 +602,17 @@ export function wireChatUI({ controller }) {
   const chatForm = document.getElementById("chatForm");
   const chatPrompt = document.getElementById("chatPrompt");
   const resetChatBtn = document.getElementById("resetChatBtn");
-  const aiKeyBtn = document.getElementById("aiKeyBtn");
 
   if (!(chatLog && chatForm && chatPrompt)) return;
 
-  const STORAGE_KEY = "OPENAI_API_KEY";
-  const STORAGE_ENDPOINT = "OPENAI_API_ENDPOINT";
   const DEFAULT_AI_ENDPOINT = "https://portfolio-openai-proxy.jacobscarani.workers.dev/v1/responses";
   const redactSecrets = (s) =>
     String(s == null ? "" : s)
       // redact common OpenAI key formats (best-effort)
       .replace(/\bsk-[a-z0-9_-]{10,}\b/gi, "sk-***")
       .replace(/\bsk-proj-[a-z0-9_-]{10,}\b/gi, "sk-proj-***");
-  const getKey = () => {
-    try {
-      return String(window.localStorage.getItem(STORAGE_KEY) || "").trim();
-    } catch {
-      return "";
-    }
-  };
-  const getEndpoint = () => {
-    try {
-      return String(window.localStorage.getItem(STORAGE_ENDPOINT) || "").trim();
-    } catch {
-      return "";
-    }
-  };
-  const setKey = (k) => {
-    try {
-      if (!k) window.localStorage.removeItem(STORAGE_KEY);
-      else window.localStorage.setItem(STORAGE_KEY, k);
-    } catch {}
-  };
-  const setEndpoint = (v) => {
-    try {
-      if (!v) window.localStorage.removeItem(STORAGE_ENDPOINT);
-      else window.localStorage.setItem(STORAGE_ENDPOINT, v);
-    } catch {}
-  };
 
-  const callOpenAI = async ({ key, prompt, projects, contextProjectId }) => {
+  const callOpenAI = async ({ prompt, projects, contextProjectId }) => {
     const contextProject = contextProjectId ? projects.find((p) => p.id === contextProjectId) : null;
 
     const allProjectsCompact = projects.map((p) => ({
@@ -743,15 +714,13 @@ export function wireChatUI({ controller }) {
       prompt
     ].join("\n");
 
-    const endpoint = getEndpoint() || DEFAULT_AI_ENDPOINT;
+    const endpoint = DEFAULT_AI_ENDPOINT;
     let res;
     try {
       /** @type {Record<string, string>} */
       const headers = {
         "Content-Type": "application/json"
       };
-      // If a key is provided, send it. Otherwise rely on a server-side proxy secret.
-      if (key) headers.Authorization = `Bearer ${key}`;
 
       res = await fetch(endpoint, {
         method: "POST",
@@ -832,22 +801,13 @@ export function wireChatUI({ controller }) {
     pushMsg("user", val);
     const thinking = pushThinking();
     try {
-      const key = getKey();
-      const endpoint = getEndpoint() || DEFAULT_AI_ENDPOINT;
-      if (endpoint) {
-        const aiText = await callOpenAI({
-          key,
-          prompt: val,
-          projects: controller.__projects || [],
-          contextProjectId: controller.__contextProjectId || null
-        });
-        thinking.remove();
-        pushMsg("bot", aiText);
-      } else {
-        const msg = await controller.send(val);
-        thinking.remove();
-        pushMsg("bot", msg.text);
-      }
+      const aiText = await callOpenAI({
+        prompt: val,
+        projects: controller.__projects || [],
+        contextProjectId: controller.__contextProjectId || null
+      });
+      thinking.remove();
+      pushMsg("bot", aiText);
     } catch (err) {
       thinking.remove();
       const msg = await controller.send(val);
@@ -857,7 +817,7 @@ export function wireChatUI({ controller }) {
       const safe = redactSecrets(err?.message || String(err));
       pushMsg(
         "bot",
-        `AI mode failed. If you're on a static host, you likely need to set an AI endpoint (proxy) that supports CORS. Details: ${safe}`
+        `AI mode failed. Using built-in answers. Details: ${safe}`
       );
     }
   });
@@ -866,28 +826,6 @@ export function wireChatUI({ controller }) {
     chatLog.innerHTML = "";
     const msg = controller.reset();
     pushMsg("bot", msg.text);
-  });
-
-  aiKeyBtn?.addEventListener("click", () => {
-    const existingEndpoint = getEndpoint();
-    const endpointNext = window.prompt(
-      "AI endpoint (leave blank to use the default Worker endpoint).\n\nDefault:\n" + DEFAULT_AI_ENDPOINT,
-      existingEndpoint || ""
-    );
-    if (endpointNext == null) return;
-    const ep = String(endpointNext).trim();
-    // Prevent accidental pasting of the API key into the endpoint field.
-    if (/\bsk-(proj-)?[a-z0-9_-]{10,}\b/i.test(ep)) {
-      pushMsg("bot", "That looks like an API key, not an endpoint URL. Endpoint was not changed.");
-    } else if (ep && !/^https?:\/\//i.test(ep)) {
-      pushMsg("bot", "Endpoint must start with http(s)://. Endpoint was not changed.");
-    } else {
-      setEndpoint(ep);
-    }
-    // Keys are intentionally not collected in the UI for public deployments.
-    setKey("");
-    const nowEndpoint = getEndpoint() || DEFAULT_AI_ENDPOINT;
-    pushMsg("bot", `AI endpoint saved. Endpoint: ${nowEndpoint}`);
   });
 
   for (const chip of Array.from(document.querySelectorAll(".chip[data-prompt]"))) {
