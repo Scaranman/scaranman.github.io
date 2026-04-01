@@ -38,12 +38,12 @@ function renderTagBar() {
       if (activeTags.has(t)) activeTags.delete(t);
       else activeTags.add(t);
       renderTagBar();
-      renderPieces();
+      renderProjects();
     });
   }
 }
 
-function pieceMatchesFilters(p) {
+function projectMatchesFilters(p) {
   const q = normalize(projectFilter.value);
   if (activeTags.size > 0) {
     const hasAll = Array.from(activeTags).every((t) => (p.tags || []).includes(t));
@@ -68,11 +68,11 @@ function pieceMatchesFilters(p) {
   return blob.includes(q);
 }
 
-function renderPieces() {
+function renderProjects() {
   const list = projects
     .slice()
     .sort((a, b) => (b.year || 0) - (a.year || 0))
-    .filter(pieceMatchesFilters);
+    .filter(projectMatchesFilters);
 
   if (list.length === 0) {
     projectsGrid.innerHTML = `<div class="card pad" style="grid-column: 1 / -1;">
@@ -123,9 +123,9 @@ async function main() {
 
   projects = await loadProjects();
   renderTagBar();
-  renderPieces();
+  renderProjects();
 
-  projectFilter.addEventListener("input", renderPieces);
+  projectFilter.addEventListener("input", renderProjects);
 
   const controller = createChatController({ projects });
   wireChatUI({ controller });

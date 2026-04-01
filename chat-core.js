@@ -48,7 +48,7 @@ function formatProjectSummary(p) {
 export function createChatController({ projects, initialContextProjectId }) {
   const contextProject = initialContextProjectId ? projects.find((p) => p.id === initialContextProjectId) : null;
 
-  function answerForPiece(p, q) {
+  function answerForProject(p, q) {
     const nq = normalize(q);
     if (!nq) return "Ask about role, constraints, process, impact, or artifacts.";
 
@@ -67,7 +67,7 @@ export function createChatController({ projects, initialContextProjectId }) {
 
   return {
     async send(prompt) {
-      if (contextProject) return { role: "bot", text: answerForPiece(contextProject, prompt) };
+      if (contextProject) return { role: "bot", text: answerForProject(contextProject, prompt) };
 
       const p = pickProjectByQuery(projects, prompt);
       if (p) {
