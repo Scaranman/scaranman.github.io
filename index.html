@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+    <title>Jacob Scarani</title>
+    <meta name="description" content="Jacob Scarani's UX portfolio." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img class="brand-mark" src="./assets/logo.png" alt="" width="38" height="38" decoding="async" />
+          <div class="brand-text">
+            <div class="brand-name">Jacob Scarani</div>
+            <div class="brand-tag">Product & UX</div>
+          </div>
+        </div>
+
+        <nav class="top-nav" aria-label="Primary">
+          <a href="#projects" class="nav-link">Portfolio</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#resume" class="nav-link">Experience</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+          <span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span>
+          <span class="theme-toggle-label">Dark</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>
+            Ask the bot about my work.
+            <span class="muted">Explore case studies conversationally.</span>
+          </h1>
+          <p class="lead">
+            This portfolio is organized like a product: you can browse, but the fastest path is to ask. Try “Show a mobile-first project.”
+          </p>
+
+          <div class="hero-chips" role="list" aria-label="Suggested prompts">
+            <button class="chip" type="button" data-prompt="Give me your strongest UX case study.">Strongest case study</button>
+            <button class="chip" type="button" data-prompt="Show me a project with measurable impact.">Measurable impact</button>
+            <button class="chip" type="button" data-prompt="What’s a good example of your IA or content strategy work?">IA / content</button>
+            <button class="chip" type="button" data-prompt="Show a project you shipped end-to-end.">End-to-end</button>
+          </div>
+        </div>
+
+        <div class="hero-chat card" aria-label="Portfolio chatbot">
+          <div class="chat-header">
+            <div class="status-pill"><span class="dot" aria-hidden="true"></span>Portfolio bot</div>
+            <button id="resetChatBtn" class="ghost-btn" type="button">Reset</button>
+          </div>
+          <div id="chatLog" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+          <form id="chatForm" class="chat-input" autocomplete="off">
+            <label class="sr-only" for="chatPrompt">Ask about the portfolio</label>
+            <input id="chatPrompt" name="chatPrompt" type="text" inputmode="text" placeholder='Ask: "Show a security project"' />
+            <button class="primary-btn" type="submit">Send</button>
+          </form>
+          <div class="hint">Tip: ask for <strong>role</strong>, <strong>constraints</strong>, <strong>process</strong>, <strong>impact</strong>, or a project name.</div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <div class="section-header">
+          <h2>Portfolio</h2>
+          <p class="muted">Browse, filter, or open a project for the full case study.</p>
+        </div>
+        <div class="toolbar">
+          <label class="sr-only" for="projectFilter">Filter projects</label>
+          <input id="projectFilter" class="filter" type="search" placeholder="Filter by keyword (e.g., mobile, research, security)" />
+          <div class="tags" id="tagBar" aria-label="Common tags"></div>
+        </div>
+        <div id="projectsGrid" class="grid" aria-live="polite"></div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="section-header">
+          <h2>About</h2>
+          <p class="muted">A quick intro.</p>
+        </div>
+        <div class="two-col">
+          <div class="card pad">
+            <h3>About Me</h3>
+            <p>Hi, I’m Jacob. I’m a UX Designer from the Philadelphia region.</p>
+            <p>As a UX Designer, I’m passionate about creating intuitive, user-friendly experiences that solve real-world problems. With a B.S. in Human Centered Computing (HCC) and a minor in Japanese from Rochester Institute of Technology (RIT), I bring a unique perspective to every project I work on.</p>
+            <p>In addition to my professional pursuits, I enjoy hiking, live music, and video games. Additionally, I'm currently learning to play the drums.</p>
+            <p>If you’re interested in working together or want to learn more about my design philosophy, please don’t hesitate to get in touch.</p>
+          </div>
+          <div class="card pad">
+            <h3>What you’ll find here</h3>
+            <ul class="bullets">
+              <li><strong>Case studies</strong> with decisions, trade-offs, and learnings.</li>
+              <li><strong>Artifacts</strong> (flows, wireframes, UI, motion, and rationale).</li>
+              <li><strong>Impact</strong> where available (shipping, differentiation, adoption signals).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="resume" class="section">
+        <div class="section-header">
+          <h2>Experience</h2>
+          <p class="muted">A quick timeline.</p>
+        </div>
+
+        <div class="timeline card pad" aria-label="Experience timeline">
+          <ol class="timeline-list">
+            <li class="timeline-item">
+              <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <img class="timeline-logo" src="./assets/logos/cayuse.svg" alt="Cayuse logo" />
+                  <div class="timeline-title">
+                    <div class="timeline-role"><strong>Contract UX Designer</strong> <span class="muted">— Cayuse</span></div>
+                    <div class="timeline-company muted">Nov 2025 – Present • Remote</div>
+                  </div>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Collaborate with designers and stakeholders to update designs for iRIS.</li>
+                  <li>Create wireframes and design deliverables in Figma.</li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="timeline-item">
+              <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <img class="timeline-logo" src="./assets/logos/cobblestone.svg" alt="Cobblestone Software logo" />
+                  <div class="timeline-title">
+                    <div class="timeline-role"><strong>UX Designer</strong> <span class="muted">— Cobblestone Software</span></div>
+                    <div class="timeline-company muted">Nov 2023 – Oct 2025 • Lindenwold, NJ</div>
+                  </div>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Designed new and existing features for Contract Insights (contract management + procurement).</li>
+                  <li>Led redesign of the external Vendor Client Gateway module.</li>
+                  <li>Produced handoff-ready wireframes and specs in Figma.</li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="timeline-item">
+              <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <img class="timeline-logo" src="./assets/logos/buxton.svg" alt="Buxton logo" />
+                  <div class="timeline-title">
+                    <div class="timeline-role"><strong>Product Designer</strong> <span class="muted">— Buxton</span></div>
+                    <div class="timeline-company muted">Jun 2022 – Oct 2022 • Remote, USA</div>
+                  </div>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Designed data-driven product experiences across multiple platforms.</li>
+                  <li>Launched 3 products (100+ screens) in 3 months.</li>
+                  <li>Centralized and streamlined the design system to reduce weekly design time.</li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="timeline-item">
+              <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <img class="timeline-logo" src="./assets/logos/lenels2.svg" alt="LenelS2 logo" />
+                  <div class="timeline-title">
+                    <div class="timeline-role"><strong>UX Co-op</strong> <span class="muted">— LenelS2</span></div>
+                    <div class="timeline-company muted">Jun 2021 – Dec 2021 • Pittsford, NY</div>
+                  </div>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Led end-to-end design for a new guest access feature (Guest Pass) in Elements.</li>
+                  <li>Migrated a 50+ component library from Sketch to Figma and improved system consistency.</li>
+                  <li>Created dark mode variations of design system components.</li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="timeline-item">
+              <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
+              <div class="timeline-content">
+                <div class="timeline-header">
+                  <img class="timeline-logo" src="./assets/logos/tamagodb.svg" alt="Tamago DB logo" />
+                  <div class="timeline-title">
+                    <div class="timeline-role"><strong>Front-end Development Intern</strong> <span class="muted">— Tamago DB K.K.</span></div>
+                    <div class="timeline-company muted">Jun 2019 – Aug 2020 • Shinagawa, Tokyo, JP</div>
+                  </div>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Modernized analytics visualizations by replacing a legacy charts library.</li>
+                  <li>Tested and debugged locally using Laragon, improving iteration speed.</li>
+                  <li>Improved UI quality across a Symfony codebase with HTML/CSS/JS updates.</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+
+          <div class="timeline-actions">
+            <a class="link-btn" href="./assets/Jacob Scarani Resume.pdf" target="_blank" rel="noreferrer">Download My Resume</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="section-header">
+          <h2>Contact</h2>
+          <p class="muted">Email works best.</p>
+        </div>
+        <div class="card pad">
+          <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="29d8a6d0-1b87-4a68-a16c-f3c3ada53639" />
+
+            <div class="contact-grid">
+              <div class="field">
+                <label for="contactName">Name</label>
+                <input id="contactName" type="text" name="name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="contactEmail">Email</label>
+                <input id="contactEmail" type="email" name="email" autocomplete="email" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" name="message" required></textarea>
+            </div>
+
+            <div class="contact-actions">
+              <button class="primary-btn" type="submit">Submit</button>
+              <span class="muted">Or send to <a class="contact-link" href="mailto:jacobscarani@gmail.com">jacobscarani@gmail.com</a></span>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="muted">© <span id="year"></span> Jacob Scarani</div>
+        <div class="muted">Built as a chat-first UX portfolio.</div>
+      </div>
+    </footer>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

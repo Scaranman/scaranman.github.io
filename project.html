@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
+    <title>Portfolio project</title>
+    <meta name="description" content="Portfolio project details." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img class="brand-mark" src="./assets/logo.png" alt="" width="38" height="38" decoding="async" />
+          <div class="brand-text">
+            <div class="brand-name">Jacob Scarani</div>
+            <div class="brand-tag">Product & UX</div>
+          </div>
+        </div>
+
+        <nav class="top-nav" aria-label="Primary">
+          <a href="./index.html#projects" class="nav-link">Portfolio</a>
+          <a href="./index.html#about" class="nav-link">About</a>
+          <a href="./index.html#resume" class="nav-link">Experience</a>
+          <a href="./index.html#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+          <span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span>
+          <span class="theme-toggle-label">Dark</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      <section class="project-hero">
+        <a class="back-link" href="./index.html#projects">← Back to Portfolio</a>
+        <h1 id="projectTitle">Loading…</h1>
+        <div id="projectMeta" class="project-meta muted"></div>
+        <p id="projectProblem" class="lead"></p>
+        <div id="projectHeroMedia" class="project-hero-media" aria-hidden="true"></div>
+        <div id="projectTagRow" class="project-tag-row"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Ask about this project</h2>
+          <p class="muted">The bot answers in the context of this project.</p>
+        </div>
+
+        <div class="hero-chat card" aria-label="Portfolio chatbot">
+          <div class="chat-header">
+            <div class="status-pill"><span class="dot" aria-hidden="true"></span>Portfolio bot</div>
+            <button id="resetChatBtn" class="ghost-btn" type="button">Reset</button>
+          </div>
+          <div id="chatLog" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+          <form id="chatForm" class="chat-input" autocomplete="off">
+            <label class="sr-only" for="chatPrompt">Ask about this project</label>
+            <input id="chatPrompt" name="chatPrompt" type="text" inputmode="text" placeholder='Ask: "What was the approach?"' />
+            <button class="primary-btn" type="submit">Send</button>
+          </form>
+          <div class="hint">Tip: ask for <strong>constraints</strong>, <strong>process</strong>, or <strong>impact</strong>.</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Details</h2>
+          <p class="muted">Pulled from `data/projects.json`.</p>
+        </div>
+        <div id="projectDetails" class="card pad"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="muted">© <span id="year"></span> Jacob Scarani</div>
+        <div class="muted">Built as a chat-first UX portfolio.</div>
+      </div>
+    </footer>
+
+    <dialog id="lightbox" class="lightbox" aria-label="Artifact viewer">
+      <form method="dialog" class="lightbox-inner">
+        <div class="lightbox-topbar">
+          <div class="lightbox-title muted">Viewer</div>
+          <div class="lightbox-actions">
+            <button id="zoomOutBtn" class="ghost-btn" type="button" aria-label="Zoom out">−</button>
+            <button id="zoomResetBtn" class="ghost-btn" type="button" aria-label="Reset zoom">Reset</button>
+            <button id="zoomInBtn" class="ghost-btn" type="button" aria-label="Zoom in">+</button>
+            <button class="lightbox-close" aria-label="Close">Close</button>
+          </div>
+        </div>
+        <figure class="lightbox-figure">
+          <div id="lightboxStage" class="lightbox-stage" aria-label="Zoomable stage">
+            <img id="lightboxImg" class="lightbox-img" alt="" />
+            <video id="lightboxVideo" class="lightbox-video" controls playsinline></video>
+          </div>
+          <figcaption id="lightboxCaption" class="lightbox-caption muted"></figcaption>
+        </figure>
+      </form>
+    </dialog>
+
+    <script src="./project.js" type="module"></script>
+  </body>
+</html>
