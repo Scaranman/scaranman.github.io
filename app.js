@@ -77,7 +77,7 @@ function renderProjects() {
   if (list.length === 0) {
     projectsGrid.innerHTML = `<div class="card pad" style="grid-column: 1 / -1;">
       <strong>No matches.</strong>
-      <div class="muted" style="margin-top:6px;">Try removing a tag filter or searching for “security”, “enterprise”, or “workflows”.</div>
+      <div style="margin-top:6px;">Try removing a tag filter or searching for “security”, “enterprise”, or “workflows”.</div>
     </div>`;
     return;
   }
@@ -95,7 +95,7 @@ function renderProjects() {
             <span class="pill">${escapeHtml(roles || "—")}</span>
           </div>
           <div class="summary">${escapeHtml(p.problem || "")}</div>
-          <div class="summary muted" style="margin-top:8px;">${impact}</div>
+          <div class="summary" style="margin-top:8px;">${impact}</div>
           <div class="tags">${tags}</div>
         </article>
       `;
@@ -134,7 +134,7 @@ async function main() {
 main().catch((err) => {
   projectsGrid.innerHTML = `<div class="card pad" style="grid-column: 1 / -1;">
     <strong>Couldn’t load portfolio data.</strong>
-    <div class="muted" style="margin-top:6px;">${escapeHtml(err?.message || String(err))}</div>
+    <div style="margin-top:6px;">${escapeHtml(err?.message || String(err))}</div>
   </div>`;
 });
 

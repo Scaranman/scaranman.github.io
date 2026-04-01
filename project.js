@@ -117,9 +117,12 @@ function renderProjectDetails(p) {
         ${imageArtifacts
           .map((a) => {
             const alt = a.alt || a.label || "Project screenshot";
+            const cap = (a.label || "").trim()
+              ? `<figcaption><h4 class="artifact-caption">${escapeHtml(a.label)}</h4></figcaption>`
+              : "";
             return `
               <figure class="artifact-figure">
-                <figcaption class="artifact-caption">${escapeHtml(a.label || "")}</figcaption>
+                ${cap}
                 <a href="${escapeHtml(a.src)}" target="_blank" rel="noreferrer" class="artifact-media">
                   <img src="${escapeHtml(a.src)}" alt="${escapeHtml(alt)}" loading="lazy" />
                 </a>
@@ -138,9 +141,12 @@ function renderProjectDetails(p) {
           .map((a) => {
             const label = a.label || "Project video";
             const aria = a.alt || label;
+            const cap = label.trim()
+              ? `<figcaption><h4 class="artifact-caption">${escapeHtml(label)}</h4></figcaption>`
+              : "";
             return `
               <figure class="artifact-figure">
-                <figcaption class="artifact-caption">${escapeHtml(label)}</figcaption>
+                ${cap}
                 <a href="${escapeHtml(a.src)}" target="_blank" rel="noreferrer" class="artifact-media artifact-video">
                   <video src="${escapeHtml(a.src)}" aria-label="${escapeHtml(aria)}" muted playsinline preload="metadata"></video>
                   <button class="artifact-play" type="button" aria-label="Play video">▶</button>
@@ -154,7 +160,13 @@ function renderProjectDetails(p) {
     : "";
 
   const otherHtml = nonUrlArtifacts
-    .map((a) => `<li class="artifact"><strong>${escapeHtml(a?.label || "")}:</strong> <span class="muted">${escapeHtml(a?.value ?? "")}</span></li>`)
+    .map((a) => {
+      const label = (a?.label || "").trim();
+      const valueRaw = String(a?.value ?? "");
+      const labelHtml = label ? `<h4 class="artifact-label">${escapeHtml(label)}</h4>` : "";
+      const valueHtml = valueRaw.trim() ? `<div class="artifact-value">${escapeHtml(valueRaw)}</div>` : "";
+      return `<li class="artifact">${labelHtml}${valueHtml}</li>`;
+    })
     .join("");
 
   const caseStudy = Array.isArray(p.caseStudy) && p.caseStudy.length ? p.caseStudy : buildFallbackCaseStudy(p);

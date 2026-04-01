@@ -42,7 +42,7 @@
       <section class="project-hero">
         <a class="back-link" href="./index.html#projects">← Back to Portfolio</a>
         <h1 id="projectTitle">Loading…</h1>
-        <div id="projectMeta" class="project-meta muted"></div>
+        <div id="projectMeta" class="project-meta"></div>
         <p id="projectProblem" class="lead"></p>
         <div id="projectHeroMedia" class="project-hero-media" aria-hidden="true"></div>
         <div id="projectTagRow" class="project-tag-row"></div>
@@ -51,7 +51,6 @@
       <section class="section">
         <div class="section-header">
           <h2>Ask about this project</h2>
-          <p class="muted">The bot answers in the context of this project.</p>
         </div>
 
         <div class="hero-chat card" aria-label="Portfolio chatbot">
@@ -74,7 +73,6 @@
       <section class="section">
         <div class="section-header">
           <h2>Details</h2>
-          <p class="muted">Pulled from `data/projects.json`.</p>
         </div>
         <div id="projectDetails" class="card pad"></div>
       </section>
@@ -90,7 +88,7 @@
     <dialog id="lightbox" class="lightbox" aria-label="Artifact viewer">
       <form method="dialog" class="lightbox-inner">
         <div class="lightbox-topbar">
-          <div class="lightbox-title muted">Viewer</div>
+          <div class="lightbox-title">Viewer</div>
           <div class="lightbox-actions">
             <button id="zoomOutBtn" class="ghost-btn" type="button" aria-label="Zoom out">−</button>
             <button id="zoomResetBtn" class="ghost-btn" type="button" aria-label="Reset zoom">Reset</button>
@@ -103,7 +101,7 @@
             <img id="lightboxImg" class="lightbox-img" alt="" />
             <video id="lightboxVideo" class="lightbox-video" controls playsinline></video>
           </div>
-          <figcaption id="lightboxCaption" class="lightbox-caption muted"></figcaption>
+          <figcaption id="lightboxCaption" class="lightbox-caption"></figcaption>
         </figure>
       </form>
     </dialog>

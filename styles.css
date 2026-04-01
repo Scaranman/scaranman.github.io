@@ -146,7 +146,7 @@ a{ color: inherit; }
   align-items: start;
 }
 h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spacing: -0.02em; }
-.lead{ margin: 12px 0 0; color: var(--muted); max-width: 62ch; }
+.lead{ margin: 12px 0; color: var(--muted); max-width: 65ch; }
 .hero-chips{ display:flex; flex-wrap:wrap; gap: 10px; margin-top: 16px; }
 .chip{
   border-radius: 999px;
@@ -311,7 +311,7 @@ h2{ margin:0; font-size: 22px; letter-spacing: -0.01em; }
 }
 .project:hover{ border-color: #34495EA6; box-shadow: 0 16px 55px rgba(0,0,0,.25); }
 .project h3{ margin:0; font-size: 17px; letter-spacing: -0.01em; }
-.project .meta{ margin-top: 6px; display:flex; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
+.project .meta{ margin-top: 6px; display:flex; gap: 10px; flex-wrap: wrap; color: var(--text); font-size: 13px; }
 .pill{
   display:inline-flex;
   gap: 6px;
@@ -407,7 +407,21 @@ h3{ margin: 0 0 10px; font-size: 16px; letter-spacing: -0.01em; }
 .hero-image{ display:block; width: 100%; height:auto; }
 .artifact-gallery{ margin-top: 10px; display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
 .artifact-figure{ margin:0; border-radius: 16px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.02); padding: 12px; }
-.artifact-caption{ font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.artifact-figure .artifact-caption{
+  margin: 0 0 8px;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+  color: var(--text);
+}
+.artifact .artifact-label{
+  margin: 0 0 8px;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+  color: var(--text);
+}
+.artifact .artifact-value{ color: var(--text); }
 .artifact-media{ display:block; border-radius: 14px; overflow:hidden; border: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18); }
 .artifact-media img{ display:block; width: 100%; height:auto; }
 .artifact-video{ position: relative; }
@@ -428,7 +442,7 @@ h3{ margin: 0 0 10px; font-size: 16px; letter-spacing: -0.01em; }
 .artifact-play:focus{ outline:none; box-shadow: 0 0 0 3px #34495E47; }
 
 .detail .kvs{ display:grid; grid-template-columns: 180px 1fr; gap: 10px 14px; margin-top: 12px; }
-.kv-k{ color: var(--muted); font-weight: 650; }
+.kv-k{ color: var(--text); font-weight: 650; }
 .kv-v{ color: var(--text); }
 .case-study{ margin-top: 16px; }
 .case-study-section + .case-study-section{ margin-top: 24px; }
