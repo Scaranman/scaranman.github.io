@@ -33,6 +33,13 @@
   --contact-link: var(--brand);
   --secondary-btn-border: var(--brand);
 }
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input[type="email"],
+[data-theme="light"] input[type="search"],
+[data-theme="light"] .contact-form textarea{
+  background: rgba(0,0,0,.06);
+  border-color: rgba(0,0,0,.12);
+}
 html{ scroll-padding-top: var(--header-h); }
 *{ box-sizing: border-box; }
 html, body{ height: 100%; }
