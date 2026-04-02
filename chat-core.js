@@ -794,9 +794,6 @@ export function wireChatUI({ controller }) {
   const callOpenAI = async ({ prompt, projects, contextProjectId }) => {
     const contextProject = contextProjectId ? projects.find((p) => p.id === contextProjectId) : null;
 
-    const sitePagesAll = await loadSitePagesCorpus();
-    const sitePages = pickRelevantSitePages(sitePagesAll, prompt, { limit: 5, maxChars: 52000 });
-
     const allProjectsCompact = projects.map((p) => ({
       id: p.id,
       title: p.title,
@@ -813,6 +810,12 @@ export function wireChatUI({ controller }) {
       caseStudyText: flattenCaseStudyText(p.caseStudy, { maxLen: 8000 }),
       artifacts: (p.artifacts || []).filter((a) => a && a.kind === "url" && a.href).map((a) => ({ label: a.label, href: a.href }))
     }));
+
+    // For the project page, we want the assistant to answer ONLY about the current project.
+    // That means: don't provide the full portfolio list, and don't provide other site pages that may mention other projects.
+    const sitePages = contextProject
+      ? []
+      : pickRelevantSitePages(await loadSitePagesCorpus(), prompt, { limit: 5, maxChars: 52000 });
 
     const getText = (sel) => {
       const el = document.querySelector(sel);
@@ -861,6 +864,7 @@ export function wireChatUI({ controller }) {
       "You are a helpful portfolio assistant for Jacob Scarani.",
       "Answer ONLY using the provided knowledge: (1) live homepage summary, (2) structured projects + caseStudyText, (3) plain-text excerpts fetched from the site's HTML pages (sitePages).",
       "If something isn't covered there, say you don't have that detail on this site and suggest a related question or page.",
+      "If contextProject is provided, the user is on that project's page. Answer ONLY using contextProject. Do NOT use other projects even if they exist in the dataset.",
       "Prefer concise, plain English. For case studies use markdown like [Open case study](project.html?id=...). Legacy article pages may be linked by filename when helpful, e.g. [Guest Pass article](guestpass.html).",
       "If multiple projects match, return up to 4 and ask a short clarifying question."
     ].join("\n");
@@ -871,7 +875,7 @@ export function wireChatUI({ controller }) {
       sitePages,
       contextProjectId: contextProject?.id || null,
       contextProjectTitle: contextProject?.title || null,
-      projects: allProjectsCompact,
+      projects: contextProject ? [] : allProjectsCompact,
       contextProject: contextProject
         ? {
             id: contextProject.id,
@@ -977,7 +981,21 @@ export function wireChatUI({ controller }) {
     return wrap;
   };
 
-  pushMsg("bot", "Ask me about a project (role, constraints, process, impact) or open a case study from the grid.");
+  const onProjectPage = (() => {
+    try {
+      const p = new URL(window.location.href).pathname.toLowerCase();
+      return p.endsWith("/project.html") || p.endsWith("project.html") || Boolean(document.getElementById("projectTitle"));
+    } catch {
+      return Boolean(document.getElementById("projectTitle"));
+    }
+  })();
+
+  pushMsg(
+    "bot",
+    onProjectPage || controller.__contextProjectId
+      ? "Ask me about this project (role, constraints, process, impact)."
+      : "Ask me about a project (role, constraints, process, impact) or open a case study from the grid."
+  );
 
   let chatBusy = false;
   const submitBtn = chatForm.querySelector('button[type="submit"]');
