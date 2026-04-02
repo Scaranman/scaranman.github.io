@@ -297,6 +297,8 @@ h2{ margin:0; font-size: 22px; letter-spacing: -0.01em; }
   background: #34495E7A;
 }
 
+.skill-tags .tag{ cursor: default; }
+
 .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
 .project{
   grid-column: span 6;

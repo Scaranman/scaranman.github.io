@@ -670,7 +670,6 @@ export function wireChatUI({ controller }) {
   const loadSitePagesCorpus = async () => {
     if (sitePagesCorpusCache) return sitePagesCorpusCache;
     const perPageMax = 12000;
-    const totalMax = 52000;
     const parts = await Promise.all(
       SITE_HTML_PATHS.map(async (path) => {
         try {
@@ -687,6 +686,40 @@ export function wireChatUI({ controller }) {
             doc.querySelector("article");
           const root = contentRoot || doc.body;
           let text = root ? String(root.innerText || "").replace(/\s+/g, " ").trim() : "";
+
+          // innerText drops URLs that only exist in attributes (e.g. icon links).
+          // Include a compact link/media list so the assistant can answer “what’s your LinkedIn URL?” etc.
+          if (root) {
+            /** @type {string[]} */
+            const linkLines = [];
+            for (const a of Array.from(root.querySelectorAll("a[href]"))) {
+              const href = String(a.getAttribute("href") || "").trim();
+              if (!href) continue;
+              // skip purely internal anchors; keep relative pages and external links
+              if (href.startsWith("#")) continue;
+              const label = String((a.getAttribute("aria-label") || a.textContent || "").replace(/\s+/g, " ").trim());
+              linkLines.push(label ? `${label} — ${href}` : href);
+              if (linkLines.length >= 60) break;
+            }
+
+            /** @type {string[]} */
+            const mediaLines = [];
+            for (const el of Array.from(root.querySelectorAll("img[src], video[src], source[src]"))) {
+              const src = String(el.getAttribute("src") || "").trim();
+              if (!src) continue;
+              const alt = String((el.getAttribute("alt") || el.getAttribute("aria-label") || "").replace(/\s+/g, " ").trim());
+              mediaLines.push(alt ? `${alt} — ${src}` : src);
+              if (mediaLines.length >= 60) break;
+            }
+
+            const extras = [
+              linkLines.length ? `Links: ${linkLines.join(" | ")}` : "",
+              mediaLines.length ? `Media: ${mediaLines.join(" | ")}` : ""
+            ]
+              .filter(Boolean)
+              .join("\n");
+            if (extras) text = `${text}\n\n${extras}`.trim();
+          }
           if (text.length > perPageMax) text = `${text.slice(0, perPageMax)}…`;
           const pageTitle = (doc.querySelector("title") && doc.querySelector("title").textContent.trim()) || path;
           if (!text) return null;
@@ -697,18 +730,58 @@ export function wireChatUI({ controller }) {
       })
     );
     const ok = /** @type {{ path: string; pageTitle: string; text: string }[]} */ (parts.filter(Boolean));
+    sitePagesCorpusCache = ok;
+    return sitePagesCorpusCache;
+  };
+
+  const pickRelevantSitePages = (sitePages, prompt, { limit = 4, maxChars = 52000 } = {}) => {
+    const q = normalize(prompt);
+    if (!q) return sitePages.slice(0, Math.min(limit, sitePages.length));
+
+    const tokens = q
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/g)
+      .filter(Boolean)
+      .filter((t) => t.length >= 3);
+
+    const scorePage = (p) => {
+      const title = normalize(p.pageTitle || "");
+      const path = normalize(p.path || "");
+      const text = normalize(p.text || "");
+      const blob = `${title} ${path} ${text}`;
+      let score = 0;
+      for (const t of tokens) {
+        if (!t) continue;
+        if (title.includes(t)) score += 8;
+        if (path.includes(t)) score += 6;
+        if (text.includes(t)) score += 2;
+        if (blob.includes(t)) score += 1;
+      }
+      // Small bias toward non-generic legacy dumps when they match
+      if (path.endsWith("site.html")) score -= 2;
+      return score;
+    };
+
+    const ranked = sitePages
+      .map((p) => ({ p, score: scorePage(p) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((x) => x.p);
+
+    const picked = (ranked.length ? ranked : sitePages).slice(0, Math.min(limit, sitePages.length));
+    /** @type {{ path: string; pageTitle: string; text: string }[]} */
+    const out = [];
     let used = 0;
-    sitePagesCorpusCache = [];
-    for (const p of ok) {
-      if (used + p.text.length > totalMax) {
-        const rest = totalMax - used;
-        if (rest > 500) sitePagesCorpusCache.push({ ...p, text: `${p.text.slice(0, rest)}…` });
+    for (const p of picked) {
+      if (used + p.text.length > maxChars) {
+        const rest = maxChars - used;
+        if (rest > 500) out.push({ ...p, text: `${p.text.slice(0, rest)}…` });
         break;
       }
-      sitePagesCorpusCache.push(p);
+      out.push(p);
       used += p.text.length;
     }
-    return sitePagesCorpusCache;
+    return out;
   };
 
   const DEFAULT_AI_ENDPOINT = "https://portfolio-openai-proxy.jacobscarani.workers.dev/v1/responses";
@@ -721,7 +794,8 @@ export function wireChatUI({ controller }) {
   const callOpenAI = async ({ prompt, projects, contextProjectId }) => {
     const contextProject = contextProjectId ? projects.find((p) => p.id === contextProjectId) : null;
 
-    const sitePages = await loadSitePagesCorpus();
+    const sitePagesAll = await loadSitePagesCorpus();
+    const sitePages = pickRelevantSitePages(sitePagesAll, prompt, { limit: 5, maxChars: 52000 });
 
     const allProjectsCompact = projects.map((p) => ({
       id: p.id,
