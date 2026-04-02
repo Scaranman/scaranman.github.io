@@ -656,6 +656,105 @@ function renderMarkdownish(text) {
   return out.join("");
 }
 
+/** @typedef {{ label: string; href: string }} SocialLink */
+
+/**
+ * Snapshot of homepage-ish content from any Document (live page or fetched index.html).
+ * @param {Document} doc
+ */
+function collectHomeContextFromDoc(doc) {
+  const getText = (sel) => {
+    const el = doc.querySelector(sel);
+    return el ? String(el.textContent || "").replace(/\s+/g, " ").trim() : "";
+  };
+  const getTexts = (sel) =>
+    Array.from(doc.querySelectorAll(sel))
+      .map((el) => String(el.textContent || "").replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+
+  const getHref = (sel) => {
+    const el = doc.querySelector(sel);
+    if (!(el instanceof HTMLAnchorElement)) return "";
+    return String(el.getAttribute("href") || "").trim();
+  };
+
+  const skillCards = doc.querySelectorAll("#skills .two-col .card.pad");
+  const tagTexts = (card) =>
+    card
+      ? Array.from(card.querySelectorAll(".tag"))
+          .map((el) => String(el.textContent || "").replace(/\s+/g, " ").trim())
+          .filter(Boolean)
+      : [];
+  const skillsCore = tagTexts(skillCards[0]);
+  const skillsTools = tagTexts(skillCards[1]);
+
+  /** @type {SocialLink[]} */
+  const socialLinks = Array.from(doc.querySelectorAll("#contact .social-link[href], #contact .social-links a[href]"))
+    .map((a) => {
+      const href = String(a.getAttribute("href") || "").trim();
+      const label = String((a.getAttribute("aria-label") || a.textContent || "").replace(/\s+/g, " ").trim());
+      return href ? { label: label || href, href } : null;
+    })
+    .filter(Boolean);
+
+  const aboutTitle = getText("#about h2") || "About";
+
+  return {
+    name: getText(".brand-name"),
+    tagline: getText(".brand-tag"),
+    heroHeadline: getText("main .hero h1"),
+    about: { title: aboutTitle, text: getTexts("#about .card p").join("\n") },
+    experience: {
+      roles: getTexts("#resume .timeline-role"),
+      timeline: getTexts("#resume .timeline-company"),
+      highlights: getTexts("#resume .timeline-bullets li")
+    },
+    contact: {
+      email: getText('a.contact-link[href^="mailto:"]') || getText('#contact a[href^="mailto:"]'),
+      resumeHref: getHref('#resume a.link-btn[href$=".pdf"]')
+    },
+    skillsCore,
+    skillsTools,
+    socialLinks
+  };
+}
+
+/**
+ * Prefer non-empty fields from `a`, fall back to `b` (e.g. live page vs fetched index.html).
+ * @param {ReturnType<typeof collectHomeContextFromDoc>} a
+ * @param {ReturnType<typeof collectHomeContextFromDoc>} b
+ */
+function mergeHomeContext(a, b) {
+  const pick = (x, y) => {
+    const sx = x == null ? "" : String(x).trim();
+    if (sx) return x;
+    const sy = y == null ? "" : String(y).trim();
+    return sy ? y : x ?? y ?? "";
+  };
+  const pickArr = (x, y) => (x && x.length ? x : y && y.length ? y : x || y || []);
+  return {
+    name: pick(a.name, b.name),
+    tagline: pick(a.tagline, b.tagline),
+    heroHeadline: pick(a.heroHeadline, b.heroHeadline),
+    about: {
+      title: pick(a.about?.title, b.about?.title),
+      text: pick(a.about?.text, b.about?.text)
+    },
+    experience: {
+      roles: pickArr(a.experience?.roles, b.experience?.roles),
+      timeline: pickArr(a.experience?.timeline, b.experience?.timeline),
+      highlights: pickArr(a.experience?.highlights, b.experience?.highlights)
+    },
+    contact: {
+      email: pick(a.contact?.email, b.contact?.email),
+      resumeHref: pick(a.contact?.resumeHref, b.contact?.resumeHref)
+    },
+    skillsCore: pickArr(a.skillsCore, b.skillsCore),
+    skillsTools: pickArr(a.skillsTools, b.skillsTools),
+    socialLinks: pickArr(a.socialLinks, b.socialLinks)
+  };
+}
+
 export function wireChatUI({ controller }) {
   const chatLog = document.getElementById("chatLog");
   const chatForm = document.getElementById("chatForm");
@@ -811,63 +910,55 @@ export function wireChatUI({ controller }) {
       artifacts: (p.artifacts || []).filter((a) => a && a.kind === "url" && a.href).map((a) => ({ label: a.label, href: a.href }))
     }));
 
-    // For the project page, we want the assistant to answer ONLY about the current project.
-    // That means: don't provide the full portfolio list, and don't provide other site pages that may mention other projects.
-    const sitePages = contextProject
-      ? []
-      : pickRelevantSitePages(await loadSitePagesCorpus(), prompt, { limit: 5, maxChars: 52000 });
+    const isProjectScopedChat = Boolean(contextProject);
 
-    const getText = (sel) => {
-      const el = document.querySelector(sel);
-      return el ? String(el.textContent || "").replace(/\s+/g, " ").trim() : "";
-    };
+    /** @type {{ path: string; pageTitle: string; text: string }[]} */
+    let sitePages = [];
+    if (!isProjectScopedChat) {
+      const sitePagesAll = await loadSitePagesCorpus();
+      sitePages = pickRelevantSitePages(sitePagesAll, prompt, { limit: 5, maxChars: 52000 });
+    }
 
-    const getTexts = (sel) =>
-      Array.from(document.querySelectorAll(sel))
-        .map((el) => String(el.textContent || "").replace(/\s+/g, " ").trim())
-        .filter(Boolean);
+    let homeContext = collectHomeContextFromDoc(document);
+    if (!isProjectScopedChat) {
+      const needsIndexFallback =
+        !String(homeContext.about?.text || "").trim() ||
+        (!(homeContext.skillsCore || []).length && !(homeContext.skillsTools || []).length) ||
+        !(homeContext.socialLinks || []).length;
+      if (needsIndexFallback) {
+        try {
+          const res = await fetch("./index.html", { cache: "force-cache" });
+          if (res.ok) {
+            const idxDoc = new DOMParser().parseFromString(await res.text(), "text/html");
+            homeContext = mergeHomeContext(homeContext, collectHomeContextFromDoc(idxDoc));
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+    } else {
+      homeContext = {};
+    }
 
-    const getHref = (sel) => {
-      const el = document.querySelector(sel);
-      if (!(el instanceof HTMLAnchorElement)) return "";
-      return String(el.getAttribute("href") || "").trim();
-    };
-
-    const homeContext = (() => {
-      // Only present on index.html, but safe to call anywhere.
-      const name = getText(".brand-name");
-      const tagline = getText(".brand-tag");
-      const hero = getText("main .hero h1");
-      const aboutTitle = getText("#about h2") || "About";
-      const aboutCardText = getTexts("#about .card p").join("\n");
-      const experienceItems = getTexts("#resume .timeline-bullets li");
-      const experienceRoles = getTexts("#resume .timeline-role");
-      const experienceCompanies = getTexts("#resume .timeline-company");
-      const resumeHref = getHref('#resume a.link-btn[href$=".pdf"]');
-      const contactEmail = getText('a.contact-link[href^="mailto:"]') || getText('#contact a[href^="mailto:"]');
-
-      return {
-        name,
-        tagline,
-        heroHeadline: hero,
-        about: { title: aboutTitle, text: aboutCardText },
-        experience: {
-          roles: experienceRoles,
-          timeline: experienceCompanies,
-          highlights: experienceItems
-        },
-        contact: { email: contactEmail, resumeHref }
-      };
-    })();
-
-    const system = [
-      "You are a helpful portfolio assistant for Jacob Scarani.",
-      "Answer ONLY using the provided knowledge: (1) live homepage summary, (2) structured projects + caseStudyText, (3) plain-text excerpts fetched from the site's HTML pages (sitePages).",
-      "If something isn't covered there, say you don't have that detail on this site and suggest a related question or page.",
-      "If contextProject is provided, the user is on that project's page. Answer ONLY using contextProject. Do NOT use other projects even if they exist in the dataset.",
-      "Prefer concise, plain English. For case studies use markdown like [Open case study](project.html?id=...). Legacy article pages may be linked by filename when helpful, e.g. [Guest Pass article](guestpass.html).",
-      "If multiple projects match, return up to 4 and ask a short clarifying question."
+    const systemPortfolio = [
+      "You are a helpful portfolio assistant for Jacob Scarani (homepage / portfolio chat).",
+      "Answer using ONLY the provided JSON: homepage (including skillsCore, skillsTools, socialLinks, experience), projects, and sitePages excerpts.",
+      "You may answer any question supported by that data (contact, LinkedIn, skills, work history, comparisons, case studies, legacy article pages, etc.).",
+      "If the answer is not in the provided JSON, say you do not have that information on this site and suggest a related question.",
+      "Prefer concise plain English. Use markdown links like [Open case study](project.html?id=...). Legacy pages may use filenames like guestpass.html when relevant.",
+      "If multiple projects match a broad query, summarize up to 4 and ask a short clarifying question."
     ].join("\n");
+
+    const systemProject = [
+      "You are a helpful assistant for Jacob Scarani's portfolio (project / case study page).",
+      "Answer ONLY using the provided contextProject object: title, role, team, problem/summary, constraints, process, impact, skills, tags, caseStudyText, and artifacts.",
+      "Treat vague questions (e.g. \"what was the process?\", \"constraints?\", \"impact?\", \"what did you do?\", \"tell me about it\") as referring to THIS project unless the user explicitly asks about something else (another project name, LinkedIn, the whole site, etc.).",
+      "Do not use other projects, homepage fields, or sitePages — they are intentionally omitted on this page. If asked for something outside this project, briefly say that this chat is scoped to the open case study and suggest they use the portfolio chat on the home page, or ask a question about this project.",
+      "If a detail is not in contextProject, say you don't have it in this case study and suggest what they can ask instead.",
+      "Be concise. Use markdown links only for URLs present in contextProject (e.g. artifact links)."
+    ].join("\n");
+
+    const system = isProjectScopedChat ? systemProject : systemPortfolio;
 
     const data = {
       mode: contextProject ? "project" : "portfolio",
@@ -875,7 +966,7 @@ export function wireChatUI({ controller }) {
       sitePages,
       contextProjectId: contextProject?.id || null,
       contextProjectTitle: contextProject?.title || null,
-      projects: contextProject ? [] : allProjectsCompact,
+      projects: isProjectScopedChat ? [] : allProjectsCompact,
       contextProject: contextProject
         ? {
             id: contextProject.id,
