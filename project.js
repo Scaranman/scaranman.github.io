@@ -175,11 +175,26 @@ function renderProjectDetails(p) {
   return `
     <div class="detail">
       <div class="kvs" role="list" aria-label="Project details">
-        <div class="kv-k">Role</div><div class="kv-v">${escapeHtml((p.role || []).join(", "))}</div>
-        <div class="kv-k">Team</div><div class="kv-v">${escapeHtml(p.team || "")}</div>
-        <div class="kv-k">Summary</div><div class="kv-v">${escapeHtml(p.problem || "")}</div>
-        <div class="kv-k">Skills</div><div class="kv-v">${escapeHtml((p.skills || []).join(" • "))}</div>
-        <div class="kv-k">Tags</div><div class="kv-v">${escapeHtml((p.tags || []).join(" • "))}</div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Role</h3>
+          <div class="kv-v">${escapeHtml((p.role || []).join(", "))}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Team</h3>
+          <div class="kv-v">${escapeHtml(p.team || "")}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Summary</h3>
+          <div class="kv-v">${escapeHtml(p.problem || "")}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Skills</h3>
+          <div class="kv-v">${escapeHtml((p.skills || []).join(" • "))}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Tags</h3>
+          <div class="kv-v">${escapeHtml((p.tags || []).join(" • "))}</div>
+        </div>
       </div>
 
       ${caseStudyHtml ? `<article class="case-study" aria-label="Case study">${caseStudyHtml}</article>` : ""}
