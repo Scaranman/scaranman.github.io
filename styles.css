@@ -143,7 +143,7 @@ a{ color: inherit; }
   align-items: start;
 }
 h1{ margin:0; font-size: clamp(30px, 3.2vw, 44px); line-height: 1.1; letter-spacing: -0.02em; }
-.lead{ margin: 12px 0; color: var(--muted); max-width: 65ch; }
+.lead{ margin: 12px 0; color: var(--muted); max-width: 66ch; }
 .hero-chips{ display:flex; flex-wrap:wrap; gap: 10px; margin-top: 16px; }
 .chip{
   border-radius: 999px;
