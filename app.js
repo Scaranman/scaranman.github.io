@@ -1,4 +1,4 @@
-import { escapeHtml, normalize, loadProjects, createChatController, wireChatUI } from "./chat-core.js";
+import { escapeHtml, normalize, loadProjects, loadExperience, createChatController, wireChatUI } from "./chat-core.js";
 import { initTheme } from "./theme.js";
 
 const $ = (sel) => document.querySelector(sel);
@@ -68,6 +68,44 @@ function projectMatchesFilters(p) {
   return blob.includes(q);
 }
 
+function renderExperience(data) {
+  const ol = $("#experienceTimeline");
+  const resumeLink = $("#resumeDownloadLink");
+  if (!ol) return;
+
+  const entries = Array.isArray(data?.entries) ? data.entries : [];
+  if (entries.length === 0) {
+    ol.innerHTML = `<li class="timeline-item"><div class="timeline-content"><p class="muted">No experience entries.</p></div></li>`;
+    return;
+  }
+
+  ol.innerHTML = entries
+    .map(
+      (e) => `
+    <li class="timeline-item">
+      <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <img class="timeline-logo" src="${escapeHtml(e.logoSrc)}" alt="${escapeHtml(e.logoAlt)}" />
+          <div class="timeline-title">
+            <div class="timeline-role"><strong>${escapeHtml(e.roleTitle)}</strong> — ${escapeHtml(e.company)}</div>
+            <div class="timeline-company">${escapeHtml(e.datesAndLocation)}</div>
+          </div>
+        </div>
+        <ul class="timeline-bullets">
+          ${(e.bullets || []).map((b) => `<li>${escapeHtml(b)}</li>`).join("")}
+        </ul>
+      </div>
+    </li>`
+    )
+    .join("");
+
+  if (resumeLink && data?.resumeDownloadHref) {
+    resumeLink.setAttribute("href", data.resumeDownloadHref);
+    if (data.resumeDownloadLabel) resumeLink.textContent = data.resumeDownloadLabel;
+  }
+}
+
 function renderProjects() {
   const list = projects
     .slice()
@@ -120,6 +158,16 @@ function renderProjects() {
 
 async function main() {
   $("#year").textContent = String(new Date().getFullYear());
+
+  try {
+    const experienceData = await loadExperience();
+    renderExperience(experienceData);
+  } catch (err) {
+    const ol = $("#experienceTimeline");
+    if (ol) {
+      ol.innerHTML = `<li class="timeline-item"><div class="timeline-content"><p><strong>Couldn’t load experience.</strong> ${escapeHtml(err?.message || String(err))}</p></div></li>`;
+    }
+  }
 
   projects = await loadProjects();
   renderTagBar();

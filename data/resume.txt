@@ -1,0 +1,81 @@
+JACOB E. SCARANI
+UX Designer | Philadelphia, PA
+Email: jacobscarani@gmail.com
+Linkedin: https://www.linkedin.com/in/jescarani
+Portfolio: https://jacobscarani.me
+
+EDUCATION
+
+B.S. Human Centered Computing
+Minor in Japanese
+Rochester Institute of Technology
+Rochester, NY, USA
+
+Study Abroad
+Nanzan University
+Nagoya, Japan
+
+EXPERTISE
+
+• UX Design
+• Product Design
+• Interaction Design
+• User Research
+• Usability Testing
+• Wireframing
+• Prototyping
+• Accessibility
+• Stakeholder Engagement
+
+TECHNICAL/SOFTWARE
+
+• Figma
+• Miro
+• HTML
+• CSS
+• JavaScript
+
+EXPERIENCE
+
+CAYUSE, Remote
+Contract UX Designer
+11/2025 - Present
+Cloud-based research management
+• Collaborate with Senior Designer to redesign iRIS, a legacy enterprise product, contributing to
+hundreds of screens across complex, workflow-driven experiences.
+• Create wireframes, high-fidelity designs, and prototypes in Figma to support iterative design
+and stakeholder alignment.
+• Contribute to and expand a scalable component library, standardizing UI patterns and
+improving consistency across the platform.
+
+COBBLESTONE SOFTWARE, Lindenwold, NJ
+UX Designer
+11/2023 - 10/2025
+Contract, vendor, and e-procurement management software, SaaS.
+• Collaborate with stakeholders and developers to design new features and enhance existing
+workflows for Contract Insights, a contract management and procurement platform.
+• Lead the redesign of the Vendor Client Gateway, an external-facing portal, improving usability
+and overall user experience.
+• Create wireframes, high-fidelity designs, and prototypes in Figma to support iterative design
+
+BUXTON, Remote
+Product Designer
+6/2022 - 10/2022
+Retail Customer Analytics, SaaS
+• Worked within the company’s product team to design multiple new products for stakeholder
+review and eventual public release.
+• Utilized Figma to create wireframe deliverables and finalize existing designs.
+• Helped centralize design system in a singular ecosystem to create a more cohesive design
+system going forward with new products.
+
+LENELS2, Pittsford, NY
+Product Designer
+6/2021 - 12/2021
+Advanced physical security solutions, access control, video surveillance and mobile credentialing.
+• Collaborate with stakeholders to design features and functionality for Elements, an all-in-one
+cloud-managed security platform.
+• Lead end-to-end design for a guest access feature, from concept through delivery, improving
+usability and access workflows.
+• Conduct user research and testing, including writing scripts, running interviews and A/B tests,
+and creating interactive prototypes in ProtoPie; synthesize and present findings to
+stakeholders via Confluence.

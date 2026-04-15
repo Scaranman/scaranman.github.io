@@ -26,6 +26,27 @@ export async function loadProjects() {
   return Array.isArray(json.projects) ? json.projects : [];
 }
 
+export async function loadExperience() {
+  const res = await fetch("./data/experience.json", { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to load experience.json (${res.status})`);
+  return await res.json();
+}
+
+const RESUME_PLAIN_TEXT_MAX_CHARS = 14000;
+
+/** Plain-text resume for the chatbot (optional). PDFs are not parsed in the browser—keep this in sync with your PDF. */
+export async function loadResumePlainText() {
+  try {
+    const res = await fetch("./data/resume.txt", { cache: "force-cache" });
+    if (!res.ok) return "";
+    const t = (await res.text()).replace(/\r\n/g, "\n").trim();
+    if (!t) return "";
+    return t.length <= RESUME_PLAIN_TEXT_MAX_CHARS ? t : `${t.slice(0, RESUME_PLAIN_TEXT_MAX_CHARS)}…`;
+  } catch {
+    return "";
+  }
+}
+
 /** Flatten case study JSON into plain text for AI context (no HTML). */
 function flattenCaseStudyText(caseStudy, { maxLen = 8000 } = {}) {
   if (!Array.isArray(caseStudy) || caseStudy.length === 0) return "";
@@ -936,13 +957,38 @@ export function wireChatUI({ controller }) {
           /* ignore */
         }
       }
+
+      try {
+        const expData = await loadExperience();
+        const entries = Array.isArray(expData?.entries) ? expData.entries : [];
+        if (entries.length) {
+          homeContext.experience = {
+            roles: entries.map((e) => `${String(e.roleTitle || "").trim()} — ${String(e.company || "").trim()}`),
+            timeline: entries.map((e) => String(e.datesAndLocation || "").trim()),
+            highlights: entries.flatMap((e) => (Array.isArray(e.bullets) ? e.bullets : []).map((b) => String(b).trim()))
+          };
+          if (expData.resumeDownloadHref) {
+            homeContext.contact = homeContext.contact || { email: "", resumeHref: "" };
+            homeContext.contact.resumeHref = expData.resumeDownloadHref;
+          }
+        }
+      } catch {
+        /* keep DOM / index.html experience snapshot */
+      }
+
+      try {
+        const resumePlainText = await loadResumePlainText();
+        if (resumePlainText) homeContext.resumePlainText = resumePlainText;
+      } catch {
+        /* optional */
+      }
     } else {
       homeContext = {};
     }
 
     const systemPortfolio = [
       "You are a helpful portfolio assistant for Jacob Scarani (homepage / portfolio chat).",
-      "Answer using ONLY the provided JSON: homepage (including skillsCore, skillsTools, socialLinks, experience), projects, and sitePages excerpts.",
+      "Answer using ONLY the provided JSON: homepage (including skillsCore, skillsTools, socialLinks, experience, resumePlainText when present), projects, and sitePages excerpts.",
       "You may answer any question supported by that data (contact, LinkedIn, skills, work history, comparisons, case studies, legacy article pages, etc.).",
       "If the answer is not in the provided JSON, say you do not have that information on this site and suggest a related question.",
       "Prefer concise plain English. Use markdown links like [Open case study](project.html?id=...). Legacy pages may use filenames like guestpass.html when relevant.",

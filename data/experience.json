@@ -1,0 +1,66 @@
+{
+  "resumeDownloadHref": "./assets/Jacob Scarani Resume.pdf",
+  "resumeDownloadLabel": "Download My Resume",
+  "entries": [
+    {
+      "logoSrc": "./assets/logos/cayuse.svg",
+      "logoAlt": "Cayuse logo",
+      "roleTitle": "Contract UX Designer",
+      "company": "Cayuse",
+      "datesAndLocation": "Nov 2025 – Present • Remote",
+      "bullets": [
+        "Collaborate with Senior Designer to redesign iRIS, a legacy enterprise product, contributing to hundreds of screens across complex, workflow-driven experiences.",
+        "Create wireframes, high-fidelity designs, and prototypes in Figma to support iterative design and stakeholder alignment.",
+        "Contribute to and expand a scalable component library, standardizing UI patterns and improving consistency across the platform."
+      ]
+    },
+    {
+      "logoSrc": "./assets/logos/cobblestone.svg",
+      "logoAlt": "Cobblestone Software logo",
+      "roleTitle": "UX Designer",
+      "company": "Cobblestone Software",
+      "datesAndLocation": "Nov 2023 – Oct 2025 • Lindenwold, NJ",
+      "bullets": [
+        "Collaborate with stakeholders and developers to design new features and enhance existing workflows for Contract Insights, a contract management and procurement platform.",
+        "Lead the redesign of the Vendor Client Gateway, an external-facing portal, improving usability and overall user experience.",
+        "Create wireframes, high-fidelity designs, and prototypes in Figma to support iterative design."
+      ]
+    },
+    {
+      "logoSrc": "./assets/logos/buxton.svg",
+      "logoAlt": "Buxton logo",
+      "roleTitle": "Product Designer",
+      "company": "Buxton",
+      "datesAndLocation": "Jun 2022 – Oct 2022 • Remote",
+      "bullets": [
+        "Designed data-driven product experiences across multiple platforms.",
+        "Launched 3 products (100+ screens) in 3 months.",
+        "Centralized and streamlined the design system to reduce weekly design time."
+      ]
+    },
+    {
+      "logoSrc": "./assets/logos/lenels2.svg",
+      "logoAlt": "LenelS2 logo",
+      "roleTitle": "UX Co-op",
+      "company": "LenelS2",
+      "datesAndLocation": "Jun 2021 – Dec 2021 • Pittsford, NY",
+      "bullets": [
+        "Collaborate with stakeholders to design features and functionality for Elements, an all-in-one cloud-managed security platform.",
+        "Lead end-to-end design for a guest access feature, from concept through delivery, improving usability and access workflows.",
+        "Conduct user research and testing, including writing scripts, running interviews and A/B tests, and creating interactive prototypes in ProtoPie; synthesize and present findings to stakeholders via Confluence."
+      ]
+    },
+    {
+      "logoSrc": "./assets/logos/tamagodb.svg",
+      "logoAlt": "Tamago DB logo",
+      "roleTitle": "Front-end Development Intern",
+      "company": "Tamago DB K.K.",
+      "datesAndLocation": "Jun 2019 – Aug 2020 • Shinagawa, Tokyo, JP",
+      "bullets": [
+        "Modernized analytics visualizations by replacing a legacy charts library.",
+        "Tested and debugged locally using Laragon, improving iteration speed.",
+        "Improved UI quality across a Symfony codebase with HTML/CSS/JS updates."
+      ]
+    }
+  ]
+}
