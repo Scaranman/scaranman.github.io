@@ -197,7 +197,8 @@
         {
           "title": "Hi-fi Wireframes and Progression",
           "paragraphs": [
-            "{{artifact:Hi-fi wireframes and progression}}",
+            "{{artifact:Hi-fi progression}}",
+            "{{artifact:Popover in context}}",
             "After deciding on a structure, I stylized the popover using the existing UI style so it matched the application’s design standards.",
             "From there, I progressively refined the design by adding clearer labels and a boat indicator."
           ]
