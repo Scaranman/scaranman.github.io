@@ -28,6 +28,12 @@ function renderRichText(text) {
   const raw = String(text == null ? "" : text);
   if (!raw.trim()) return "";
   let s = escapeHtml(raw);
+  s = linkifyEscaped(s);
+  return s;
+}
+
+function linkifyEscaped(escaped) {
+  let s = String(escaped == null ? "" : escaped);
   s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label, href) => {
     const safeLabel = escapeHtml(label);
     const safeHref = escapeHtml(href);
@@ -40,7 +46,82 @@ function renderRichText(text) {
   return s;
 }
 
-function renderCaseStudySections(caseStudy) {
+function buildArtifactLookup(p) {
+  const list = Array.isArray(p?.artifacts) ? p.artifacts.filter(Boolean) : [];
+  /** @type {Map<string, any>} */
+  const byKey = new Map();
+
+  for (let i = 0; i < list.length; i++) {
+    const a = list[i];
+    byKey.set(String(i), a);
+    if (a?.id) byKey.set(String(a.id).trim().toLowerCase(), a);
+    if (a?.label) byKey.set(String(a.label).trim().toLowerCase(), a);
+  }
+  return byKey;
+}
+
+function renderInlineArtifact(a) {
+  if (!a) return "";
+  const label = (a.label || "").trim();
+  const caption = label ? `<figcaption><h4 class="artifact-caption">${escapeHtml(label)}</h4></figcaption>` : "";
+
+  if (a.kind === "image" && a.src) {
+    const alt = a.alt || label || "Project screenshot";
+    return `
+      <figure class="artifact-figure inline-artifact">
+        ${caption}
+        <a href="${escapeHtml(a.src)}" target="_blank" rel="noreferrer" class="artifact-media">
+          <img src="${escapeHtml(a.src)}" alt="${escapeHtml(alt)}" loading="lazy" />
+        </a>
+      </figure>
+    `;
+  }
+
+  if (a.kind === "video" && a.src) {
+    const aria = a.alt || label || "Project video";
+    return `
+      <figure class="artifact-figure inline-artifact">
+        ${caption}
+        <a href="${escapeHtml(a.src)}" target="_blank" rel="noreferrer" class="artifact-media artifact-video">
+          <video src="${escapeHtml(a.src)}" aria-label="${escapeHtml(aria)}" muted playsinline preload="metadata"></video>
+          <button class="artifact-play" type="button" aria-label="Play video">▶</button>
+        </a>
+      </figure>
+    `;
+  }
+
+  if (a.kind === "url" && a.href) {
+    const href = String(a.href);
+    const btnLabel = label || href;
+    return `<p class="inline-artifact inline-artifact-link"><a class="link-btn" href="${escapeHtml(href)}" target="_blank" rel="noreferrer">${escapeHtml(btnLabel)}</a></p>`;
+  }
+
+  const valueRaw = String(a?.value ?? "").trim();
+  const valueHtml = valueRaw ? `<div class="artifact-value">${escapeHtml(valueRaw)}</div>` : "";
+  if (!label && !valueHtml) return "";
+  return `<div class="artifact inline-artifact">${label ? `<h4 class="artifact-label">${escapeHtml(label)}</h4>` : ""}${valueHtml}</div>`;
+}
+
+function renderRichTextWithArtifacts(text, artifactLookup) {
+  const raw = String(text == null ? "" : text);
+  if (!raw.trim()) return "";
+
+  const parts = raw.split(/(\{\{artifact:[^}]+\}\})/g);
+  const out = parts
+    .map((part) => {
+      const m = part.match(/^\{\{artifact:([^}]+)\}\}$/);
+      if (!m) return linkifyEscaped(escapeHtml(part));
+      const key = String(m[1] || "").trim();
+      const k = key.toLowerCase();
+      const a = artifactLookup?.get(key) || artifactLookup?.get(k);
+      return renderInlineArtifact(a) || "";
+    })
+    .join("");
+
+  return out;
+}
+
+function renderCaseStudySections(caseStudy, artifactLookup) {
   if (!Array.isArray(caseStudy) || caseStudy.length === 0) return "";
   return caseStudy
     .filter((s) => s && (s.title || (Array.isArray(s.paragraphs) && s.paragraphs.length) || (Array.isArray(s.bullets) && s.bullets.length)))
@@ -48,10 +129,10 @@ function renderCaseStudySections(caseStudy) {
       const titleHtml = s.title ? `<h3>${escapeHtml(s.title)}</h3>` : "";
       const parasHtml = (s.paragraphs || [])
         .filter((x) => typeof x === "string" && x.trim())
-        .map((x) => `<p>${renderRichText(x)}</p>`)
+        .map((x) => `<p>${renderRichTextWithArtifacts(x, artifactLookup)}</p>`)
         .join("");
       const bulletsHtml = (s.bullets || []).length
-        ? `<ul class="bullets">${(s.bullets || []).map((x) => `<li>${renderRichText(String(x))}</li>`).join("")}</ul>`
+        ? `<ul class="bullets">${(s.bullets || []).map((x) => `<li>${renderRichTextWithArtifacts(String(x), artifactLookup)}</li>`).join("")}</ul>`
         : "";
 
       const subsectionsHtml = Array.isArray(s.subsections)
@@ -65,10 +146,10 @@ function renderCaseStudySections(caseStudy) {
               const subTitleHtml = sub.title ? `<h4>${escapeHtml(sub.title)}</h4>` : "";
               const subParasHtml = (sub.paragraphs || [])
                 .filter((x) => typeof x === "string" && x.trim())
-                .map((x) => `<p>${renderRichText(x)}</p>`)
+                .map((x) => `<p>${renderRichTextWithArtifacts(x, artifactLookup)}</p>`)
                 .join("");
               const subBulletsHtml = (sub.bullets || []).length
-                ? `<ul class="bullets">${(sub.bullets || []).map((x) => `<li>${renderRichText(String(x))}</li>`).join("")}</ul>`
+                ? `<ul class="bullets">${(sub.bullets || []).map((x) => `<li>${renderRichTextWithArtifacts(String(x), artifactLookup)}</li>`).join("")}</ul>`
                 : "";
               return `<div class="case-study-subsection">${subTitleHtml}${subParasHtml}${subBulletsHtml}</div>`;
             })
@@ -89,7 +170,42 @@ function buildFallbackCaseStudy(p) {
   return sections;
 }
 
-function renderProjectDetails(p) {
+function renderProjectDetailsText(p) {
+  const artifactLookup = buildArtifactLookup(p);
+  const caseStudy = Array.isArray(p.caseStudy) && p.caseStudy.length ? p.caseStudy : buildFallbackCaseStudy(p);
+  const caseStudyHtml = renderCaseStudySections(caseStudy, artifactLookup);
+
+  return `
+    <div class="detail">
+      <div class="kvs" role="list" aria-label="Project details">
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Role</h3>
+          <div class="kv-v">${escapeHtml((p.role || []).join(", "))}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Team</h3>
+          <div class="kv-v">${escapeHtml(p.team || "")}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Summary</h3>
+          <div class="kv-v">${escapeHtml(p.problem || "")}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Skills</h3>
+          <div class="kv-v">${escapeHtml((p.skills || []).join(" • "))}</div>
+        </div>
+        <div class="kv-row" role="listitem">
+          <h3 class="kv-k">Tags</h3>
+          <div class="kv-v">${escapeHtml((p.tags || []).join(" • "))}</div>
+        </div>
+      </div>
+
+      ${caseStudyHtml ? `<article class="case-study" aria-label="Case study">${caseStudyHtml}</article>` : ""}
+    </div>
+  `;
+}
+
+function renderProjectArtifacts(p) {
   const allArtifacts = p.artifacts || [];
   const imageArtifacts = allArtifacts.filter((a) => a && a.kind === "image" && a.src);
   const videoArtifacts = allArtifacts.filter((a) => a && a.kind === "video" && a.src);
@@ -169,43 +285,16 @@ function renderProjectDetails(p) {
     })
     .join("");
 
-  const caseStudy = Array.isArray(p.caseStudy) && p.caseStudy.length ? p.caseStudy : buildFallbackCaseStudy(p);
-  const caseStudyHtml = renderCaseStudySections(caseStudy);
+  const hasAny = Boolean(urlArtifacts.length || imageArtifacts.length || videoArtifacts.length || otherHtml);
+  if (!hasAny) return "";
 
   return `
-    <div class="detail">
-      <div class="kvs" role="list" aria-label="Project details">
-        <div class="kv-row" role="listitem">
-          <h3 class="kv-k">Role</h3>
-          <div class="kv-v">${escapeHtml((p.role || []).join(", "))}</div>
-        </div>
-        <div class="kv-row" role="listitem">
-          <h3 class="kv-k">Team</h3>
-          <div class="kv-v">${escapeHtml(p.team || "")}</div>
-        </div>
-        <div class="kv-row" role="listitem">
-          <h3 class="kv-k">Summary</h3>
-          <div class="kv-v">${escapeHtml(p.problem || "")}</div>
-        </div>
-        <div class="kv-row" role="listitem">
-          <h3 class="kv-k">Skills</h3>
-          <div class="kv-v">${escapeHtml((p.skills || []).join(" • "))}</div>
-        </div>
-        <div class="kv-row" role="listitem">
-          <h3 class="kv-k">Tags</h3>
-          <div class="kv-v">${escapeHtml((p.tags || []).join(" • "))}</div>
-        </div>
-      </div>
-
-      ${caseStudyHtml ? `<article class="case-study" aria-label="Case study">${caseStudyHtml}</article>` : ""}
-
-      <div style="margin-top:14px;">
-        <strong>Artifacts</strong>
-        ${linksHtml}
-        ${imagesHtml}
-        ${videosHtml}
-        ${otherHtml ? `<ul class="artifact-list">${otherHtml}</ul>` : ""}
-      </div>
+    <div class="project-artifacts">
+      <strong>Artifacts</strong>
+      ${linksHtml}
+      ${imagesHtml}
+      ${videosHtml}
+      ${otherHtml ? `<ul class="artifact-list">${otherHtml}</ul>` : ""}
     </div>
   `;
 }
@@ -357,9 +446,9 @@ async function main() {
   $("#projectProblem").textContent = p.problem || "";
   $("#projectHeroMedia").innerHTML = renderHeroImage(p.heroImage, p.title);
   $("#projectTagRow").innerHTML = renderTags(p.tags);
-  $("#projectDetails").innerHTML = renderProjectDetails(p);
-
   const detailsRoot = $("#projectDetails");
+  if (detailsRoot) detailsRoot.innerHTML = `${renderProjectDetailsText(p)}`;
+
   if (detailsRoot) {
     detailsRoot.addEventListener("click", (e) => {
       const t = e.target;

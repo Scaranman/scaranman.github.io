@@ -5,7 +5,7 @@
       "title": "Guest Pass",
       "type": "Case study",
       "year": 2021,
-      "heroImage": { "src": "./assets/projects/guest-pass.jpg", "alt": "Guest Pass project cover image" },
+      "heroImage": { "src": "./assets/projects/GuestPass.png", "alt": "Guest Pass project cover image" },
       "role": ["UX Co-op / UX Designer"],
       "team": "Product, engineering, stakeholders",
       "problem": "Guest Pass is a feature I designed for an all-in-one access control security system called Elements during my time at LenelS2. It allows users to send a temporary “guest pass” that visiting guests can access right from their smart phone.",
@@ -83,6 +83,10 @@
         {
           "title": "Flow & Design",
           "paragraphs": [
+            "{{artifact:InVision flow screenshot}}",
+            "{{artifact:Guest pass list}}",
+            "{{artifact:Create guest pass}}",
+            "{{artifact:Side panels}}",
             "I created a user flow using low fidelity wireframes in InVision Freehand, then moved into high fidelity designs in Figma using the pre-established LenelS2 design system that I helped manage and expand."
           ],
           "bullets": [
@@ -97,6 +101,8 @@
         {
           "title": "Guest-Facing UI & Animation",
           "paragraphs": [
+            "{{artifact:Guest UI (open animation)}}",
+            "{{artifact:Guest UI (error animation)}}",
             "Once the creation process was designed, I moved onto the web UI that guest pass recipients would use.",
             "Because guest passes live on isolated pages outside the primary Elements interface, I was able to add animation to the unlock buttons to help guests understand that something is happening after they tap to unlock a door reader.",
             "You can find a prototype of these animations [here](https://cloud.protopie.io/p/9964619755).",
@@ -148,7 +154,7 @@
       "title": "JRCS Command Task",
       "type": "Design challenge",
       "year": 2023,
-      "heroImage": { "src": "./assets/projects/jrcs-command-task.jpg", "alt": "JRCS Command Task project cover image" },
+      "heroImage": { "src": "./assets/projects/JRCS.png", "alt": "JRCS Command Task project cover image" },
       "role": ["UX Designer"],
       "team": "Solo (challenge) / reviewers",
       "problem": "JRCS provided two existing screens for a shipboard command application and asked me to design a collision warning method that grabs attention, provides actionable information, and doesn’t drown out other critical data.",
@@ -176,16 +182,22 @@
         {
           "title": "Sketches",
           "paragraphs": [
+            "{{artifact:Sketches}}",
             "After establishing users and requirements, I sketched out several ideas. My immediate thought was a popover that points to the vessel the user is about to collide with.",
             "I experimented with three different shapes and ultimately settled on a simple rectangular popover window that provided users with the needed information.",
             "I also considered adding lines to indicate the path each ship was going to take. After moving on from sketches, I scrapped that idea because it could be difficult to implement in rough sea conditions and would add significant computational complexity.",
             "Because the application also includes a compass-like view, I explored a way to provide warning in that view."
           ]
         },
-        { "title": "Lo-fi Wireframes", "paragraphs": ["After sketches, I focused on the primary view and created a couple low-fi variations for the popover."] },
+        { "title": "Lo-fi Wireframes", "paragraphs": [
+          "{{artifact:Lo-fi wireframes}}",
+          "After sketches, I focused on the primary view and created a couple low-fi variations for the popover."
+          ] 
+        },
         {
           "title": "Hi-fi Wireframes and Progression",
           "paragraphs": [
+            "{{artifact:Hi-fi wireframes and progression}}",
             "After deciding on a structure, I stylized the popover using the existing UI style so it matched the application’s design standards.",
             "From there, I progressively refined the design by adding clearer labels and a boat indicator."
           ]
@@ -193,12 +205,15 @@
         {
           "title": "Pulse (Attention Mechanism)",
           "paragraphs": [
+            "{{artifact:Pulse (Attention Mechanism)}}",
             "Inspired by FPS games like Halo and Call of Duty, I added a pulsing red bar at the top of the screen to draw attention without being overwhelming."
           ]
         },
         {
           "title": "Accessibility checks",
           "paragraphs": [
+            "{{artifact:Transparency comparison}}",
+            "{{artifact:Color-blind filters}}",
             "I validated legibility across background conditions (sunrise/sunset/night) and ran the design through color-blind filters to ensure the warning remained accessible."
           ]
         },
@@ -244,7 +259,7 @@
       "title": "Vendor-Client Gateway Redesign",
       "type": "Case study",
       "year": 2025,
-      "heroImage": { "src": "./assets/projects/vcg.jpg", "alt": "Vendor-Client Gateway Redesign project cover image" },
+      "heroImage": { "src": "./assets/projects/VCG.png", "alt": "Vendor-Client Gateway Redesign project cover image" },
       "role": ["UX Designer"],
       "team": "Stakeholders, engineering",
       "problem": "The Vendor Client Gateway is an add-on module for CobbleStone Software’s contract management platform, Contract Insights. As part of a broader UX overhaul across the platform, I led the redesign to improve usability, modernize the experience, and increase adoption of the module.",
@@ -259,7 +274,12 @@
         },
         {
           "title": "Problem",
-          "paragraphs": ["The existing gateway experience created significant friction for users and limited the product’s effectiveness."],
+          "paragraphs": [
+            "{{artifact:Before: Home}}",
+            "{{artifact:Before: Solicitations}}",
+            "{{artifact:Before: News}}",
+            "The existing gateway experience created significant friction for users and limited the product’s effectiveness."
+          ],
           "bullets": [
             "Non-responsive design, making the experience difficult on mobile devices",
             "Outdated UI patterns that reduced usability and trust",
@@ -278,6 +298,11 @@
         },
         {
           "title": "Solution",
+          "paragraphs": [
+            "{{artifact:After: Home}}",
+            "{{artifact:After: Solicitations}}",
+            "{{artifact:After: News}}"
+          ],
           "bullets": [
             "Responsive layouts across desktop and mobile",
             "Improved navigation and information hierarchy",
