@@ -163,6 +163,7 @@
           "title": "The Problem",
           "paragraphs": [
             "One of the JRCS Digital Innovation Lab’s flagship products is a command application that provides captains and officers on ships at sea with information regarding the navigation of their vessel, and highlights nearby vessels through AR as well.",
+            "{{artifact:Given screens (start)}}",
             "The team provided me two screens and asked me to design a method for the application to warn users when they are about to collide with another vessel."
           ]
         },
@@ -206,7 +207,7 @@
         {
           "title": "Pulse (Attention Mechanism)",
           "paragraphs": [
-            "{{artifact:Pulse (Attention Mechanism)}}",
+            "{{artifact:Pulse attention bar}}",
             "Inspired by FPS games like Halo and Call of Duty, I added a pulsing red bar at the top of the screen to draw attention without being overwhelming."
           ]
         },
