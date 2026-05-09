@@ -15,7 +15,7 @@
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization"
 };
 
@@ -24,16 +24,20 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
     }
-    if (request.method !== "POST") {
+    if (request.method !== "POST" && request.method !== "GET") {
       return new Response("Method not allowed", { status: 405, headers: CORS_HEADERS });
     }
 
     const url = new URL(request.url);
-    // Serve as /v1/responses to match client default
-    const upstream = "https://api.openai.com" + url.pathname;
+    // Proxy any OpenAI REST path under /v1/* (Responses + Assistants/Threads/Runs/etc.)
+    // Keep query string for GET polling (e.g., list messages, get run status).
+    const upstream = "https://api.openai.com" + url.pathname + url.search;
 
     const headers = new Headers(request.headers);
     headers.set("Content-Type", "application/json");
+    // Required for Assistants API (Threads/Runs) on many accounts.
+    // Safe to include for other endpoints too.
+    headers.set("OpenAI-Beta", "assistants=v2");
 
     const hasAuth = headers.has("Authorization");
     if (!hasAuth) {
@@ -48,7 +52,7 @@ export default {
     }
 
     const upstreamRes = await fetch(upstream, {
-      method: "POST",
+      method: request.method,
       headers,
       body: request.body
     });

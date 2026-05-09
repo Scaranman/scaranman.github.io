@@ -904,7 +904,8 @@ export function wireChatUI({ controller }) {
     return out;
   };
 
-  const DEFAULT_AI_ENDPOINT = "https://portfolio-openai-proxy.jacobscarani.workers.dev/v1/responses";
+  // OpenAI proxy base URL (Cloudflare Worker).
+  const DEFAULT_AI_BASE = "https://portfolio-openai-proxy.jacobscarani.workers.dev";
   const redactSecrets = (s) =>
     String(s == null ? "" : s)
       // redact common OpenAI key formats (best-effort)
@@ -1033,60 +1034,102 @@ export function wireChatUI({ controller }) {
         : null
     };
 
-    const user = [
-      "Site knowledge (JSON):",
-      JSON.stringify(data),
-      "",
-      "User question:",
-      prompt
-    ].join("\n");
+    const aiBase = DEFAULT_AI_BASE.replace(/\/+$/, "");
 
-    const endpoint = DEFAULT_AI_ENDPOINT;
-    let res;
-    try {
-      /** @type {Record<string, string>} */
-      const headers = {
-        "Content-Type": "application/json"
-      };
+    const safeFetchJson = async (path, { method = "GET", body } = {}) => {
+      let res;
+      try {
+        res = await fetch(`${aiBase}${path}`, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: body ? JSON.stringify(body) : undefined
+        });
+      } catch (e) {
+        throw new Error(
+          `Network/CORS error calling OpenAI. Check your proxy URL and CORS settings. (${redactSecrets(e?.message || String(e))})`
+        );
+      }
+      if (!res.ok) {
+        const msg = await res.text().catch(() => "");
+        throw new Error(`OpenAI error (${res.status}) on ${path}: ${msg || res.statusText}`);
+      }
+      return await res.json();
+    };
 
-      res = await fetch(endpoint, {
+    // Responses API: keep state server-side using store:true + previous_response_id.
+    // We seed the conversation once with your site JSON, then only send user questions after.
+    const storageKeyBase = contextProject
+      ? `portfolioChat.responses.project.${contextProject.id}`
+      : "portfolioChat.responses.portfolio";
+    const lastResponseIdKey = `${storageKeyBase}.lastResponseId`;
+
+    const getLastResponseId = () => {
+      const id = localStorage.getItem(lastResponseIdKey);
+      return id && /^resp_[a-zA-Z0-9_-]+$/.test(id) ? id : "";
+    };
+    const setLastResponseId = (id) => localStorage.setItem(lastResponseIdKey, id);
+
+    const parseResponseText = (json) => {
+      const outputText =
+        (typeof json?.output_text === "string" && json.output_text.trim()) ||
+        (Array.isArray(json?.output)
+          ? json.output
+              .flatMap((item) => item?.content || [])
+              .filter((c) => c && (c.type === "output_text" || c.type === "summary_text") && typeof c.text === "string")
+              .map((c) => c.text)
+              .join("\n")
+              .trim()
+          : "");
+      return outputText;
+    };
+
+    const createSeedIfNeeded = async () => {
+      const existing = getLastResponseId();
+      if (existing) return existing;
+
+      const seedText = [
+        system,
+        "",
+        "Site knowledge (JSON):",
+        JSON.stringify(data),
+        "",
+        "Reply with: Ready."
+      ].join("\n");
+
+      const seeded = await safeFetchJson("/v1/responses", {
         method: "POST",
-        headers,
-        body: JSON.stringify({
+        body: {
           model: "gpt-4o-mini",
+          store: true,
           input: [
-            { role: "system", content: [{ type: "input_text", text: system }] },
-            { role: "user", content: [{ type: "input_text", text: user }] }
+            { role: "system", content: [{ type: "input_text", text: "You are a helpful portfolio assistant." }] },
+            { role: "user", content: [{ type: "input_text", text: seedText }] }
           ]
-        })
+        }
       });
-    } catch (e) {
-      // Most common on static sites: CORS blocks direct calls to api.openai.com
-      throw new Error(
-        `Network/CORS error calling OpenAI. Set an AI endpoint that supports CORS (a small proxy), then retry. (${redactSecrets(
-          e?.message || String(e)
-        )})`
-      );
-    }
 
-    if (!res.ok) {
-      const msg = await res.text().catch(() => "");
-      throw new Error(`OpenAI error (${res.status}): ${msg || res.statusText}`);
-    }
-    const json = await res.json();
+      const seededId = String(seeded?.id || "");
+      if (!seededId) throw new Error("OpenAI returned no response id.");
+      setLastResponseId(seededId);
+      return seededId;
+    };
 
-    const outputText =
-      (typeof json?.output_text === "string" && json.output_text.trim()) ||
-      (Array.isArray(json?.output)
-        ? json.output
-            .flatMap((item) => item?.content || [])
-            .filter((c) => c && (c.type === "output_text" || c.type === "summary_text") && typeof c.text === "string")
-            .map((c) => c.text)
-            .join("\n")
-            .trim()
-        : "");
+    const prevId = await createSeedIfNeeded();
+    const json = await safeFetchJson("/v1/responses", {
+      method: "POST",
+      body: {
+        model: "gpt-4o-mini",
+        store: true,
+        previous_response_id: prevId,
+        input: [{ role: "user", content: [{ type: "input_text", text: prompt }] }]
+      }
+    });
 
-    if (outputText) return outputText;
+    const newId = String(json?.id || "");
+    if (newId) setLastResponseId(newId);
+
+    const out = parseResponseText(json);
+    if (out) return out;
     throw new Error("OpenAI returned no output text.");
   };
 
@@ -1189,6 +1232,16 @@ export function wireChatUI({ controller }) {
     chatLog.innerHTML = "";
     const msg = controller.reset();
     pushMsg("bot", msg.text);
+
+    // Also clear any persisted assistant thread so the next message re-seeds context.
+    try {
+      const keyBase = controller.__contextProjectId
+        ? `portfolioChat.responses.project.${controller.__contextProjectId}`
+        : "portfolioChat.responses.portfolio";
+      localStorage.removeItem(`${keyBase}.lastResponseId`);
+    } catch {
+      /* ignore */
+    }
   });
 
   for (const chip of Array.from(document.querySelectorAll(".chip[data-prompt]"))) {
