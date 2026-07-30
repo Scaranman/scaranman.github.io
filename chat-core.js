@@ -732,7 +732,7 @@ function collectHomeContextFromDoc(doc) {
     },
     contact: {
       email: getText('a.contact-link[href^="mailto:"]') || getText('#contact a[href^="mailto:"]'),
-      resumeHref: getHref('#resume a.link-btn[href$=".pdf"]')
+      resumeHref: getHref('#resumeDownloadLink')
     },
     skillsCore,
     skillsTools,

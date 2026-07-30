@@ -258,14 +258,20 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="search"]:focus{
   box-shadow: 0 0 0 3px #34495E47;
 }
 .primary-btn{
+  display: inline-flex;
+  align-items: center;
   flex: 0 0 auto;
   border: 1px solid rgba(255,255,255,.12);
   background: linear-gradient(135deg, var(--brand), var(--brand-2));
   color: rgba(255,255,255,.95);
   padding: 12px 14px;
   border-radius: 14px;
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 800;
+  line-height: 1.2;
   cursor: pointer;
+  text-decoration: none;
 }
 .primary-btn:hover{ filter: brightness(1.06); }
 .primary-btn:disabled{ color: var(--text); }
