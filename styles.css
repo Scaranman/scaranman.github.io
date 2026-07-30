@@ -548,11 +548,12 @@ h3{ margin: 0 0 10px; font-size: 16px; letter-spacing: -0.01em; }
   box-shadow: 0 0 0 4px #34495E33;
   border: 1px solid rgba(255,255,255,.16);
 }
-.timeline-content{ border-radius: 16px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); padding: 14px; }
+.timeline-content{ padding: 14px 0; }
 .timeline-header{ display:flex; gap: 12px; align-items:flex-start; }
 .timeline-logo{ width: 32px; height: 32px; max-width: 32px; object-fit: contain; }
 .timeline-company{ margin-top: 2px; font-size: 13px; }
-.timeline-bullets{ margin: 10px 0 0; padding-left: 18px; color: var(--text); }
+.timeline-bullets{ margin: 10px 0 0; padding-left: 18px; color: var(--text); display: grid; gap: 8px; }
+.timeline-bullets li{ max-width: 80ch; }
 .timeline-actions{ margin-top: 14px; display:flex; gap: 10px; flex-wrap:wrap; }
 
 /* lightbox */
