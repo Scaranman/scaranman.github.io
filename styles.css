@@ -40,7 +40,10 @@
   background: rgba(0,0,0,.06);
   border-color: rgba(0,0,0,.12);
 }
-html{ scroll-padding-top: var(--header-h); }
+html{ scroll-padding-top: var(--header-h); scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+}
 *{ box-sizing: border-box; }
 html, body{ height: 100%; }
 body{
