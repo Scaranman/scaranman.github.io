@@ -17,7 +17,7 @@
   --container: 1100px;
   --header-h: 76px;
   --timeline-line: rgba(255,255,255,.10);
-  --contact-link: rgba(169, 199, 224, .98);
+  --contact-link: #6eb6ff;
   --secondary-btn-border: var(--border);
 }
 [data-theme="light"]{
@@ -30,7 +30,7 @@
   --faint: rgba(0,0,0,.48);
   --shadow: 0 18px 60px rgba(0,0,0,.12);
   --timeline-line: #34495EB3;
-  --contact-link: var(--brand);
+  --contact-link: #2563eb;
   --secondary-btn-border: var(--brand);
 }
 [data-theme="light"] input[type="text"],
@@ -53,7 +53,7 @@ body{
   color: var(--text);
   background: var(--bg);
 }
-a{ color: inherit; }
+a{ color: var(--contact-link); }
 .container{ width: min(var(--container), calc(100% - 48px)); margin: 0 auto; }
 .muted{ color: var(--muted); }
 .sr-only{
