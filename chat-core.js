@@ -702,7 +702,7 @@ function collectHomeContextFromDoc(doc) {
   const skillCards = doc.querySelectorAll("#skills .two-col .card.pad");
   const tagTexts = (card) =>
     card
-      ? Array.from(card.querySelectorAll(".tag"))
+      ? Array.from(card.querySelectorAll(".skill-tag"))
           .map((el) => String(el.textContent || "").replace(/\s+/g, " ").trim())
           .filter(Boolean)
       : [];

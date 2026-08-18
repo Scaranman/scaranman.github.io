@@ -333,9 +333,9 @@
         "Iterative design: developed updated flows, wireframes, and high-fidelity designs and refined them with internal feedback"
       ],
       "impact": [
-        "Expected: improved usability and satisfaction",
-        "Expected: reduced friction in key workflows",
-        "Expected: increased adoption and usage of the gateway module"
+        "improved usability and satisfaction",
+        "reduced friction in key workflows",
+        "increased adoption and usage of the gateway module"
       ],
       "skills": ["Enterprise UX", "IA", "Forms", "Tables", "Stakeholder alignment"],
       "tags": ["enterprise", "redesign", "tables", "forms", "workflows"],

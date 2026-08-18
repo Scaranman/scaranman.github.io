@@ -8,12 +8,6 @@ function getProjectIdFromUrl() {
   return url.searchParams.get("id");
 }
 
-function renderTags(tags) {
-  const list = (tags || []).slice(0, 8);
-  if (list.length === 0) return "";
-  return list.map((t) => `<span class="tag" aria-hidden="true">${escapeHtml(t)}</span>`).join("");
-}
-
 function renderHeroImage(heroImage, title) {
   if (!heroImage || !heroImage.src) return "";
   const alt = heroImage.alt || `${title} cover image`;
@@ -193,10 +187,6 @@ function renderProjectDetailsText(p) {
         <div class="kv-row" role="listitem">
           <h3 class="kv-k">Skills</h3>
           <div class="kv-v">${escapeHtml((p.skills || []).join(" • "))}</div>
-        </div>
-        <div class="kv-row" role="listitem">
-          <h3 class="kv-k">Tags</h3>
-          <div class="kv-v">${escapeHtml((p.tags || []).join(" • "))}</div>
         </div>
       </div>
 
@@ -445,7 +435,6 @@ async function main() {
   $("#projectMeta").textContent = `${p.type} • ${p.year} • ${(p.role || []).join(", ")}`;
   $("#projectProblem").textContent = p.problem || "";
   $("#projectHeroMedia").innerHTML = renderHeroImage(p.heroImage, p.title);
-  $("#projectTagRow").innerHTML = renderTags(p.tags);
   const detailsRoot = $("#projectDetails");
   if (detailsRoot) detailsRoot.innerHTML = `${renderProjectDetailsText(p)}`;
 

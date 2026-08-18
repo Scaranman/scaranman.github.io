@@ -8,47 +8,11 @@ initTheme();
 
 const projectsGrid = $("#projectsGrid");
 const projectFilter = $("#projectFilter");
-const tagBar = $("#tagBar");
 
 let projects = [];
-let activeTags = new Set();
-
-function renderTagBar() {
-  const counts = new Map();
-  for (const p of projects) {
-    for (const t of (p.tags || [])) counts.set(t, (counts.get(t) ?? 0) + 1);
-  }
-
-  const top = Array.from(counts.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([t]) => t);
-
-  tagBar.innerHTML = top
-    .map((t) => {
-      const pressed = activeTags.has(t);
-      return `<button class="tag" type="button" data-tag="${escapeHtml(t)}" aria-pressed="${pressed ? "true" : "false"}">${escapeHtml(t)}</button>`;
-    })
-    .join("");
-
-  for (const btn of $$("#tagBar .tag")) {
-    btn.addEventListener("click", () => {
-      const t = btn.getAttribute("data-tag");
-      if (!t) return;
-      if (activeTags.has(t)) activeTags.delete(t);
-      else activeTags.add(t);
-      renderTagBar();
-      renderProjects();
-    });
-  }
-}
 
 function projectMatchesFilters(p) {
   const q = normalize(projectFilter.value);
-  if (activeTags.size > 0) {
-    const hasAll = Array.from(activeTags).every((t) => (p.tags || []).includes(t));
-    if (!hasAll) return false;
-  }
   if (!q) return true;
   const blob = normalize(
     [
@@ -115,14 +79,13 @@ function renderProjects() {
   if (list.length === 0) {
     projectsGrid.innerHTML = `<div class="card pad" style="grid-column: 1 / -1;">
       <strong>No matches.</strong>
-      <div style="margin-top:6px;">Try removing a tag filter or searching for “security”, “enterprise”, or “workflows”.</div>
+      <div style="margin-top:6px;">Try searching for “security”, “enterprise”, or “workflows”.</div>
     </div>`;
     return;
   }
 
   projectsGrid.innerHTML = list
     .map((p) => {
-      const tags = (p.tags || []).slice(0, 4).map((t) => `<span class="tag" aria-hidden="true">${escapeHtml(t)}</span>`).join("");
       const roles = (p.role || []).slice(0, 2).join(" · ");
       const impact = (p.impact && p.impact[0]) ? `Impact: ${escapeHtml(p.impact[0])}` : "Impact: —";
       return `
@@ -134,7 +97,6 @@ function renderProjects() {
           </div>
           <div class="summary">${escapeHtml(p.problem || "")}</div>
           <div class="summary" style="margin-top:8px;">${impact}</div>
-          <div class="tags">${tags}</div>
         </article>
       `;
     })
@@ -170,7 +132,6 @@ async function main() {
   }
 
   projects = await loadProjects();
-  renderTagBar();
   renderProjects();
 
   projectFilter.addEventListener("input", renderProjects);
