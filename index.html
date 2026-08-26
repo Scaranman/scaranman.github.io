@@ -12,6 +12,8 @@
   gtag('js', new Date());
   gtag('config', 'G-QM6YRRRJ5F');
 </script>
+<link rel="preload" href="./data/projects.json" as="fetch" crossorigin="anonymous">
+<link rel="modulepreload" href="./case-studies.js">
 <script src="./support.js"></script>
 <script src="./mobile.js" defer></script>
   <link rel="stylesheet" href="./mobile.css">
@@ -33,6 +35,8 @@
   a { color: #69349c; }
   a:hover { color: #522979; }
   ::placeholder { color: #737373; }
+  .tag-chip { padding: 9px 16px; border: 1px solid #e5e5e5; border-radius: 24px; background: #fff; font-family: inherit; font-size: 14px; font-weight: 500; color: #404040; cursor: pointer; }
+  .tag-chip[data-active="true"] { border-color: #69349c; background: #69349c; color: #fff; }
   /* chat-core.js injects these nodes at runtime, so they cannot be inline-styled */
   .msg { display: flex; gap: 10px; align-items: flex-start; }
   .msg + .msg { margin-top: 14px; }
@@ -201,69 +205,41 @@
         <div class="project-search" style="flex:0 0 480px; display:flex; align-items:center; gap:12px; padding:12px 16px; background:#fff; border:1px solid #e5e5e5; border-radius:12px">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
           <label for="projectFilter" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)">Filter projects</label>
-          <input id="projectFilter" type="search" placeholder="Search keywords (e.g., 'security', 'enterprise', 'forms')..." ref="{{ filterRef }}" onInput="{{ onFilter }}" style="flex:1; min-width:0; border:none; outline:none; background:transparent; font-family:inherit; font-size:14px; line-height:20px; color:#171717">
+          <input id="projectFilter" type="search" placeholder="Search keywords (e.g., 'security', 'enterprise', 'forms')..." onInput="{{ onFilter }}" style="flex:1; min-width:0; border:none; outline:none; background:transparent; font-family:inherit; font-size:14px; line-height:20px; color:#171717">
         </div>
-        <div class="project-chips" ref="{{ chipsRef }}" onClick="{{ onChip }}" style="display:flex; flex-wrap:wrap; gap:10px">
-          <button type="button" data-tag="" data-active="true" style="padding:9px 16px; border:1px solid #69349c; border-radius:24px; background:#69349c; font-family:inherit; font-size:14px; font-weight:500; color:#fff; cursor:pointer">All</button>
-          <button type="button" data-tag="enterprise" style="padding:9px 16px; border:1px solid #e5e5e5; border-radius:24px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#404040; cursor:pointer">Enterprise</button>
-          <button type="button" data-tag="security" style="padding:9px 16px; border:1px solid #e5e5e5; border-radius:24px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#404040; cursor:pointer">Security</button>
-          <button type="button" data-tag="redesign" style="padding:9px 16px; border:1px solid #e5e5e5; border-radius:24px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#404040; cursor:pointer">Redesign</button>
-          <button type="button" data-tag="workflows" style="padding:9px 16px; border:1px solid #e5e5e5; border-radius:24px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#404040; cursor:pointer">Workflows</button>
-          <button type="button" data-tag="design challenge" style="padding:9px 16px; border:1px solid #e5e5e5; border-radius:24px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#404040; cursor:pointer">Design challenge</button>
+        <div class="project-chips" onClick="{{ onChip }}" style="display:flex; flex-wrap:wrap; gap:10px">
+          <sc-for list="{{ filters }}" as="filter">
+            <button type="button" class="tag-chip" data-tag="{{ filter.tag }}" data-active="{{ filter.active }}">{{ filter.label }}</button>
+          </sc-for>
         </div>
       </div>
 
-      <div ref="{{ gridRef }}" style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+        <sc-for list="{{ cards }}" as="card">
+          <a href="{{ card.href }}" data-card="1" data-tags="{{ card.tags }}" data-search="{{ card.search }}" style="display:flex; flex-direction:column; gap:20px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:24px; color:inherit" style-hover="border-color:#c5a8e2; box-shadow:0 12px 28px -12px rgba(10,10,10,.14)">
+            <!-- sc-camel-src compiles to src; a literal src= would make the browser's
+                 preload scanner request the uninterpolated "{{ card.coverSrc }}" path -->
+            <img sc-camel-src="{{ card.coverSrc }}" alt="{{ card.coverAlt }}" style="width:100%; height:auto; object-fit:contain; border-radius:16px; background:#f5f5f5; display:block">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+              <span style="padding:6px 12px; border-radius:9999px; background:#f3eef9; color:#69349c; font-size:12px; font-weight:600; line-height:18px">{{ card.eyebrow }}</span>
+              <span style="font-size:12px; font-weight:500; color:#737373">{{ card.meta }}</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:26px; line-height:34px; font-weight:600; letter-spacing:-0.01em; color:#171717">{{ card.title }}</h3>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040; text-wrap:pretty">{{ card.summary }}</p>
+            </div>
+            <span style="display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#69349c">Explore case study
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </span>
+          </a>
+        </sc-for>
 
-        <a href="project.html?id=vendor-client-gateway-redesign" data-card="1" data-tags="enterprise redesign tables forms workflows" data-search="vendor client gateway redesign cobblestone contract insights enterprise ux ia forms tables stakeholder alignment 2025 procurement responsive" style="display:flex; flex-direction:column; gap:20px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:24px; color:inherit" style-hover="border-color:#c5a8e2; box-shadow:0 12px 28px -12px rgba(10,10,10,.14)">
-          <img src="assets/projects/VCG.png" alt="Vendor-Client Gateway redesign cover" style="width:100%; height:auto; object-fit:contain; border-radius:16px; background:#f5f5f5; display:block">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
-            <span style="padding:6px 12px; border-radius:9999px; background:#f3eef9; color:#69349c; font-size:12px; font-weight:600; line-height:18px">Enterprise UX · Redesign</span>
-            <span style="font-size:12px; font-weight:500; color:#737373">Case study · 2025</span>
+        <sc-if value="{{ noMatches }}">
+          <div style="grid-column:1 / -1; padding:32px; background:#fff; border:1px solid #e5e5e5; border-radius:24px">
+            <p style="margin:0 0 6px; font-size:16px; font-weight:600; color:#171717">No matches.</p>
+            <p style="margin:0; font-size:14px; line-height:22px; color:#404040">Try searching for "security", "enterprise", or "workflows".</p>
           </div>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <h3 style="margin:0; font-size:26px; line-height:34px; font-weight:600; letter-spacing:-0.01em; color:#171717">Vendor-Client Gateway</h3>
-            <p style="margin:0; font-size:15px; line-height:24px; color:#404040; text-wrap:pretty">Led the phase-1 redesign of CobbleStone's vendor-facing portal with responsive layouts, clearer information architecture, and reduced client-side configuration options.</p>
-          </div>
-          <span style="display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#69349c">Explore case study
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          </span>
-        </a>
-
-        <a href="project.html?id=guest-pass" data-card="1" data-tags="enterprise security workflows permissions forms" data-search="guest pass lenels2 elements access control security workflows permissions forms flows interaction design protopie 2021 credentials" style="display:flex; flex-direction:column; gap:20px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:24px; color:inherit" style-hover="border-color:#c5a8e2; box-shadow:0 12px 28px -12px rgba(10,10,10,.14)">
-          <img src="assets/projects/GuestPass.png" alt="Guest Pass cover" style="width:100%; height:auto; object-fit:contain; border-radius:16px; background:#f5f5f5; display:block">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
-            <span style="padding:6px 12px; border-radius:9999px; background:#f3eef9; color:#69349c; font-size:12px; font-weight:600; line-height:18px">Interaction design · Security</span>
-            <span style="font-size:12px; font-weight:500; color:#737373">Case study · 2021</span>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <h3 style="margin:0; font-size:26px; line-height:34px; font-weight:600; letter-spacing:-0.01em; color:#171717">Guest Pass</h3>
-            <p style="margin:0; font-size:15px; line-height:24px; color:#404040; text-wrap:pretty">Designed temporary door access for LenelS2's Elements platform. Hosts create a pass, guests unlock from their phone, and credentials expire automatically. Shipped Q4 2021.</p>
-          </div>
-          <span style="display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#69349c">Explore case study
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          </span>
-        </a>
-
-        <a href="project.html?id=jrcs-command-task" data-card="1" data-tags="design challenge flows enterprise" data-search="jrcs command task design challenge collision warning ship navigation ar wireframing documentation problem framing accessibility color blind 2023" style="display:flex; flex-direction:column; gap:20px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:24px; color:inherit" style-hover="border-color:#c5a8e2; box-shadow:0 12px 28px -12px rgba(10,10,10,.14)">
-          <img src="assets/projects/JRCS.png" alt="JRCS command task cover" style="width:100%; height:auto; object-fit:contain; border-radius:16px; background:#f5f5f5; display:block">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
-            <span style="padding:6px 12px; border-radius:9999px; background:#f3eef9; color:#69349c; font-size:12px; font-weight:600; line-height:18px">Design challenge · Research</span>
-            <span style="font-size:12px; font-weight:500; color:#737373">Design challenge · 2023</span>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:8px">
-            <h3 style="margin:0; font-size:26px; line-height:34px; font-weight:600; letter-spacing:-0.01em; color:#171717">JRCS Command Task</h3>
-            <p style="margin:0; font-size:15px; line-height:24px; color:#404040; text-wrap:pretty">Time-boxed design challenge for collision warnings on a shipboard command display, balancing visibility with the need to preserve critical navigation information.</p>
-          </div>
-          <span style="display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#69349c">Explore case study
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-          </span>
-        </a>
-
-        <div ref="{{ emptyRef }}" style="display:none; grid-column:1 / -1; padding:32px; background:#fff; border:1px solid #e5e5e5; border-radius:24px">
-          <p style="margin:0 0 6px; font-size:16px; font-weight:600; color:#171717">No matches.</p>
-          <p style="margin:0; font-size:14px; line-height:22px; color:#404040">Try searching for "security", "enterprise", or "workflows".</p>
-        </div>
+        </sc-if>
       </div>
     </div>
   </section>
@@ -539,8 +515,10 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showFloatingChat&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#69349c&quot;,&quot;options&quot;:[&quot;#69349c&quot;,&quot;#1d4ed8&quot;,&quot;#0f766e&quot;,&quot;#b91c1c&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
+const normalizeQuery = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
 class Component extends DCLogic {
-  state = { activeTag: "", docked: false, pastHero: false };
+  state = { activeTag: "", query: "", cards: [], filters: [], docked: false, pastHero: false };
 
   onScroll = () => {
     const card = this.heroSlotEl;
@@ -564,7 +542,7 @@ class Component extends DCLogic {
   componentDidMount() {
     const accent = this.props.accentColor;
     if (accent) document.documentElement.style.setProperty("--accent", accent);
-    this.applyFilter();
+    this.loadCaseStudies();
     this.initChat();
     this.scroller = document.scrollingElement || document.documentElement;
     this.scrollHost = this.scroller === document.documentElement || this.scroller === document.body ? window : this.scroller;
@@ -586,6 +564,16 @@ class Component extends DCLogic {
     if (this.scrollHost) this.scrollHost.removeEventListener("scroll", this.onScroll);
   }
 
+  async loadCaseStudies() {
+    try {
+      const registry = await import("./case-studies.js");
+      const { projects, filters } = await registry.loadCaseStudies();
+      this.setState({ cards: registry.toCards(projects), filters });
+    } catch (err) {
+      console.warn("Case studies unavailable", err);
+    }
+  }
+
   async initChat() {
     try {
       const core = await import("./chat-core.js");
@@ -604,42 +592,31 @@ class Component extends DCLogic {
     }
   }
 
-  applyFilter = () => {
-    const grid = this.gridEl;
-    if (!grid) return;
-    const q = (this.filterEl && this.filterEl.value || "").trim().toLowerCase();
+  visibleCards() {
+    const q = normalizeQuery(this.state.query);
     const tag = this.state.activeTag;
-    let shown = 0;
-    for (const card of grid.querySelectorAll("[data-card]")) {
-      const blob = (card.getAttribute("data-search") || "").toLowerCase();
-      const tags = card.getAttribute("data-tags") || "";
-      const ok = (!q || blob.includes(q)) && (!tag || tags.includes(tag));
-      card.style.display = ok ? "flex" : "none";
-      if (ok) shown++;
-    }
-    if (this.emptyEl) this.emptyEl.style.display = shown ? "none" : "block";
-  };
+    return this.state.cards.filter(
+      (c) => (!q || c.search.includes(q)) && (!tag || c.tags.includes(tag))
+    );
+  }
 
   renderVals() {
+    const cards = this.visibleCards();
     return {
       floatingChat: this.props.showFloatingChat ?? true,
-      gridRef: (el) => { this.gridEl = el; },
-      emptyRef: (el) => { this.emptyEl = el; },
-      filterRef: (el) => { this.filterEl = el; },
-      chipsRef: (el) => { this.chipsEl = el; },
-      onFilter: this.applyFilter,
+      cards,
+      noMatches: this.state.cards.length > 0 && cards.length === 0,
+      filters: this.state.filters.map((f) => ({
+        tag: f.tag || "",
+        label: f.label,
+        active: String((f.tag || "") === this.state.activeTag)
+      })),
+      onFilter: (e) => this.setState({ query: e.target.value }),
       onChip: (e) => {
         const btn = e.target.closest("button[data-tag]");
-        if (!btn || !this.chipsEl) return;
+        if (!btn) return;
         const tag = btn.getAttribute("data-tag") || "";
-        const next = this.state.activeTag === tag ? "" : tag;
-        for (const b of this.chipsEl.querySelectorAll("button[data-tag]")) {
-          const on = (b.getAttribute("data-tag") || "") === next;
-          b.style.background = on ? "#69349c" : "#fff";
-          b.style.color = on ? "#fff" : "#404040";
-          b.style.borderColor = on ? "#69349c" : "#e5e5e5";
-        }
-        this.setState({ activeTag: next }, this.applyFilter);
+        this.setState({ activeTag: this.state.activeTag === tag ? "" : tag });
       },
       docked: this.state.docked,
       showFab: (this.props.showFloatingChat ?? true) && (this.state.pastHero || this.state.docked),

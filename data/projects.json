@@ -1,11 +1,162 @@
 {
+  "filters": [
+    { "tag": "", "label": "All" },
+    { "tag": "enterprise", "label": "Enterprise" },
+    { "tag": "security", "label": "Security" },
+    { "tag": "redesign", "label": "Redesign" },
+    { "tag": "workflows", "label": "Workflows" },
+    { "tag": "design challenge", "label": "Design challenge" }
+  ],
   "projects": [
     {
       "id": "guest-pass",
       "title": "Guest Pass",
+      "shortTitle": "Guest Pass",
+      "order": 2,
       "type": "Case study",
       "year": 2021,
       "heroImage": { "src": "./assets/projects/GuestPass.png", "alt": "Guest Pass project cover image" },
+      "card": {
+        "eyebrow": "Interaction design · Security",
+        "summary": "Designed temporary door access for LenelS2's Elements platform. Hosts create a pass, guests unlock from their phone, and credentials expire automatically. Shipped Q4 2021.",
+        "cover": { "src": "assets/projects/GuestPass.png", "alt": "Guest Pass cover" },
+        "keywords": ["access control", "ProtoPie"]
+      },
+      "sections": [
+        {
+          "type": "hero",
+          "alt": "Guest Pass — hero",
+          "title": "Guest Pass",
+          "summary": "Temporary door access for LenelS2's Elements platform. Hosts create a pass, share a link, and guests unlock doors from their phone before credentials expire automatically.",
+          "meta": [
+            { "label": "MY ROLE", "value": "UX Designer (co-op), end-to-end" },
+            { "label": "TIMELINE", "value": "Jun – Dec 2021 · shipped Q4 2021" },
+            { "label": "THE TEAM", "value": "Product, engineering, stakeholders" }
+          ]
+        },
+        {
+          "type": "overview",
+          "heading": "Project overview",
+          "blocks": [
+            { "heading": "The challenge", "body": "Before Guest Pass, granting visitor access in Elements required creating a full person record, normally reserved for employees, and manually revoking it later. Customers needed a way to grant temporary visitors access without creating permanent credentials or coordinating access through the lobby." },
+            { "heading": "The solution", "body": "Hosts create a pass by setting start and end times, assigning door readers, and sharing a link. Guests open the pass on their phone and tap to unlock. When the access window closes, the pass is deleted automatically with no lingering credentials." },
+            { "heading": "Context", "body": "LenelS2 develops physical security software for access control, video, and mobile credentials. Elements is their cloud platform for managing badge readers and cameras across a facility." }
+          ],
+          "aside": [
+            {
+              "type": "callout",
+              "eyebrow": "KEY IMPACT",
+              "value": "Q4 2021",
+              "body": "Released in Q4 2021. The feature is included in sales demonstrations and has generated ongoing requests for additional capability."
+            },
+            {
+              "type": "stats",
+              "items": [
+                { "label": "User groups served", "value": "2 (host + guest)" },
+                { "label": "Records created per guest", "value": "0 (was 1)" },
+                { "label": "Post-launch feature requests", "value": "Numerous" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "What the feature had to do",
+          "intro": "Hosts and guests do different jobs on the same pass, and security teams need an event log when someone actually uses it.",
+          "blocks": [
+            {
+              "type": "cards",
+              "columns": 3,
+              "items": [
+                {
+                  "eyebrow": "ISSUING A PASS",
+                  "items": [
+                    "Hosts issue and send passes themselves and remain responsible for the guest",
+                    "Optional start and end date",
+                    "Assign specific door readers",
+                    "A way to share the pass, plus an email template",
+                    "The ability to update a pass after sending"
+                  ]
+                },
+                {
+                  "eyebrow": "USING A PASS",
+                  "items": [
+                    "Guests receive the pass by email with a link to a web UI",
+                    "The UI shows the validity window and who issued it",
+                    "One unlock button per assigned reader"
+                  ]
+                },
+                {
+                  "eyebrow": "EVENTS",
+                  "items": ["The Elements event feed records when a pass is used and at which reader"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "From a low-fi flow to the shipped UI",
+          "intro": "Flow first in InVision Freehand, then hi-fi in Figma using the LenelS2 design system I helped maintain.",
+          "blocks": [
+            { "type": "figure", "slot": "gp-flow", "height": 320, "caption": "Figure 1.1 — InVision Freehand flow: create, share, use, and manage a guest pass." },
+            {
+              "type": "figure-grid",
+              "columns": 2,
+              "height": 260,
+              "items": [
+                { "slot": "gp-list", "title": "1. Guest pass list", "body": "A dedicated area of Elements where hosts see active, scheduled, and expired passes." },
+                { "slot": "gp-create", "title": "2. Create a pass", "body": "Name, activation and expiration, then readers. In hi-fi I replaced the recipient field with a share step." }
+              ]
+            },
+            {
+              "type": "split",
+              "badge": "Design decision",
+              "heading": "Sharing became its own step",
+              "body": "In the low-fidelity flow, the recipient email lived inside the create form, which meant any edit risked re-sending the pass. I moved sharing to its own screen so hosts can copy the link through any channel, and edits no longer notify the guest.",
+              "slot": "gp-panels",
+              "height": 380
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "Animation as feedback",
+          "intro": "Guest passes live on standalone pages outside the main Elements interface, which allowed animated unlock buttons that confirm the tap registered at the door.",
+          "blocks": [
+            {
+              "type": "group",
+              "gap": 32,
+              "blocks": [
+                {
+                  "type": "media-row",
+                  "items": [
+                    { "slot": "gp-open", "title": "Unlock success", "body": "Confirmation animation after a guest taps to unlock a door reader.", "aria": "Guest pass unlock success animation" },
+                    { "slot": "gp-error", "title": "Unlock error", "body": "Feedback when a pass is invalid, expired, or the reader cannot be reached.", "aria": "Guest pass unlock error animation" }
+                  ]
+                },
+                {
+                  "type": "link-card",
+                  "href": "https://codepen.io/JEScarani/pen/oNWKmxG",
+                  "title": "Code reference",
+                  "body": "An HTML and CSS translation of the prototype to give engineering a concrete implementation reference.",
+                  "cta": "Open in CodePen →"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "outcome",
+          "heading": "Results & outcomes",
+          "statement": "Guest Pass released in Q4 2021. It is included in sales demonstrations and has generated ongoing requests for additional functionality.",
+          "takeaways": [
+            { "title": "Two users, one feature", "body": "Designing for a system owner and a one-time visitor required two separate interfaces on a shared data model, with clear ownership of decisions for each audience." },
+            { "title": "Flows first in a complex system", "body": "Mapping the end-to-end flow before high-fidelity design surfaced the re-send problem early, when restructuring was still inexpensive." },
+            { "title": "Motion earns its keep at the door", "body": "Unlock animation gives guests immediate confirmation at the door and reduces repeated taps on the reader." }
+          ]
+        }
+      ],
       "role": ["UX Co-op / UX Designer"],
       "team": "Product, engineering, stakeholders",
       "problem": "Temporary door access for LenelS2's Elements platform. Hosts create a pass, guests unlock from their phone, and credentials expire automatically.",
@@ -138,21 +289,119 @@
       "tags": ["enterprise", "security", "workflows", "permissions", "forms"],
       "artifacts": [
         { "label": "CodePen translation", "kind": "url", "href": "https://codepen.io/JEScarani/pen/oNWKmxG" },
-        { "label": "InVision flow screenshot", "kind": "image", "src": "./assets/projects/GuestPass/invision_screenshot.jpg", "alt": "Guest Pass — InVision flow screenshot" },
-        { "label": "Guest pass list", "kind": "image", "src": "./assets/projects/GuestPass/list.png", "alt": "Guest Pass — list view" },
-        { "label": "Create guest pass", "kind": "image", "src": "./assets/projects/GuestPass/create.png", "alt": "Guest Pass — create flow" },
-        { "label": "Side panels", "kind": "image", "src": "./assets/projects/GuestPass/SidePanels.png", "alt": "Guest Pass — side panels" },
-        { "label": "Guest UI (open animation)", "kind": "video", "src": "./assets/projects/GuestPass/open.mp4", "alt": "Guest Pass — open animation" },
-        { "label": "Guest UI (error animation)", "kind": "video", "src": "./assets/projects/GuestPass/error.mp4", "alt": "Guest Pass — error animation" }
+        { "label": "InVision flow screenshot", "slot": "gp-flow", "kind": "image", "src": "./assets/projects/GuestPass/invision_screenshot.jpg", "alt": "Guest Pass — InVision flow screenshot" },
+        { "label": "Guest pass list", "slot": "gp-list", "kind": "image", "src": "./assets/projects/GuestPass/list.png", "alt": "Guest Pass — list view" },
+        { "label": "Create guest pass", "slot": "gp-create", "kind": "image", "src": "./assets/projects/GuestPass/create.png", "alt": "Guest Pass — create flow" },
+        { "label": "Side panels", "slot": "gp-panels", "kind": "image", "src": "./assets/projects/GuestPass/SidePanels.png", "alt": "Guest Pass — side panels" },
+        { "label": "Guest UI (open animation)", "slot": "gp-open", "kind": "video", "src": "./assets/projects/GuestPass/open.mp4", "alt": "Guest Pass — open animation" },
+        { "label": "Guest UI (error animation)", "slot": "gp-error", "kind": "video", "src": "./assets/projects/GuestPass/error.mp4", "alt": "Guest Pass — error animation" }
       ],
       "links": [{ "label": "Ask about this project", "href": "#chat=guest%20pass" }]
     },
     {
       "id": "jrcs-command-task",
       "title": "JRCS Command Task",
+      "shortTitle": "JRCS Command Task",
+      "order": 3,
       "type": "Design challenge",
       "year": 2023,
       "heroImage": { "src": "./assets/projects/JRCS.png", "alt": "JRCS Command Task project cover image" },
+      "card": {
+        "eyebrow": "Design challenge · Research",
+        "summary": "Time-boxed design challenge for collision warnings on a shipboard command display, balancing visibility with the need to preserve critical navigation information.",
+        "cover": { "src": "assets/projects/JRCS.png", "alt": "JRCS command task cover" },
+        "keywords": ["AR", "accessibility", "color blind"]
+      },
+      "sections": [
+        {
+          "type": "hero",
+          "alt": "JRCS Command Task — hero",
+          "title": "JRCS Command Task",
+          "summary": "Design challenge to warn a ship's bridge of an imminent collision without obscuring other critical navigation information.",
+          "meta": [
+            { "label": "MY ROLE", "value": "UX Designer (solo)" },
+            { "label": "TIMELINE", "value": "2023 · time-boxed challenge" },
+            { "label": "REVIEWED BY", "value": "JRCS Digital Innovation Lab" }
+          ]
+        },
+        {
+          "type": "overview",
+          "heading": "The brief",
+          "blocks": [
+            { "heading": "The problem", "body": "JRCS Digital Innovation Lab develops a command application that gives captains and officers navigation information for their vessel and highlights nearby traffic through AR. The team provided two existing screens and asked me to design a collision warning pattern." },
+            { "heading": "Users", "body": "Captains and watch officers who monitor dense navigation displays for extended periods." }
+          ],
+          "aside": [
+            {
+              "type": "list",
+              "eyebrow": "REQUIREMENTS",
+              "items": [
+                "Must grab the user's attention",
+                "Must carry enough information to act on",
+                "Cannot drown out any other critical information"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "Sketches to shipped-looking UI",
+          "intro": "My first approach was a popover pointing at the vessel on a collision course. After testing three shapes, a rectangular window provided the necessary detail without obscuring the chart.",
+          "blocks": [
+            { "type": "figure", "slot": "jrcs-start", "height": 320, "caption": "Figure 1.1 — The two screens provided at the start of the challenge." },
+            {
+              "type": "figure-grid",
+              "columns": 2,
+              "height": 280,
+              "items": [
+                { "slot": "jrcs-sketches", "title": "1. Sketches", "body": "Three popover shapes and a warning treatment for the compass-like view. I also explored projected ship paths and removed that concept because it would be difficult to implement in rough seas and computationally expensive." },
+                { "slot": "jrcs-lofi", "title": "2. Lo-fi wireframes", "body": "Narrowing to the primary view and comparing a couple of popover structures." },
+                { "slot": "jrcs-progression", "title": "3. Hi-fi progression", "body": "Styled to the application's existing UI standards, then refined with clearer labels and a boat indicator." },
+                { "slot": "jrcs-incontext", "title": "4. Popover in context", "body": "The warning sitting on the real bridge display, competing with everything else on screen." }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "blocks": [
+            {
+              "type": "split",
+              "badge": "Attention mechanism",
+              "heading": "Peripheral attention from game UI patterns",
+              "body": "First-person shooters such as Halo and Call of Duty use edge-of-screen cues to signal urgency without blocking the view. I applied that pattern as a pulsing red bar at the top of the display. It reaches peripheral vision without covering navigation data.",
+              "slot": "jrcs-pulse",
+              "height": 380
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "Legible at sunrise, sunset, and night",
+          "intro": "A warning must remain legible across lighting conditions. I evaluated the design against sunrise, sunset, and night backgrounds and tested it with color-blind simulation filters so red was not the only signal.",
+          "blocks": [
+            {
+              "type": "figure-grid",
+              "columns": 2,
+              "height": 340,
+              "items": [
+                { "slot": "jrcs-transparency", "caption": "Figure 3.1 — Transparency compared across sunrise, sunset, and night backgrounds." },
+                { "slot": "jrcs-colorblind", "caption": "Figure 3.2 — The warning under color-blind simulation filters." }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "outcome",
+          "heading": "How it ended",
+          "statement": "The team responded positively to the work, although the role ultimately went to another candidate. It remains one of the most engaging problems I have worked on.",
+          "takeaways": [
+            { "title": "Feasibility is a design constraint", "body": "The projected-path concept was the strongest early sketch and the first removed from scope. Rough seas and computational cost determined that decision, not visual preference." },
+            { "title": "Borrow from outside the domain", "body": "Game interfaces have long addressed the problem of urgent but non-blocking alerts. That research direction informed the pulsing bar more than a review of competing maritime products." },
+            { "title": "Prioritize under a time box", "body": "With limited domain context, framing users and requirements up front was what made the rest of the work defensible." }
+          ]
+        }
+      ],
       "role": ["UX Designer"],
       "team": "Solo (challenge) / reviewers",
       "problem": "Design challenge to warn a ship's bridge of an imminent collision without obscuring other critical navigation information.",
@@ -242,23 +491,111 @@
       "skills": ["Problem framing", "IA", "Wireframing", "Documentation"],
       "tags": ["design challenge", "flows", "enterprise"],
       "artifacts": [
-        { "label": "Given screens (start)", "kind": "image", "src": "./assets/projects/JRCS/start.png", "alt": "JRCS — given screens" },
-        { "label": "Sketches", "kind": "image", "src": "./assets/projects/JRCS/sketches.png", "alt": "JRCS — sketches" },
-        { "label": "Lo-fi wireframes", "kind": "image", "src": "./assets/projects/JRCS/lofi.png", "alt": "JRCS — lo-fi wireframes" },
-        { "label": "Hi-fi progression", "kind": "image", "src": "./assets/projects/JRCS/Progression.png", "alt": "JRCS — hi-fi progression" },
-        { "label": "Popover in context", "kind": "image", "src": "./assets/projects/JRCS/incontext.png", "alt": "JRCS — popover in context" },
-        { "label": "Pulse attention bar", "kind": "image", "src": "./assets/projects/JRCS/pulse.png", "alt": "JRCS — pulsing attention bar" },
-        { "label": "Transparency comparison", "kind": "image", "src": "./assets/projects/JRCS/Transparency.png", "alt": "JRCS — transparency comparison" },
-        { "label": "Color-blind filters", "kind": "image", "src": "./assets/projects/JRCS/colorblind.png", "alt": "JRCS — color blind filters" }
+        { "label": "Given screens (start)", "slot": "jrcs-start", "kind": "image", "src": "./assets/projects/JRCS/start.png", "alt": "JRCS — given screens" },
+        { "label": "Sketches", "slot": "jrcs-sketches", "kind": "image", "src": "./assets/projects/JRCS/sketches.png", "alt": "JRCS — sketches" },
+        { "label": "Lo-fi wireframes", "slot": "jrcs-lofi", "kind": "image", "src": "./assets/projects/JRCS/lofi.png", "alt": "JRCS — lo-fi wireframes" },
+        { "label": "Hi-fi progression", "slot": "jrcs-progression", "kind": "image", "src": "./assets/projects/JRCS/Progression.png", "alt": "JRCS — hi-fi progression" },
+        { "label": "Popover in context", "slot": "jrcs-incontext", "kind": "image", "src": "./assets/projects/JRCS/incontext.png", "alt": "JRCS — popover in context" },
+        { "label": "Pulse attention bar", "slot": "jrcs-pulse", "kind": "image", "src": "./assets/projects/JRCS/pulse.png", "alt": "JRCS — pulsing attention bar" },
+        { "label": "Transparency comparison", "slot": "jrcs-transparency", "kind": "image", "src": "./assets/projects/JRCS/Transparency.png", "alt": "JRCS — transparency comparison" },
+        { "label": "Color-blind filters", "slot": "jrcs-colorblind", "kind": "image", "src": "./assets/projects/JRCS/colorblind.png", "alt": "JRCS — color blind filters" }
       ],
       "links": [{ "label": "Ask about this project", "href": "#chat=jrcs%20command%20task" }]
     },
     {
       "id": "vendor-client-gateway-redesign",
       "title": "Vendor-Client Gateway Redesign",
+      "shortTitle": "Vendor-Client Gateway",
+      "order": 1,
       "type": "Case study",
       "year": 2025,
       "heroImage": { "src": "./assets/projects/VCG.png", "alt": "Vendor-Client Gateway Redesign project cover image" },
+      "card": {
+        "eyebrow": "Enterprise UX · Redesign",
+        "summary": "Led the phase-1 redesign of CobbleStone's vendor-facing portal with responsive layouts, clearer information architecture, and reduced client-side configuration options.",
+        "cover": { "src": "assets/projects/VCG.png", "alt": "Vendor-Client Gateway redesign cover" },
+        "keywords": ["contract insights", "procurement"]
+      },
+      "sections": [
+        {
+          "type": "hero",
+          "alt": "Vendor-Client Gateway — hero",
+          "title": "Vendor-Client Gateway",
+          "summary": "External-facing portal for CobbleStone's contract management platform. The experience was outdated, difficult to use, and underperforming with clients.",
+          "meta": [
+            { "label": "MY ROLE", "value": "UX Designer, redesign lead" },
+            { "label": "TIMELINE", "value": "2025 · phase 1 of 3" },
+            { "label": "THE TEAM", "value": "Stakeholders, engineering" }
+          ]
+        },
+        {
+          "type": "overview",
+          "heading": "Project overview",
+          "blocks": [
+            { "heading": "The challenge", "body": "The Vendor Client Gateway is an add-on for Contract Insights, CobbleStone's procurement and contract platform. Clients and support staff had raised concerns for years about a non-responsive layout, outdated UI patterns, and per-client customization that often reduced usability." },
+            { "heading": "The solution", "body": "During a broader UX initiative across the platform, I led the Gateway redesign with responsive layouts, clearer navigation, UI patterns aligned to Contract Insights, and a narrower set of configuration options." },
+            { "heading": "Where it sits", "body": "This work is phase 1 of a three-phase roadmap to redesign existing features, expand capabilities, and iterate based on live feedback." }
+          ],
+          "aside": [
+            {
+              "type": "callout",
+              "eyebrow": "GOAL",
+              "value": "Adoption",
+              "body": "Increase adoption of a module clients had been avoiding by removing the friction that limited everyday use."
+            },
+            {
+              "type": "stats",
+              "items": [
+                { "label": "Responsive breakpoints", "value": "Desktop + mobile" },
+                { "label": "Core surfaces redesigned", "value": "Home, solicitations, news" },
+                { "label": "Roadmap", "value": "Phase 1 of 3" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "What was going wrong",
+          "intro": "An audit of the existing gateway and review of comparable vendor portals identified four problems to address first.",
+          "blocks": [
+            {
+              "type": "cards",
+              "columns": 4,
+              "items": [
+                { "eyebrow": "ISSUE 01", "title": "Not responsive", "body": "Vendors working away from a desk encountered a desktop-only layout on mobile devices." },
+                { "eyebrow": "ISSUE 02", "title": "Dated patterns", "body": "Interactions that no longer matched what users expect anywhere else, which hurt both usability and trust." },
+                { "eyebrow": "ISSUE 03", "title": "Over-customization", "body": "Clients could configure the interface into states that reduced usability for their vendors." },
+                { "eyebrow": "ISSUE 04", "title": "Inconsistent workflows", "body": "Solicitation and contract management behaved differently depending on where you entered them." }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "content",
+          "heading": "Surface by surface",
+          "blocks": [
+            {
+              "type": "group",
+              "gap": 48,
+              "blocks": [
+                { "type": "before-after", "title": "Home", "note": "From a configurable wall of widgets to a clear starting point.", "height": 340, "before": "vcg-home-before", "after": "vcg-home-after" },
+                { "type": "before-after", "title": "Solicitations", "note": "The module's highest-traffic workflow, standardized end to end.", "height": 340, "before": "vcg-sol-before", "after": "vcg-sol-after" },
+                { "type": "before-after", "title": "News", "note": "Announcements that vendors could actually scan.", "height": 340, "before": "vcg-news-before", "after": "vcg-news-after" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "outcome",
+          "heading": "Results & outcomes",
+          "statement": "Phase 1 establishes patterns that make the module easier to adopt. The next two phases will build on that foundation.",
+          "takeaways": [
+            { "title": "Less configurability can be the feature", "body": "Removing configuration options was the most difficult stakeholder conversation and the most meaningful improvement. Flexibility that allows clients to degrade their vendors' experience is not worth preserving." },
+            { "title": "Audit before you redesign", "body": "Documenting what existed and why it had been added made the case for standardization more persuasive than visual inspiration alone." },
+            { "title": "A mature product moves in phases", "body": "Sequencing the work as redesign, then expand, then iterate kept scope honest and gave engineering something shippable at each step." }
+          ]
+        }
+      ],
       "role": ["UX Designer"],
       "team": "Stakeholders, engineering",
       "problem": "The Vendor Client Gateway is CobbleStone's client-facing add-on for Contract Insights. The experience was outdated, over-configurable, and difficult to use on mobile devices. I led the phase-1 redesign.",
@@ -337,12 +674,12 @@
       "skills": ["Enterprise UX", "IA", "Forms", "Tables", "Stakeholder alignment"],
       "tags": ["enterprise", "redesign", "tables", "forms", "workflows"],
       "artifacts": [
-        { "label": "Before: Home", "kind": "image", "src": "./assets/projects/VCG/home.png", "alt": "Vendor-Client Gateway (before) — Home" },
-        { "label": "After: Home", "kind": "image", "src": "./assets/projects/VCG/new-home.png", "alt": "Vendor-Client Gateway (after) — Home" },
-        { "label": "Before: Solicitations", "kind": "image", "src": "./assets/projects/VCG/solicitations.png", "alt": "Vendor-Client Gateway (before) — Solicitations list" },
-        { "label": "After: Solicitations", "kind": "image", "src": "./assets/projects/VCG/new-solicitations.png", "alt": "Vendor-Client Gateway (after) — Solicitations list" },
-        { "label": "Before: News", "kind": "image", "src": "./assets/projects/VCG/news.png", "alt": "Vendor-Client Gateway (before) — News" },
-        { "label": "After: News", "kind": "image", "src": "./assets/projects/VCG/new-news.png", "alt": "Vendor-Client Gateway (after) — News" }
+        { "label": "Before: Home", "slot": "vcg-home-before", "kind": "image", "src": "./assets/projects/VCG/home.png", "alt": "Vendor-Client Gateway (before) — Home" },
+        { "label": "After: Home", "slot": "vcg-home-after", "kind": "image", "src": "./assets/projects/VCG/new-home.png", "alt": "Vendor-Client Gateway (after) — Home" },
+        { "label": "Before: Solicitations", "slot": "vcg-sol-before", "kind": "image", "src": "./assets/projects/VCG/solicitations.png", "alt": "Vendor-Client Gateway (before) — Solicitations list" },
+        { "label": "After: Solicitations", "slot": "vcg-sol-after", "kind": "image", "src": "./assets/projects/VCG/new-solicitations.png", "alt": "Vendor-Client Gateway (after) — Solicitations list" },
+        { "label": "Before: News", "slot": "vcg-news-before", "kind": "image", "src": "./assets/projects/VCG/news.png", "alt": "Vendor-Client Gateway (before) — News" },
+        { "label": "After: News", "slot": "vcg-news-after", "kind": "image", "src": "./assets/projects/VCG/new-news.png", "alt": "Vendor-Client Gateway (after) — News" }
       ],
       "links": [{ "label": "Ask about this project", "href": "#chat=vendor%20client%20gateway" }]
     }

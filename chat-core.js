@@ -1,3 +1,6 @@
+import { loadCaseStudies } from "./case-studies.js";
+import { sectionsToText } from "./case-study-sections.js";
+
 export function escapeHtml(s) {
   return String(s == null ? "" : s)
     .replace(/&/g, "&amp;")
@@ -20,10 +23,8 @@ export function includesAny(haystack, needles) {
 }
 
 export async function loadProjects() {
-  const res = await fetch("./data/projects.json", { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load projects.json (${res.status})`);
-  const json = await res.json();
-  return Array.isArray(json.projects) ? json.projects : [];
+  const { projects } = await loadCaseStudies();
+  return projects;
 }
 
 export async function loadExperience() {
@@ -67,6 +68,20 @@ function flattenCaseStudyText(caseStudy, { maxLen = 8000 } = {}) {
   const out = lines.join("\n").replace(/\s+\n/g, "\n").trim();
   if (out.length <= maxLen) return out;
   return `${out.slice(0, maxLen)}…`;
+}
+
+/**
+ * Narrative context for one project: the long-form `caseStudy` notes plus the
+ * copy actually shown on the page. The page body is data now, so it no longer
+ * reaches the assistant through the scraped project.html corpus.
+ */
+function projectNarrative(project, maxLen) {
+  const parts = [
+    flattenCaseStudyText(project.caseStudy, { maxLen }),
+    sectionsToText(project)
+  ].filter(Boolean);
+  const out = parts.join("\n\n").trim();
+  return out.length <= maxLen ? out : `${out.slice(0, maxLen)}…`;
 }
 
 /** Relative paths to static HTML in this repo. */
@@ -917,7 +932,7 @@ export function wireChatUI({ controller }) {
       impact: p.impact,
       skills: p.skills,
       tags: p.tags,
-      caseStudyText: flattenCaseStudyText(p.caseStudy, { maxLen: 8000 }),
+      caseStudyText: projectNarrative(p, 8000),
       artifacts: (p.artifacts || []).filter((a) => a && a.kind === "url" && a.href).map((a) => ({ label: a.label, href: a.href }))
     }));
 
@@ -1017,7 +1032,7 @@ export function wireChatUI({ controller }) {
             impact: contextProject.impact,
             skills: contextProject.skills,
             tags: contextProject.tags,
-            caseStudyText: flattenCaseStudyText(contextProject.caseStudy, { maxLen: 12000 }),
+            caseStudyText: projectNarrative(contextProject, 12000),
             artifacts: (contextProject.artifacts || []).filter((a) => a && (a.kind === "url" || a.kind === "image" || a.kind === "video"))
           }
         : null
