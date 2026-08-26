@@ -71,14 +71,13 @@ function flattenCaseStudyText(caseStudy, { maxLen = 8000 } = {}) {
 }
 
 /**
- * Narrative context for one project: the long-form `caseStudy` notes plus the
- * copy actually shown on the page. The page body is data now, so it no longer
- * reaches the assistant through the scraped project.html corpus.
+ * Narrative context for one project. Prefers the on-page `sections` copy; falls
+ * back to a legacy `caseStudy` outline if one is still present.
  */
 function projectNarrative(project, maxLen) {
   const parts = [
-    flattenCaseStudyText(project.caseStudy, { maxLen }),
-    sectionsToText(project)
+    sectionsToText(project),
+    flattenCaseStudyText(project.caseStudy, { maxLen })
   ].filter(Boolean);
   const out = parts.join("\n\n").trim();
   return out.length <= maxLen ? out : `${out.slice(0, maxLen)}…`;

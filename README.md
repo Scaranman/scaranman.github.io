@@ -22,7 +22,7 @@ chat assistant's knowledge of the project, and the case study page itself.
    {
      "id": "my-case-study",          // also the ?id= in the URL
      "title": "My Case Study",
-     "shortTitle": "My Case Study",  // cards, breadcrumb, pager
+     "shortTitle": "My Case Study",  // optional; cards/pager/breadcrumb when shorter than title
      "order": 4,                     // grid and pager position
      "type": "Case study",
      "year": 2026,
@@ -35,20 +35,19 @@ chat assistant's knowledge of the project, and the case study page itself.
      "role": ["…"], "team": "…", "problem": "…",
      "constraints": [], "process": [], "impact": [],
      "skills": [], "tags": ["enterprise"],
-     "caseStudy": [{ "title": "Overview", "paragraphs": ["…"] }],
      "sections": [ /* the page body — see below */ ],
      "artifacts": [
        { "label": "Before: Home", "slot": "mine-home", "kind": "image", "src": "./assets/projects/Mine/home.png", "alt": "…" }
-     ],
-     "links": []
+     ]
    }
    ```
 
    Card search text is built from the title, summary, type, year, tags, and
    skills, so `keywords` only needs terms none of those already cover.
-   `card.cover` is optional and defaults to `heroImage`. `caseStudy` is optional
-   background reading for the chat assistant; the assistant also reads every
-   string in `sections`, so it already knows whatever the page says.
+   Homepage cards use `heroImage` unless you add an optional `card.cover`.
+   The assistant reads every string in `sections`, plus the short
+   `role` / `team` / `problem` / `constraints` / `process` / `impact` fields
+   for structured answers.
 
 2. Drop the images in `assets/projects/<Name>/` and list them under `artifacts`.
    Any artifact with a `slot` can be placed in the body by naming that slot.
