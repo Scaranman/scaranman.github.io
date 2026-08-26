@@ -9,9 +9,9 @@
       "company": "Cayuse",
       "datesAndLocation": "Nov 2025 – Present • Remote",
       "bullets": [
-        "Collaborate with Senior Designer to redesign iRIS, a legacy enterprise product, contributing to hundreds of screens across complex, workflow-driven experiences.",
-        "Create wireframes, high-fidelity designs, and prototypes in Figma to support iterative design and stakeholder alignment.",
-        "Contribute to and expand a scalable component library, standardizing UI patterns and improving consistency across the platform."
+        "Collaborating with a senior designer on the iRIS redesign across hundreds of workflow screens on a legacy research-administration product, while expanding the component library.",
+        "Creating wireframes, high-fidelity designs, and prototypes in Figma to support iterative design and stakeholder alignment.",
+        "Contributing to and expanding a scalable component library to improve consistency across the platform."
       ]
     },
     {
@@ -21,9 +21,9 @@
       "company": "Cobblestone Software",
       "datesAndLocation": "Nov 2023 – Oct 2025 • Lindenwold, NJ",
       "bullets": [
-        "Collaborate with stakeholders and developers to design new features and enhance existing workflows for Contract Insights, a contract management and procurement platform.",
-        "Lead the redesign of the Vendor Client Gateway, an external-facing portal, improving usability and overall user experience.",
-        "Create wireframes, high-fidelity designs, and prototypes in Figma to support iterative design."
+        "Designed new features and reworked existing flows in Contract Insights, a contract management and procurement platform.",
+        "Led the Vendor Client Gateway redesign with responsive layouts, clearer information architecture, and reduced client-side configuration.",
+        "Created wireframes, high-fidelity designs, and prototypes in Figma to support iterative design."
       ]
     },
     {
@@ -34,8 +34,8 @@
       "datesAndLocation": "Jun 2022 – Oct 2022 • Remote",
       "bullets": [
         "Designed data-driven product experiences across multiple platforms.",
-        "Launched 3 products (100+ screens) in 3 months.",
-        "Centralized and streamlined the design system to reduce weekly design time."
+        "Delivered three retail-analytics products with more than 100 screens in three months.",
+        "Consolidated the design system to reduce duplicate component work."
       ]
     },
     {
@@ -45,9 +45,9 @@
       "company": "LenelS2",
       "datesAndLocation": "Jun 2021 – Dec 2021 • Pittsford, NY",
       "bullets": [
-        "Collaborate with stakeholders to design features and functionality for Elements, an all-in-one cloud-managed security platform.",
-        "Lead end-to-end design for a guest access feature, from concept through delivery, improving usability and access workflows.",
-        "Conduct user research and testing, including writing scripts, running interviews and A/B tests, and creating interactive prototypes in ProtoPie; synthesize and present findings to stakeholders via Confluence."
+        "Designed features for Elements, LenelS2's cloud-managed security platform.",
+        "Led end-to-end design for Guest Pass, a temporary access feature from concept through delivery.",
+        "Conducted user research including interview scripts, A/B tests, and ProtoPie prototypes, and documented findings in Confluence."
       ]
     },
     {
@@ -57,9 +57,9 @@
       "company": "Tamago DB K.K.",
       "datesAndLocation": "Jun 2019 – Aug 2020 • Shinagawa, Tokyo, JP",
       "bullets": [
-        "Modernized analytics visualizations by replacing a legacy charts library.",
-        "Tested and debugged locally using Laragon, improving iteration speed.",
-        "Improved UI quality across a Symfony codebase with HTML/CSS/JS updates."
+        "Modernized analytics visualizations by replacing a legacy charts library with C3.js.",
+        "Tested and debugged locally using Laragon to improve iteration speed.",
+        "Improved UI quality across a Symfony codebase with HTML, CSS, and JavaScript updates."
       ]
     }
   ]

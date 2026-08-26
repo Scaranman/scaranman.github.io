@@ -8,39 +8,39 @@
       "heroImage": { "src": "./assets/projects/GuestPass.png", "alt": "Guest Pass project cover image" },
       "role": ["UX Co-op / UX Designer"],
       "team": "Product, engineering, stakeholders",
-      "problem": "Guest Pass is a feature I designed for an all-in-one access control security system called Elements during my time at LenelS2. It allows users to send a temporary “guest pass” that visiting guests can access right from their smart phone.",
+      "problem": "Temporary door access for LenelS2's Elements platform. Hosts create a pass, guests unlock from their phone, and credentials expire automatically.",
       "caseStudy": [
         {
           "title": "Overview",
           "paragraphs": [
-            "Guest Pass is a feature I designed for an all-in-one access control security system called Elements during my time at LenelS2. It allows users to send a temporary “guest pass” that visiting guests can access right from their smart phone.",
-            "Users set an activation and a deletion date/time along with any specific doors they want their guest to have access to. With this feature, users don’t need to create credentials and badges normally reserved for employees nor do they have to keep someone on stand by to let guests in.",
-            "Since its introduction to Elements, Guest Pass has been a major differentiator to competition and has been included in every demo to potential customers. Additionally, Guest Pass has received numerous requests for additional features and functionality to make it even more useful."
+            "Guest Pass is a feature I designed for Elements, LenelS2's cloud access control platform, during my co-op in 2021.",
+            "The host sets when the pass starts and ends, picks which door readers the guest can reach, and shares a link. The guest opens it on their phone and taps unlock. When the window closes, the pass deletes itself.",
+            "It released in Q4 2021. The feature is included in sales demonstrations and has generated ongoing requests for additional capability."
           ]
         },
         {
           "title": "Who is LenelS2?",
           "paragraphs": [
-            "LenelS2 is a global leader in advanced physical security solutions, including access control, video surveillance and mobile credentialing. They’re famous for products such as OnGuard, Elements, and BlueDiamond."
+            "LenelS2 develops physical security software for access control, video, and mobile credentials. Elements is their cloud platform for managing badge readers and cameras across a facility."
           ]
         },
         {
           "title": "What is Elements?",
           "paragraphs": [
-            "Elements is an SaaS all-in-one cloud-based access control and video management solution that helps companies monitor and secure their facilities with equipment such as cameras and badge readers."
+            "Elements is LenelS2's SaaS platform for access control and video management. Companies use it to monitor facilities with cameras and badge readers."
           ]
         },
         {
           "title": "Problem",
           "paragraphs": [
-            "Before Guest Pass, whenever a customer wanted to give access to a temporary guest in Elements (e.g., job candidate, clients, etc.), they had to add them to their Elements system and remember to remove them once access needed to be revoked.",
-            "Customers needed a way to temporarily grant access to temporary guests without adding them as a person in the system—something typically reserved for more long-term visitors such as employees."
+            "Before Guest Pass, granting visitor access in Elements required creating a full person record, normally reserved for employees, and manually revoking it later.",
+            "Customers needed a way to grant temporary visitors access without creating permanent credentials or coordinating access through the lobby."
           ]
         },
         {
           "title": "Solution",
           "paragraphs": [
-            "Create a feature that allows users to create a temporary “guest pass” that will automatically activate and delete according to user specifications."
+            "Create a temporary guest pass that activates and deletes itself according to the host's settings."
           ]
         },
         {
@@ -87,7 +87,7 @@
             "{{artifact:Guest pass list}}",
             "{{artifact:Create guest pass}}",
             "{{artifact:Side panels}}",
-            "I created a user flow using low fidelity wireframes in InVision Freehand, then moved into high fidelity designs in Figma using the pre-established LenelS2 design system that I helped manage and expand."
+            "I mapped the flow in InVision Freehand, then moved to hi-fi in Figma using the LenelS2 design system I helped maintain."
           ],
           "bullets": [
             "User navigates to the “Guest Passes” area of Elements",
@@ -95,7 +95,7 @@
             "User inputs a name, activation and expiration dates and times, and the recipient email",
             "User adds readers",
             "User generates the pass",
-            "In high fidelity, I replaced the email recipient field with a share button that opens a separate view for recipients—preventing automatic resharing on edits and enabling users to copy/share the link via any communication method"
+            "In high fidelity I moved sharing to its own screen so edits do not re-send the pass. Hosts can copy the link through any channel they prefer."
           ]
         },
         {
@@ -103,25 +103,24 @@
           "paragraphs": [
             "{{artifact:Guest UI (open animation)}}",
             "{{artifact:Guest UI (error animation)}}",
-            "Once the creation process was designed, I moved onto the web UI that guest pass recipients would use.",
-            "Because guest passes live on isolated pages outside the primary Elements interface, I was able to add animation to the unlock buttons to help guests understand that something is happening after they tap to unlock a door reader.",
-            "You can find a prototype of these animations [here](https://cloud.protopie.io/p/9964619755).",
-            "Additionally, I created a rough translation of the prototype in code using CodePen that you can find [here](https://codepen.io/JEScarani/pen/oNWKmxG)."
+            "Once creation was designed, I built the guest-facing web UI.",
+            "Guest passes live on standalone pages outside the main Elements interface, which allowed animated unlock buttons that confirm the tap registered at the door.",
+            "I built an HTML and CSS reference of the unlock animations in CodePen [here](https://codepen.io/JEScarani/pen/oNWKmxG)."
           ]
         },
         {
           "title": "Conclusion & Results",
           "paragraphs": [
-            "Guest Pass was an enjoyable problem to tackle because it serves two types of users: a customer who owns an Elements-based access control system, and a guest who is visiting one of the customer’s locations.",
-            "I learned a lot about defining user flows in a complex system and about using animation to make designs feel more responsive.",
-            "Guest Pass was successfully put into production in Q4 of 2021. Since implementation it has become a major differentiator, with users requesting additional features and functionality."
+            "Guest Pass served two distinct audiences, the organization running Elements and the guest using temporary access.",
+            "The project strengthened my ability to map flows in a complex system and use animation to improve perceived responsiveness.",
+            "It released in Q4 2021 and is included in sales demonstrations, with ongoing requests for additional functionality."
           ]
         }
       ],
       "constraints": [
         "Security-sensitive domain with strict requirements",
         "Needed to fit within an existing product ecosystem and patterns",
-        "Had to support two user groups: pass issuers and visiting guests"
+        "Had to support pass issuers and visiting guests as separate user groups"
       ],
       "process": [
         "Defined users, roles, permissions, and key workflows (issuer + guest)",
@@ -132,13 +131,12 @@
       ],
       "impact": [
         "Released to production in Q4 2021",
-        "Became a major differentiator and included in every customer demo",
-        "Drove follow-up requests for additional features and functionality"
+        "Included in every sales demo",
+        "Drove follow-up feature requests from customers"
       ],
       "skills": ["Flows", "Interaction design", "UX writing", "Stakeholder alignment"],
       "tags": ["enterprise", "security", "workflows", "permissions", "forms"],
       "artifacts": [
-        { "label": "ProtoPie prototype (success/error animations)", "kind": "url", "href": "https://cloud.protopie.io/p/9964619755" },
         { "label": "CodePen translation", "kind": "url", "href": "https://codepen.io/JEScarani/pen/oNWKmxG" },
         { "label": "InVision flow screenshot", "kind": "image", "src": "./assets/projects/GuestPass/invision_screenshot.jpg", "alt": "Guest Pass — InVision flow screenshot" },
         { "label": "Guest pass list", "kind": "image", "src": "./assets/projects/GuestPass/list.png", "alt": "Guest Pass — list view" },
@@ -157,26 +155,26 @@
       "heroImage": { "src": "./assets/projects/JRCS.png", "alt": "JRCS Command Task project cover image" },
       "role": ["UX Designer"],
       "team": "Solo (challenge) / reviewers",
-      "problem": "JRCS provided two existing screens for a shipboard command application and asked me to design a collision warning method that grabs attention, provides actionable information, and doesn’t drown out other critical data.",
+      "problem": "Design challenge to warn a ship's bridge of an imminent collision without obscuring other critical navigation information.",
       "caseStudy": [
         {
           "title": "The Problem",
           "paragraphs": [
-            "One of the JRCS Digital Innovation Lab’s flagship products is a command application that provides captains and officers on ships at sea with information regarding the navigation of their vessel, and highlights nearby vessels through AR as well.",
+            "JRCS Digital Innovation Lab develops a command application that gives captains and officers navigation information for their vessel and highlights nearby traffic through AR.",
             "{{artifact:Given screens (start)}}",
-            "The team provided me two screens and asked me to design a method for the application to warn users when they are about to collide with another vessel."
+            "The team provided two existing screens and asked me to design a collision warning pattern."
           ]
         },
         {
           "title": "Users and Requirements",
           "paragraphs": [
-            "I started by recognizing the primary users and establishing requirements for an effective warning experience."
+            "I began by defining the primary users and the requirements for an effective warning experience."
           ],
           "subsections": [
             { "title": "Users", "bullets": ["Captains", "Officers on “watch”"] },
             {
               "title": "Requirements",
-              "bullets": ["Must grab users’ attention", "Must provide enough information for users to act upon", "Cannot drown out any other important information"]
+              "bullets": ["Must grab the user's attention", "Must provide enough information to act on", "Cannot obscure other critical navigation data"]
             }
           ]
         },
@@ -184,10 +182,9 @@
           "title": "Sketches",
           "paragraphs": [
             "{{artifact:Sketches}}",
-            "After establishing users and requirements, I sketched out several ideas. My immediate thought was a popover that points to the vessel the user is about to collide with.",
-            "I experimented with three different shapes and ultimately settled on a simple rectangular popover window that provided users with the needed information.",
-            "I also considered adding lines to indicate the path each ship was going to take. After moving on from sketches, I scrapped that idea because it could be difficult to implement in rough sea conditions and would add significant computational complexity.",
-            "Because the application also includes a compass-like view, I explored a way to provide warning in that view."
+            "My first approach was a popover pointing at the vessel on a collision course. After testing three shapes, a rectangular window provided the necessary detail without obscuring the chart.",
+            "I also explored projected ship paths and removed that concept because it would be difficult to implement in rough seas and computationally expensive.",
+            "Because the application includes a compass-like view, I explored a warning treatment for that context as well."
           ]
         },
         { "title": "Lo-fi Wireframes", "paragraphs": [
@@ -208,7 +205,7 @@
           "title": "Pulse (Attention Mechanism)",
           "paragraphs": [
             "{{artifact:Pulse attention bar}}",
-            "Inspired by FPS games like Halo and Call of Duty, I added a pulsing red bar at the top of the screen to draw attention without being overwhelming."
+            "Drawing on patterns from first-person shooters such as Halo and Call of Duty, I added a pulsing red bar at the top of the display to reach peripheral vision without covering navigation data."
           ]
         },
         {
@@ -216,13 +213,13 @@
           "paragraphs": [
             "{{artifact:Transparency comparison}}",
             "{{artifact:Color-blind filters}}",
-            "I validated legibility across background conditions (sunrise/sunset/night) and ran the design through color-blind filters to ensure the warning remained accessible."
+            "I evaluated legibility across sunrise, sunset, and night backgrounds and tested the design with color-blind simulation filters so red was not the only signal."
           ]
         },
         {
           "title": "Conclusion",
           "paragraphs": [
-            "While the team liked my designs, they could only hire one person and I ultimately did not get the role. It was still a fun problem to design for, and I’m proud of the work."
+            "The team responded positively to the work, although the role ultimately went to another candidate. It remains one of the most engaging problems I have worked on."
           ]
         }
       ],
@@ -264,14 +261,14 @@
       "heroImage": { "src": "./assets/projects/VCG.png", "alt": "Vendor-Client Gateway Redesign project cover image" },
       "role": ["UX Designer"],
       "team": "Stakeholders, engineering",
-      "problem": "The Vendor Client Gateway is an add-on module for CobbleStone Software’s contract management platform, Contract Insights. As part of a broader UX overhaul across the platform, I led the redesign to improve usability, modernize the experience, and increase adoption of the module.",
+      "problem": "The Vendor Client Gateway is CobbleStone's client-facing add-on for Contract Insights. The experience was outdated, over-configurable, and difficult to use on mobile devices. I led the phase-1 redesign.",
       "caseStudy": [
         {
           "title": "Overview",
           "paragraphs": [
-            "The Vendor Client Gateway is an add-on module for CobbleStone Software’s contract management platform, Contract Insights.",
-            "This project focused on redesigning a historically underperforming part of the product—one that had become a consistent source of frustration for both clients and internal teams.",
-            "As part of a broader UX overhaul across the platform, I led the redesign of the gateway to improve usability, modernize the experience, and increase adoption of the module."
+            "The Vendor Client Gateway is an add-on for Contract Insights, CobbleStone's procurement and contract platform.",
+            "Clients and support staff had raised concerns for years about a non-responsive layout, outdated UI patterns, and per-client customization that often reduced usability.",
+            "During a broader UX initiative across the platform, I led the Gateway redesign with responsive layouts, clearer navigation, UI patterns aligned to Contract Insights, and a narrower set of configuration options."
           ]
         },
         {
@@ -280,13 +277,13 @@
             "{{artifact:Before: Home}}",
             "{{artifact:Before: Solicitations}}",
             "{{artifact:Before: News}}",
-            "The existing gateway experience created significant friction for users and limited the product’s effectiveness."
+            "The existing gateway created friction for vendors and limited how useful the module could be."
           ],
           "bullets": [
-            "Non-responsive design, making the experience difficult on mobile devices",
-            "Outdated UI patterns that reduced usability and trust",
-            "Over-customization, allowing clients to configure the interface in ways that harmed usability",
-            "Inconsistent workflows, particularly around solicitation and contract management"
+            "Non-responsive layout that was difficult to use on mobile devices",
+            "Outdated UI patterns that hurt usability and trust",
+            "Over-customization that let clients break their own vendors' experience",
+            "Inconsistent workflows around solicitations and contract management"
           ]
         },
         {
@@ -315,7 +312,7 @@
         {
           "title": "Future Plans",
           "paragraphs": [
-            "Phase 1 of a 3-phase roadmap: redesign existing features (current), expand capabilities, and iterate based on feedback."
+            "Phase 1 of a three-phase roadmap to redesign existing features, expand capabilities, and iterate based on live feedback."
           ]
         }
       ],
@@ -327,15 +324,15 @@
         "Balanced user needs, business goals, and technical constraints in a mature enterprise product"
       ],
       "process": [
-        "Audit & evaluation: reviewed the existing gateway to identify usability issues, inconsistencies, and outdated patterns",
-        "Competitive inspiration: analyzed similar vendor portals to understand modern expectations and interaction models",
-        "Design simplification: reduced excessive customization in favor of structured, scalable patterns",
-        "Iterative design: developed updated flows, wireframes, and high-fidelity designs and refined them with internal feedback"
+        "Audit and evaluation of the existing gateway to identify usability issues and outdated patterns",
+        "Competitive review of similar vendor portals to understand current interaction expectations",
+        "Design simplification to reduce harmful customization",
+        "Iterative design with internal feedback"
       ],
       "impact": [
-        "improved usability and satisfaction",
-        "reduced friction in key workflows",
-        "increased adoption and usage of the gateway module"
+        "Improved mobile usability for vendor workflows",
+        "Reduced friction in the module's most common tasks",
+        "Established design patterns for the next two roadmap phases"
       ],
       "skills": ["Enterprise UX", "IA", "Forms", "Tables", "Stakeholder alignment"],
       "tags": ["enterprise", "redesign", "tables", "forms", "workflows"],

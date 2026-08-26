@@ -69,17 +69,8 @@ function flattenCaseStudyText(caseStudy, { maxLen = 8000 } = {}) {
   return `${out.slice(0, maxLen)}…`;
 }
 
-/** Relative paths to static HTML in this repo (legacy exports + main pages). */
-const SITE_HTML_PATHS = [
-  "./index.html",
-  "./project.html",
-  "./guestpass.html",
-  "./jrcs.html",
-  "./laundy.html",
-  "./mtg.html",
-  "./vcg.html",
-  "./site.html"
-];
+/** Relative paths to static HTML in this repo. */
+const SITE_HTML_PATHS = ["./index.html", "./project.html"];
 
 function pickProjectByQuery(projects, q) {
   const nq = normalize(q);
@@ -877,8 +868,6 @@ export function wireChatUI({ controller }) {
         if (text.includes(t)) score += 2;
         if (blob.includes(t)) score += 1;
       }
-      // Small bias toward non-generic legacy dumps when they match
-      if (path.endsWith("site.html")) score -= 2;
       return score;
     };
 
@@ -992,7 +981,7 @@ export function wireChatUI({ controller }) {
       "Answer using ONLY the provided JSON: homepage (including skillsCore, skillsTools, socialLinks, experience, resumePlainText when present), projects, and sitePages excerpts.",
       "You may answer any question supported by that data (contact, LinkedIn, skills, work history, comparisons, case studies, legacy article pages, etc.).",
       "If the answer is not in the provided JSON, say you do not have that information on this site and suggest a related question.",
-      "Prefer concise plain English. Use markdown links like [Open case study](project.html?id=...). Legacy pages may use filenames like guestpass.html when relevant.",
+      "Prefer concise plain English. Use markdown links like [Open case study](project.html?id=...).",
       "If multiple projects match a broad query, summarize up to 4 and ask a short clarifying question."
     ].join("\n");
 

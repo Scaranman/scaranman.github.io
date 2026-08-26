@@ -1,120 +1,1035 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="./assets/favicon.png" />
-    <title>Portfolio project</title>
-    <meta name="description" content="Portfolio project details." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QM6YRRRJ5F"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "G-QM6YRRRJ5F");
-  </script>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case study — Jacob Scarani</title>
+<meta name="description" content="UX case study from Jacob Scarani's portfolio.">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QM6YRRRJ5F"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QM6YRRRJ5F');
+</script>
+<script src="./support.js"></script>
+<script src="./mobile.js" defer></script>
+  <link rel="stylesheet" href="./mobile.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="_ds/personal-design-system-0901a3c4-f877-46c6-983c-7de463bb0dbb/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/personal-design-system-0901a3c4-f877-46c6-983c-7de463bb0dbb/tokens/fig-tokens.css">
+<link rel="stylesheet" href="_ds/personal-design-system-0901a3c4-f877-46c6-983c-7de463bb0dbb/tokens/fig-typography.css">
+<link rel="stylesheet" href="_ds/personal-design-system-0901a3c4-f877-46c6-983c-7de463bb0dbb/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/personal-design-system-0901a3c4-f877-46c6-983c-7de463bb0dbb/components/ui/fig-assets.css">
+<link rel="stylesheet" href="_ds/personal-design-system-0901a3c4-f877-46c6-983c-7de463bb0dbb/styles.css">
+<style>
+  html { scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: #fafafa; font-family: Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a, a:link, a:visited, a:hover, a:focus, a:active { text-decoration: none; }
+  a { color: #69349c; }
+  a:hover { color: #522979; }
+  ::placeholder { color: #737373; }
+  .msg { display: flex; gap: 10px; align-items: flex-start; }
+  .msg + .msg { margin-top: 14px; }
+  .msg.user { flex-direction: row-reverse; }
+  .msg .avatar { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; background: #f3eef9; color: #522979; border: 1px solid #e5d5f0; }
+  .msg.user .avatar { background: #69349c; color: #fff; border-color: #69349c; }
+  .msg .bubble { max-width: 260px; padding: 10px 12px; border-radius: 12px; background: #fff; border: 1px solid #e5e5e5; color: #404040; font-size: 13px; line-height: 20px; }
+  .msg.user .bubble { background: #69349c; border-color: #69349c; color: #fff; }
+  .msg .bubble p { margin: 0 0 6px; }
+  .msg .bubble p:last-child { margin-bottom: 0; }
+  .msg .bubble ul, .msg .bubble ol { margin: 6px 0; padding-left: 18px; }
+  .msg .bubble a { color: #69349c; text-decoration: none; }
+  .msg.user .bubble a { color: #fff; }
+  .msg .bubble strong { color: #171717; font-weight: 600; }
+  .msg.user .bubble strong { color: #fff; }
+  .thinking-dots { display: inline-flex; gap: 4px; align-items: center; }
+  .thinking-dots span { width: 6px; height: 6px; border-radius: 9999px; background: #a78bc4; animation: jsDot 1.1s ease-in-out infinite; }
+  .thinking-dots span:nth-child(2) { animation-delay: .15s; }
+  .thinking-dots span:nth-child(3) { animation-delay: .3s; }
+  @keyframes jsDot { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
+    #chatLog::-webkit-scrollbar { width: 8px; }
+  #chatLog::-webkit-scrollbar-thumb { background: #e0d3ee; border-radius: 9999px; }
+</style>
+<link rel="stylesheet" href="./mobile.css">
 
-    <header class="site-header">
-      <div class="container header-inner">
-        <div class="brand">
-          <img class="brand-mark" src="./assets/logo.png" alt="" width="38" height="38" decoding="async" />
-          <div class="brand-text">
-            <div class="brand-name">Jacob Scarani</div>
-            <div class="brand-tag">Product & UX</div>
+</helmet>
+
+<div style="background:#fafafa; color:#171717; width:100%">
+
+  <header style="position:sticky; top:0; z-index:40; background:#fff; border-bottom:1px solid #e5e5e5">
+    <div style="max-width:1440px; margin:0 auto; padding:20px 80px; display:flex; align-items:center; justify-content:space-between; gap:40px">
+      <a href="index.html" style="display:flex; align-items:center; gap:12px; color:#171717">
+        <img src="assets/logo.svg" alt="" width="36" height="36" style="display:block">
+        <span style="display:flex; flex-direction:column; gap:1px">
+          <span style="font-size:15px; font-weight:600; line-height:20px; letter-spacing:-0.01em">Jacob Scarani</span>
+          <span style="font-size:12px; line-height:16px; color:#737373">UX Designer · Philadelphia</span>
+        </span>
+      </a>
+      <nav class="site-nav" style="display:flex; align-items:center; gap:40px">
+        <a href="index.html#projects" style="font-size:14px; font-weight:500; color:#404040" style-hover="color:#171717">Case Studies</a>
+        <a href="index.html#about" style="font-size:14px; font-weight:500; color:#404040" style-hover="color:#171717">About Me</a>
+        <a href="index.html#experience" style="font-size:14px; font-weight:500; color:#404040" style-hover="color:#171717">Experience</a>
+        <a href="index.html#contact" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:8px; background:#69349c; color:#fff; font-size:14px; font-weight:600; line-height:20px; box-shadow:0 1px 2px rgba(10,10,10,.08), inset 0 0 0 1px rgba(10,10,10,.18), inset 0 -2px 0 rgba(10,10,10,.05)" style-hover="background:#522979; color:#fff">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="crumb-bar" style="background:#fff; border-bottom:1px solid #e5e5e5">
+    <div style="max-width:1440px; margin:0 auto; padding:16px 80px; display:flex; align-items:center; gap:8px; font-size:14px; line-height:20px">
+      <a href="index.html#projects" style="color:#737373" style-hover="color:#171717">Projects</a>
+      <span style="color:#d4d4d4">/</span>
+      <span style="color:#522979; font-weight:500">{{ crumb }}</span>
+    </div>
+  </div>
+
+  <section style="padding:56px 80px; background:#fafafa; border-bottom:1px solid #e5e5e5">
+    <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 520px; gap:80px; align-items:center">
+      <div style="display:flex; flex-direction:column; gap:16px">
+        <h2 style="margin:0; font-size:30px; line-height:38px; font-weight:600; letter-spacing:-0.02em; color:#171717; text-wrap:pretty">Ask about this project</h2>
+        <p style="margin:0; max-width:520px; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">The assistant already has context for this project, including my role, key decisions, and outcomes. Ask a question here or read the full case study below.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; padding-top:4px">
+          <button class="chip" type="button" data-prompt="What was your role on this project?" style="display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid #e5e5e5; border-radius:9999px; background:#fff; font-family:inherit; font-size:13px; font-weight:500; color:#171717; cursor:pointer" style-hover="border-color:#c5a8e2; background:#f3eef9">What was your role?</button>
+          <button class="chip" type="button" data-prompt="What was the hardest design decision here?" style="display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid #e5e5e5; border-radius:9999px; background:#fff; font-family:inherit; font-size:13px; font-weight:500; color:#171717; cursor:pointer" style-hover="border-color:#c5a8e2; background:#f3eef9">Hardest decision?</button>
+          <button class="chip" type="button" data-prompt="What was the impact of this work?" style="display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border:1px solid #e5e5e5; border-radius:9999px; background:#fff; font-family:inherit; font-size:13px; font-weight:500; color:#171717; cursor:pointer" style-hover="border-color:#c5a8e2; background:#f3eef9">What was the impact?</button>
+        </div>
+      </div>
+
+      <div style="background:#fff; border:1px solid #e5e5e5; border-radius:24px; overflow:hidden; box-shadow:0 8px 24px -8px rgba(10,10,10,.10)">
+        <div style="display:flex; align-items:center; gap:12px; padding:16px 20px; background:#69349c">
+          <span style="width:10px; height:10px; border-radius:9999px; background:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,.25)"></span>
+          <span style="display:flex; flex-direction:column; gap:2px; flex:1">
+            <span style="font-size:15px; font-weight:600; line-height:20px; color:#fff">Jacob's Copilot</span>
+            <span style="font-size:12px; line-height:18px; color:#c5a8e2">Context: {{ shortLabel }}</span>
+          </span>
+          <button id="resetChatBtn" type="button" style="padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.10); color:#fff; font-family:inherit; font-size:12px; font-weight:600; cursor:pointer" style-hover="background:rgba(255,255,255,.22)">Reset</button>
+        </div>
+        <div ref="{{ heroSlotRef }}">
+          <div ref="{{ chatBodyRef }}">
+            <div id="chatLog" role="log" aria-live="polite" aria-relevant="additions" style="height:300px; overflow-y:auto; padding:20px; background:#fafafa; display:flex; flex-direction:column"></div>
+            <form id="chatForm" autocomplete="off" style="display:flex; align-items:center; gap:12px; padding:16px; background:#fff; border-top:1px solid #e5e5e5">
+              <label for="chatPrompt" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)">Ask about this project</label>
+              <input id="chatPrompt" name="chatPrompt" type="text" placeholder="Ask about role, process, impact..." style="flex:1; min-width:0; padding:10px 12px; border:1px solid #d4d4d4; border-radius:10px; background:#fff; font-family:inherit; font-size:14px; line-height:20px; color:#171717; outline:none" style-focus="border-color:#69349c; box-shadow:0 0 0 4px rgba(105,52,156,.24)">
+              <button type="submit" aria-label="Send" style="flex:0 0 auto; width:38px; height:38px; display:flex; align-items:center; justify-content:center; border:none; border-radius:8px; background:#69349c; color:#fff; cursor:pointer; box-shadow:0 1px 2px rgba(10,10,10,.08), inset 0 0 0 1px rgba(10,10,10,.18), inset 0 -2px 0 rgba(10,10,10,.05)" style-hover="background:#522979">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+              </button>
+            </form>
           </div>
         </div>
-
-        <nav class="top-nav" aria-label="Primary">
-          <a href="./index.html#projects" class="nav-link">Portfolio</a>
-          <a href="./index.html#about" class="nav-link">About</a>
-          <a href="./index.html#resume" class="nav-link">Experience</a>
-          <a href="./index.html#contact" class="nav-link">Contact</a>
-        </nav>
-
-        <button id="themeToggle" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Toggle dark mode">
-          <span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span>
-          <span class="theme-toggle-label">Dark</span>
-        </button>
+        <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:16px; padding:48px 32px; background:#fafafa">
+            <p style="margin:0; max-width:340px; font-size:15px; line-height:24px; color:#404040; text-align:center; text-wrap:pretty">The conversation moved to the corner of your screen so you can read and ask at the same time.</p>
+            <button type="button" onClick="{{ closePanel }}" style="padding:10px 16px; border:1px solid #d4d4d4; border-radius:8px; background:#fff; font-family:inherit; font-size:14px; font-weight:600; color:#171717; cursor:pointer" style-hover="background:#f5f5f5">Bring it back here</button>
+          </div>
+        </sc-if>
       </div>
-    </header>
+    </div>
+  </section>
 
-    <main id="main" class="container">
-      <section class="project-hero">
-        <a class="back-link" href="./index.html#projects">← Back to Portfolio</a>
-        <h1 id="projectTitle">Loading…</h1>
-        <div id="projectMeta" class="project-meta"></div>
-        <p id="projectProblem" class="lead"></p>
-        <div id="projectHeroMedia" class="project-hero-media" aria-hidden="true"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <h2>Ask about this project</h2>
-        </div>
-
-        <div class="hero-chat card" aria-label="Portfolio chatbot">
-          <div class="chat-header">
-            <div class="status-pill"><span class="dot" aria-hidden="true"></span>Portfolio bot</div>
-            <div class="chat-actions">
-              <button id="resetChatBtn" class="ghost-btn" type="button">Reset</button>
+  <!-- ============ GUEST PASS ============ -->
+  <sc-if value="{{ isGuestPass }}" hint-placeholder-val="{{ true }}">
+  <article>
+    <section style="padding:80px; background:#fff">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:48px">
+        <div style="display:flex; flex-direction:column; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start">
+            <h1 style="margin:0; font-size:60px; line-height:72px; font-weight:600; letter-spacing:-0.02em; color:#171717">Guest Pass</h1>
+            <p style="margin:0; max-width:900px; font-size:20px; line-height:30px; color:#404040; text-wrap:pretty">Temporary door access for LenelS2's Elements platform. Hosts create a pass, share a link, and guests unlock doors from their phone before credentials expire automatically.</p>
+          </div>
+          <div style="display:flex; justify-content:space-between; gap:40px; padding:24px 0; border-top:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5">
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">MY ROLE</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">UX Designer (co-op), end-to-end</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">TIMELINE</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">Jun – Dec 2021 · shipped Q4 2021</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">THE TEAM</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">Product, engineering, stakeholders</span>
             </div>
           </div>
-          <div id="chatLog" class="chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
-          <form id="chatForm" class="chat-input" autocomplete="off">
-            <label class="sr-only" for="chatPrompt">Ask about this project</label>
-            <input id="chatPrompt" name="chatPrompt" type="text" inputmode="text" placeholder='Ask: "What was the approach?"' />
-            <button class="primary-btn" type="submit">Send</button>
-          </form>
-          <div class="hint">Tip: ask for <strong>constraints</strong>, <strong>process</strong>, or <strong>impact</strong>.</div>
         </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <h2>Details</h2>
-        </div>
-        <div id="projectDetails" class="card pad" aria-label="Project details"></div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="muted">© <span id="year"></span> Jacob Scarani</div>
-        <div class="muted">Built as a chat-first UX portfolio.</div>
+        <img src="assets/projects/GuestPass.png" alt="Guest Pass — hero" style="width:100%; height:auto; object-fit:contain; border:1px solid #e5e5e5; border-radius:24px; background:#fafafa; display:block">
       </div>
-    </footer>
+    </section>
 
-    <dialog id="lightbox" class="lightbox" aria-label="Artifact viewer">
-      <form method="dialog" class="lightbox-inner">
-        <div class="lightbox-topbar">
-          <div class="lightbox-title">Viewer</div>
-          <div class="lightbox-actions">
-            <button id="zoomOutBtn" class="ghost-btn" type="button" aria-label="Zoom out">−</button>
-            <button id="zoomResetBtn" class="ghost-btn" type="button" aria-label="Reset zoom">Reset</button>
-            <button id="zoomInBtn" class="ghost-btn" type="button" aria-label="Zoom in">+</button>
-            <button class="lightbox-close" aria-label="Close">Close</button>
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 440px; gap:80px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+            <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Project overview</h2>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:24px; max-width:760px">
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">The challenge</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">Before Guest Pass, granting visitor access in Elements required creating a full person record, normally reserved for employees, and manually revoking it later. Customers needed a way to grant temporary visitors access without creating permanent credentials or coordinating access through the lobby.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">The solution</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">Hosts create a pass by setting start and end times, assigning door readers, and sharing a link. Guests open the pass on their phone and tap to unlock. When the access window closes, the pass is deleted automatically with no lingering credentials.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">Context</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">LenelS2 develops physical security software for access control, video, and mobile credentials. Elements is their cloud platform for managing badge readers and cameras across a facility.</p>
+            </div>
           </div>
         </div>
-        <figure class="lightbox-figure">
-          <div id="lightboxStage" class="lightbox-stage" aria-label="Zoomable stage">
-            <img id="lightboxImg" class="lightbox-img" alt="" />
-            <video id="lightboxVideo" class="lightbox-video" controls playsinline></video>
+        <div style="display:flex; flex-direction:column; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:12px; padding:32px; background:#69349c; border-radius:20px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#e3d3f2">KEY IMPACT</span>
+            <span style="font-size:48px; line-height:56px; font-weight:700; color:#fff">Q4 2021</span>
+            <p style="margin:0; font-size:15px; line-height:24px; color:#e3d3f2">Released in Q4 2021. The feature is included in sales demonstrations and has generated ongoing requests for additional capability.</p>
           </div>
-          <figcaption id="lightboxCaption" class="lightbox-caption"></figcaption>
-        </figure>
-      </form>
-    </dialog>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <span style="font-size:15px; color:#404040">User groups served</span>
+              <span style="font-size:16px; font-weight:600; color:#522979; white-space:nowrap">2 (host + guest)</span>
+            </div>
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <span style="font-size:15px; color:#404040">Records created per guest</span>
+              <span style="font-size:16px; font-weight:600; color:#522979; white-space:nowrap">0 (was 1)</span>
+            </div>
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <span style="font-size:15px; color:#404040">Post-launch feature requests</span>
+              <span style="font-size:16px; font-weight:600; color:#522979; white-space:nowrap">Numerous</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <script src="./project.js" type="module"></script>
-  </body>
+    <section style="padding:96px 80px; background:#fff; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">What the feature had to do</h2>
+          <p style="margin:0; max-width:900px; font-size:18px; line-height:28px; color:#404040; text-wrap:pretty">Hosts and guests do different jobs on the same pass, and security teams need an event log when someone actually uses it.</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">ISSUING A PASS</span>
+            <ul style="margin:0; padding-left:18px; display:flex; flex-direction:column; gap:8px; font-size:15px; line-height:24px; color:#404040">
+              <li>Hosts issue and send passes themselves and remain responsible for the guest</li>
+              <li>Optional start and end date</li>
+              <li>Assign specific door readers</li>
+              <li>A way to share the pass, plus an email template</li>
+              <li>The ability to update a pass after sending</li>
+            </ul>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">USING A PASS</span>
+            <ul style="margin:0; padding-left:18px; display:flex; flex-direction:column; gap:8px; font-size:15px; line-height:24px; color:#404040">
+              <li>Guests receive the pass by email with a link to a web UI</li>
+              <li>The UI shows the validity window and who issued it</li>
+              <li>One unlock button per assigned reader</li>
+            </ul>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">EVENTS</span>
+            <ul style="margin:0; padding-left:18px; display:flex; flex-direction:column; gap:8px; font-size:15px; line-height:24px; color:#404040">
+              <li>The Elements event feed records when a pass is used and at which reader</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">From a low-fi flow to the shipped UI</h2>
+          <p style="margin:0; max-width:900px; font-size:18px; line-height:28px; color:#404040; text-wrap:pretty">Flow first in InVision Freehand, then hi-fi in Figma using the LenelS2 design system I helped maintain.</p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px">
+          <div ref="{{ slot1 }}" data-slot="gp-flow" style="width:100%; height:320px; border:1px solid #e5e5e5; border-radius:16px; background:#f5f5f5"></div>
+          <p style="margin:0; font-size:13px; line-height:18px; color:#737373">Figure 1.1 — InVision Freehand flow: create, share, use, and manage a guest pass.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot2 }}" data-slot="gp-list" style="width:100%; height:260px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:15px; font-weight:600; color:#171717">1. Guest pass list</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">A dedicated area of Elements where hosts see active, scheduled, and expired passes.</span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot3 }}" data-slot="gp-create" style="width:100%; height:260px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:15px; font-weight:600; color:#171717">2. Create a pass</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">Name, activation and expiration, then readers. In hi-fi I replaced the recipient field with a share step.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:80px">
+          <div style="flex:1; display:flex; flex-direction:column; gap:24px">
+            <span style="align-self:flex-start; padding:2px 8px; border:1px solid #e5e5e5; border-radius:9999px; background:#fafafa; font-size:12px; font-weight:500; color:#404040">Design decision</span>
+            <h3 style="margin:0; font-size:24px; line-height:32px; font-weight:600; color:#171717">Sharing became its own step</h3>
+            <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">In the low-fidelity flow, the recipient email lived inside the create form, which meant any edit risked re-sending the pass. I moved sharing to its own screen so hosts can copy the link through any channel, and edits no longer notify the guest.</p>
+          </div>
+          <div ref="{{ slot4 }}" data-slot="gp-panels" style="flex:0 0 580px; height:380px; border:1px solid #e5e5e5; border-radius:16px; background:#f5f5f5"></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; background:#fff; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Animation as feedback</h2>
+          <p style="margin:0; max-width:900px; font-size:18px; line-height:28px; color:#404040; text-wrap:pretty">Guest passes live on standalone pages outside the main Elements interface, which allowed animated unlock buttons that confirm the tap registered at the door.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <div class="gp-animation-row">
+            <div class="gp-animation-item">
+              <div data-slot="gp-open" class="gp-animation-slot"></div>
+              <div class="gp-animation-caption">
+                <span style="font-size:15px; font-weight:600; color:#171717">Unlock success</span>
+                <span style="font-size:14px; line-height:20px; color:#404040">Confirmation animation after a guest taps to unlock a door reader.</span>
+              </div>
+            </div>
+            <div class="gp-animation-item">
+              <div data-slot="gp-error" class="gp-animation-slot"></div>
+              <div class="gp-animation-caption">
+                <span style="font-size:15px; font-weight:600; color:#171717">Unlock error</span>
+                <span style="font-size:14px; line-height:20px; color:#404040">Feedback when a pass is invalid, expired, or the reader cannot be reached.</span>
+              </div>
+            </div>
+          </div>
+          <a href="https://codepen.io/JEScarani/pen/oNWKmxG" target="_blank" rel="noopener noreferrer" style="display:flex; flex-direction:column; gap:16px; width:100%; padding:32px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px; color:inherit" style-hover="border-color:#c5a8e2; background:#f3eef9">
+            <span style="display:flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:12px; background:#171717; color:#fff">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18-6-6 6-6"></path><path d="m15 6 6 6-6 6"></path></svg>
+            </span>
+            <span style="display:flex; flex-direction:column; gap:6px">
+              <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Code reference</span>
+              <span style="font-size:15px; line-height:24px; color:#404040">An HTML and CSS translation of the prototype to give engineering a concrete implementation reference.</span>
+            </span>
+            <span style="font-size:14px; font-weight:600; color:#69349c">Open in CodePen →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 480px; gap:80px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:40px">
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+            <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Results &amp; outcomes</h2>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:20px; padding:32px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+            <p style="margin:0; font-size:20px; line-height:32px; font-weight:500; color:#171717; text-wrap:pretty">Guest Pass released in Q4 2021. It is included in sales demonstrations and has generated ongoing requests for additional functionality.</p>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#171717">KEY TAKEAWAYS</span>
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Two users, one feature</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Designing for a system owner and a one-time visitor required two separate interfaces on a shared data model, with clear ownership of decisions for each audience.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Flows first in a complex system</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Mapping the end-to-end flow before high-fidelity design surfaced the re-send problem early, when restructuring was still inexpensive.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Motion earns its keep at the door</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Unlock animation gives guests immediate confirmation at the door and reduces repeated taps on the reader.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+  </sc-if>
+
+  <!-- ============ VENDOR-CLIENT GATEWAY ============ -->
+  <sc-if value="{{ isVcg }}" hint-placeholder-val="{{ false }}">
+  <article>
+    <section style="padding:80px; background:#fff">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:48px">
+        <div style="display:flex; flex-direction:column; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start">
+            <h1 style="margin:0; font-size:60px; line-height:72px; font-weight:600; letter-spacing:-0.02em; color:#171717">Vendor-Client Gateway</h1>
+            <p style="margin:0; max-width:900px; font-size:20px; line-height:30px; color:#404040; text-wrap:pretty">External-facing portal for CobbleStone's contract management platform. The experience was outdated, difficult to use, and underperforming with clients.</p>
+          </div>
+          <div style="display:flex; justify-content:space-between; gap:40px; padding:24px 0; border-top:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5">
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">MY ROLE</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">UX Designer, redesign lead</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">TIMELINE</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">2025 · phase 1 of 3</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">THE TEAM</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">Stakeholders, engineering</span>
+            </div>
+          </div>
+        </div>
+        <img src="assets/projects/VCG.png" alt="Vendor-Client Gateway — hero" style="width:100%; height:auto; object-fit:contain; border:1px solid #e5e5e5; border-radius:24px; background:#fafafa; display:block">
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 440px; gap:80px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+            <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Project overview</h2>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:24px; max-width:760px">
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">The challenge</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">The Vendor Client Gateway is an add-on for Contract Insights, CobbleStone's procurement and contract platform. Clients and support staff had raised concerns for years about a non-responsive layout, outdated UI patterns, and per-client customization that often reduced usability.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">The solution</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">During a broader UX initiative across the platform, I led the Gateway redesign with responsive layouts, clearer navigation, UI patterns aligned to Contract Insights, and a narrower set of configuration options.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">Where it sits</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">This work is phase 1 of a three-phase roadmap to redesign existing features, expand capabilities, and iterate based on live feedback.</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:12px; padding:32px; background:#69349c; border-radius:20px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#e3d3f2">GOAL</span>
+            <span style="font-size:48px; line-height:56px; font-weight:700; color:#fff">Adoption</span>
+            <p style="margin:0; font-size:15px; line-height:24px; color:#e3d3f2">Increase adoption of a module clients had been avoiding by removing the friction that limited everyday use.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <span style="font-size:15px; color:#404040">Responsive breakpoints</span>
+              <span style="font-size:16px; font-weight:600; color:#522979; white-space:nowrap">Desktop + mobile</span>
+            </div>
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <span style="font-size:15px; color:#404040">Core surfaces redesigned</span>
+              <span style="font-size:16px; font-weight:600; color:#522979; white-space:nowrap">Home, solicitations, news</span>
+            </div>
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:20px; padding:20px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <span style="font-size:15px; color:#404040">Roadmap</span>
+              <span style="font-size:16px; font-weight:600; color:#522979; white-space:nowrap">Phase 1 of 3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; background:#fff; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">What was going wrong</h2>
+          <p style="margin:0; max-width:900px; font-size:18px; line-height:28px; color:#404040; text-wrap:pretty">An audit of the existing gateway and review of comparable vendor portals identified four problems to address first.</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px">
+          <div style="display:flex; flex-direction:column; gap:12px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">ISSUE 01</span>
+            <span style="font-size:18px; line-height:26px; font-weight:600; color:#171717">Not responsive</span>
+            <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Vendors working away from a desk encountered a desktop-only layout on mobile devices.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">ISSUE 02</span>
+            <span style="font-size:18px; line-height:26px; font-weight:600; color:#171717">Dated patterns</span>
+            <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Interactions that no longer matched what users expect anywhere else, which hurt both usability and trust.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">ISSUE 03</span>
+            <span style="font-size:18px; line-height:26px; font-weight:600; color:#171717">Over-customization</span>
+            <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Clients could configure the interface into states that reduced usability for their vendors.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; padding:24px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">ISSUE 04</span>
+            <span style="font-size:18px; line-height:26px; font-weight:600; color:#171717">Inconsistent workflows</span>
+            <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Solicitation and contract management behaved differently depending on where you entered them.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Surface by surface</h2>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:48px">
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div style="display:flex; align-items:baseline; gap:12px">
+              <h3 style="margin:0; font-size:24px; line-height:32px; font-weight:600; color:#171717">Home</h3>
+              <span style="font-size:15px; color:#737373">From a configurable wall of widgets to a clear starting point.</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div ref="{{ slot1 }}" data-slot="vcg-home-before" style="width:100%; height:340px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+                <span style="font-size:13px; font-weight:600; color:#737373">BEFORE</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div ref="{{ slot2 }}" data-slot="vcg-home-after" style="width:100%; height:340px; border:1px solid #c5a8e2; border-radius:12px; background:#f5f5f5"></div>
+                <span style="font-size:13px; font-weight:600; color:#522979">AFTER</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div style="display:flex; align-items:baseline; gap:12px">
+              <h3 style="margin:0; font-size:24px; line-height:32px; font-weight:600; color:#171717">Solicitations</h3>
+              <span style="font-size:15px; color:#737373">The module's highest-traffic workflow, standardized end to end.</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div ref="{{ slot3 }}" data-slot="vcg-sol-before" style="width:100%; height:340px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+                <span style="font-size:13px; font-weight:600; color:#737373">BEFORE</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div ref="{{ slot4 }}" data-slot="vcg-sol-after" style="width:100%; height:340px; border:1px solid #c5a8e2; border-radius:12px; background:#f5f5f5"></div>
+                <span style="font-size:13px; font-weight:600; color:#522979">AFTER</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div style="display:flex; align-items:baseline; gap:12px">
+              <h3 style="margin:0; font-size:24px; line-height:32px; font-weight:600; color:#171717">News</h3>
+              <span style="font-size:15px; color:#737373">Announcements that vendors could actually scan.</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div ref="{{ slot5 }}" data-slot="vcg-news-before" style="width:100%; height:340px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+                <span style="font-size:13px; font-weight:600; color:#737373">BEFORE</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <div ref="{{ slot6 }}" data-slot="vcg-news-after" style="width:100%; height:340px; border:1px solid #c5a8e2; border-radius:12px; background:#f5f5f5"></div>
+                <span style="font-size:13px; font-weight:600; color:#522979">AFTER</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; background:#fff; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 480px; gap:80px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:40px">
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+            <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Results &amp; outcomes</h2>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px; padding:32px; background:#fafafa; border:1px solid #e5e5e5; border-radius:16px">
+            <p style="margin:0; font-size:20px; line-height:32px; font-weight:500; color:#171717; text-wrap:pretty">Phase 1 establishes patterns that make the module easier to adopt. The next two phases will build on that foundation.</p>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#171717">KEY TAKEAWAYS</span>
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Less configurability can be the feature</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Removing configuration options was the most difficult stakeholder conversation and the most meaningful improvement. Flexibility that allows clients to degrade their vendors' experience is not worth preserving.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Audit before you redesign</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Documenting what existed and why it had been added made the case for standardization more persuasive than visual inspiration alone.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">A mature product moves in phases</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Sequencing the work as redesign, then expand, then iterate kept scope honest and gave engineering something shippable at each step.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+  </sc-if>
+
+  <!-- ============ JRCS COMMAND TASK ============ -->
+  <sc-if value="{{ isJrcs }}" hint-placeholder-val="{{ false }}">
+  <article>
+    <section style="padding:80px; background:#fff">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:48px">
+        <div style="display:flex; flex-direction:column; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px; align-items:flex-start">
+            <h1 style="margin:0; font-size:60px; line-height:72px; font-weight:600; letter-spacing:-0.02em; color:#171717">JRCS Command Task</h1>
+            <p style="margin:0; max-width:900px; font-size:20px; line-height:30px; color:#404040; text-wrap:pretty">Design challenge to warn a ship's bridge of an imminent collision without obscuring other critical navigation information.</p>
+          </div>
+          <div style="display:flex; justify-content:space-between; gap:40px; padding:24px 0; border-top:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5">
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">MY ROLE</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">UX Designer (solo)</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">TIMELINE</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">2023 · time-boxed challenge</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">REVIEWED BY</span>
+              <span style="font-size:16px; font-weight:500; color:#171717">JRCS Digital Innovation Lab</span>
+            </div>
+          </div>
+        </div>
+        <img src="assets/projects/JRCS.png" alt="JRCS Command Task — hero" style="width:100%; height:auto; object-fit:contain; border:1px solid #e5e5e5; border-radius:24px; background:#fafafa; display:block">
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 440px; gap:80px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+            <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">The brief</h2>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:24px; max-width:760px">
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">The problem</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">JRCS Digital Innovation Lab develops a command application that gives captains and officers navigation information for their vessel and highlights nearby traffic through AR. The team provided two existing screens and asked me to design a collision warning pattern.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px">
+              <h3 style="margin:0; font-size:20px; line-height:28px; font-weight:600; color:#171717">Users</h3>
+              <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">Captains and watch officers who monitor dense navigation displays for extended periods.</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px; padding:32px; background:#fff; border:1px solid #e5e5e5; border-radius:20px">
+          <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#522979">REQUIREMENTS</span>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div style="display:flex; gap:12px; align-items:flex-start">
+              <span style="flex:0 0 auto; margin-top:6px; width:8px; height:8px; border-radius:9999px; background:#69349c"></span>
+              <span style="font-size:16px; line-height:24px; color:#404040">Must grab the user's attention</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start">
+              <span style="flex:0 0 auto; margin-top:6px; width:8px; height:8px; border-radius:9999px; background:#69349c"></span>
+              <span style="font-size:16px; line-height:24px; color:#404040">Must carry enough information to act on</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start">
+              <span style="flex:0 0 auto; margin-top:6px; width:8px; height:8px; border-radius:9999px; background:#69349c"></span>
+              <span style="font-size:16px; line-height:24px; color:#404040">Cannot drown out any other critical information</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; background:#fff; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Sketches to shipped-looking UI</h2>
+          <p style="margin:0; max-width:900px; font-size:18px; line-height:28px; color:#404040; text-wrap:pretty">My first approach was a popover pointing at the vessel on a collision course. After testing three shapes, a rectangular window provided the necessary detail without obscuring the chart.</p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px">
+          <div ref="{{ slot1 }}" data-slot="jrcs-start" style="width:100%; height:320px; border:1px solid #e5e5e5; border-radius:16px; background:#f5f5f5"></div>
+          <p style="margin:0; font-size:13px; line-height:18px; color:#737373">Figure 1.1 — The two screens provided at the start of the challenge.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot2 }}" data-slot="jrcs-sketches" style="width:100%; height:280px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:15px; font-weight:600; color:#171717">1. Sketches</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">Three popover shapes and a warning treatment for the compass-like view. I also explored projected ship paths and removed that concept because it would be difficult to implement in rough seas and computationally expensive.</span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot3 }}" data-slot="jrcs-lofi" style="width:100%; height:280px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:15px; font-weight:600; color:#171717">2. Lo-fi wireframes</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">Narrowing to the primary view and comparing a couple of popover structures.</span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot4 }}" data-slot="jrcs-progression" style="width:100%; height:280px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:15px; font-weight:600; color:#171717">3. Hi-fi progression</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">Styled to the application's existing UI standards, then refined with clearer labels and a boat indicator.</span>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot5 }}" data-slot="jrcs-incontext" style="width:100%; height:280px; border:1px solid #e5e5e5; border-radius:12px; background:#f5f5f5"></div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:15px; font-weight:600; color:#171717">4. Popover in context</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">The warning sitting on the real bridge display, competing with everything else on screen.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; align-items:center; gap:80px">
+          <div style="flex:1; display:flex; flex-direction:column; gap:24px">
+            <span style="align-self:flex-start; padding:2px 8px; border:1px solid #e5e5e5; border-radius:9999px; background:#fafafa; font-size:12px; font-weight:500; color:#404040">Attention mechanism</span>
+            <h3 style="margin:0; font-size:24px; line-height:32px; font-weight:600; color:#171717">Peripheral attention from game UI patterns</h3>
+            <p style="margin:0; font-size:16px; line-height:26px; color:#404040; text-wrap:pretty">First-person shooters such as Halo and Call of Duty use edge-of-screen cues to signal urgency without blocking the view. I applied that pattern as a pulsing red bar at the top of the display. It reaches peripheral vision without covering navigation data.</p>
+          </div>
+          <div ref="{{ slot6 }}" data-slot="jrcs-pulse" style="flex:0 0 580px; height:380px; border:1px solid #e5e5e5; border-radius:16px; background:#f5f5f5"></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; background:#fff; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+          <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Legible at sunrise, sunset, and night</h2>
+          <p style="margin:0; max-width:900px; font-size:18px; line-height:28px; color:#404040; text-wrap:pretty">A warning must remain legible across lighting conditions. I evaluated the design against sunrise, sunset, and night backgrounds and tested it with color-blind simulation filters so red was not the only signal.</p>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot7 }}" data-slot="jrcs-transparency" style="width:100%; height:340px; border:1px solid #e5e5e5; border-radius:16px; background:#f5f5f5"></div>
+            <p style="margin:0; font-size:13px; line-height:18px; color:#737373">Figure 3.1 — Transparency compared across sunrise, sunset, and night backgrounds.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div ref="{{ slot8 }}" data-slot="jrcs-colorblind" style="width:100%; height:340px; border:1px solid #e5e5e5; border-radius:16px; background:#f5f5f5"></div>
+            <p style="margin:0; font-size:13px; line-height:18px; color:#737373">Figure 3.2 — The warning under color-blind simulation filters.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:96px 80px; border-top:1px solid #e5e5e5">
+      <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 480px; gap:80px; align-items:start">
+        <div style="display:flex; flex-direction:column; gap:40px">
+          <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start">
+            <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">How it ended</h2>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:20px; padding:32px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+            <p style="margin:0; font-size:20px; line-height:32px; font-weight:500; color:#171717; text-wrap:pretty">The team responded positively to the work, although the role ultimately went to another candidate. It remains one of the most engaging problems I have worked on.</p>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:32px">
+          <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#171717">KEY TAKEAWAYS</span>
+          <div style="display:flex; flex-direction:column; gap:20px">
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Feasibility is a design constraint</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">The projected-path concept was the strongest early sketch and the first removed from scope. Rough seas and computational cost determined that decision, not visual preference.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Borrow from outside the domain</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">Game interfaces have long addressed the problem of urgent but non-blocking alerts. That research direction informed the pulsing bar more than a review of competing maritime products.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px">
+              <span style="font-size:16px; font-weight:600; color:#171717">Prioritize under a time box</span>
+              <p style="margin:0; font-size:15px; line-height:24px; color:#404040">With limited domain context, framing users and requirements up front was what made the rest of the work defensible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+  </sc-if>
+
+  <nav class="pager" style="padding:48px 80px; background:#fff; border-top:1px solid #e5e5e5">
+    <div style="max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:40px">
+      <a data-pager-prev href="{{ prevHref }}" style="display:inline-flex; align-items:center; gap:8px; font-size:15px; font-weight:500; color:#404040" style-hover="color:#69349c">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>
+        <span>Previous: {{ prevLabel }}</span>
+      </a>
+      <a href="index.html#projects" style="font-size:14px; font-weight:600; color:#69349c">All case studies</a>
+      <a data-pager-next href="{{ nextHref }}" style="display:inline-flex; align-items:center; gap:8px; font-size:15px; font-weight:500; color:#404040" style-hover="color:#69349c">
+        <span>Next: {{ nextLabel }}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+      </a>
+    </div>
+  </nav>
+
+  <footer style="padding:40px 80px; background:#fff; border-top:1px solid #e5e5e5">
+    <div style="max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:40px">
+      <div style="display:flex; align-items:center; gap:12px">
+        <img src="assets/logo.svg" alt="" width="32" height="32" style="display:block">
+        <span style="font-size:15px; font-weight:600; color:#171717">Jacob Scarani</span>
+      </div>
+      <span style="font-size:13px; color:#737373">© 2026 Jacob Scarani. All rights reserved.</span>
+      <div style="display:flex; align-items:center; gap:24px">
+        <a href="https://www.linkedin.com/in/jescarani/" target="_blank" rel="noopener noreferrer" style="font-size:14px; font-weight:500; color:#404040" style-hover="color:#69349c">LinkedIn</a>
+        <a href="https://github.com/Scaranman" target="_blank" rel="noopener noreferrer" style="font-size:14px; font-weight:500; color:#404040" style-hover="color:#69349c">GitHub</a>
+        <a href="mailto:jacobscarani@gmail.com" style="font-size:14px; font-weight:500; color:#404040" style-hover="color:#69349c">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="chat-fab-dock" style="position:fixed; right:32px; bottom:32px; z-index:50; display:flex; flex-direction:column; align-items:flex-end; gap:16px">
+    <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="width:380px; background:#fff; border:1px solid #e5e5e5; border-radius:20px; overflow:hidden; box-shadow:0 24px 48px -16px rgba(10,10,10,.28)">
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:#69349c">
+          <span style="width:9px; height:9px; border-radius:9999px; background:#22c55e"></span>
+          <span style="flex:1; display:flex; flex-direction:column; gap:1px">
+            <span style="font-size:14px; font-weight:600; line-height:18px; color:#fff">Jacob's Copilot</span>
+            <span style="font-size:11px; line-height:16px; color:#c5a8e2">Context: {{ shortLabel }}</span>
+          </span>
+          <button type="button" onClick="{{ returnHere }}" style="padding:5px 9px; border-radius:7px; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.10); color:#fff; font-family:inherit; font-size:11px; font-weight:600; cursor:pointer" style-hover="background:rgba(255,255,255,.22)">Dock to top</button>
+          <button type="button" onClick="{{ closePanel }}" aria-label="Minimize chat" style="width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:7px; border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.10); color:#fff; cursor:pointer" style-hover="background:rgba(255,255,255,.22)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg>
+          </button>
+        </div>
+        <div ref="{{ dockSlotRef }}"></div>
+      </div>
+    </sc-if>
+    <button type="button" onClick="{{ togglePanel }}" aria-label="Ask Jacob's Copilot" style="width:56px; height:56px; display:flex; align-items:center; justify-content:center; border:none; border-radius:9999px; background:#69349c; color:#fff; cursor:pointer; box-shadow:0 12px 28px -8px rgba(105,52,156,.55)" style-hover="background:#522979">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </button>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;projectId&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;guest-pass&quot;,&quot;vendor-client-gateway-redesign&quot;,&quot;jrcs-command-task&quot;],&quot;default&quot;:&quot;guest-pass&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+const ORDER = [
+  { id: "vendor-client-gateway-redesign", label: "Vendor-Client Gateway" },
+  { id: "guest-pass", label: "Guest Pass" },
+  { id: "jrcs-command-task", label: "JRCS Command Task" }
+];
+
+function projectHref(id) {
+  return "project.html?id=" + encodeURIComponent(id);
+}
+
+function readProjectIdFromLocation() {
+  try {
+    const url = new URL(window.location.href);
+    const fromQuery = url.searchParams.get("id");
+    if (fromQuery && ORDER.some((p) => p.id === fromQuery)) return fromQuery;
+    const hash = (url.hash || "").replace(/^#/, "");
+    if (hash && ORDER.some((p) => p.id === hash)) return hash;
+  } catch (e) { /* ignore */ }
+  return null;
+}
+
+const ARTIFACTS = {
+  "gp-flow": "assets/projects/GuestPass/invision_screenshot.jpg",
+  "gp-list": "assets/projects/GuestPass/list.png",
+  "gp-create": "assets/projects/GuestPass/create.png",
+  "gp-panels": "assets/projects/GuestPass/SidePanels.png",
+  "gp-open": "assets/projects/GuestPass/open.mp4",
+  "gp-error": "assets/projects/GuestPass/error.mp4",
+  "vcg-home-before": "assets/projects/VCG/home.png",
+  "vcg-home-after": "assets/projects/VCG/new-home.png",
+  "vcg-sol-before": "assets/projects/VCG/solicitations.png",
+  "vcg-sol-after": "assets/projects/VCG/new-solicitations.png",
+  "vcg-news-before": "assets/projects/VCG/news.png",
+  "vcg-news-after": "assets/projects/VCG/new-news.png",
+  "jrcs-start": "assets/projects/JRCS/start.png",
+  "jrcs-sketches": "assets/projects/JRCS/sketches.png",
+  "jrcs-lofi": "assets/projects/JRCS/lofi.png",
+  "jrcs-progression": "assets/projects/JRCS/Progression.png",
+  "jrcs-incontext": "assets/projects/JRCS/incontext.png",
+  "jrcs-pulse": "assets/projects/JRCS/pulse.png",
+  "jrcs-transparency": "assets/projects/JRCS/Transparency.png",
+  "jrcs-colorblind": "assets/projects/JRCS/colorblind.png"
+};
+
+class Component extends DCLogic {
+  state = { panelOpen: false };
+
+  currentId() {
+    const fromUrl = readProjectIdFromLocation();
+    if (fromUrl) return fromUrl;
+    const fromProp = this.props.projectId;
+    if (fromProp && ORDER.some((p) => p.id === fromProp)) return fromProp;
+    return ORDER[0].id;
+  }
+
+  componentDidMount() {
+    this.fillSlots();
+    this.wirePager();
+    this.initChat();
+  }
+
+  componentDidUpdate() {
+    this.fillSlots();
+    this.wirePager();
+    this.placeChat();
+  }
+
+  wirePager() {
+    const id = this.currentId();
+    const i = ORDER.findIndex((p) => p.id === id);
+    if (i < 0) return;
+    const prev = ORDER[(i - 1 + ORDER.length) % ORDER.length];
+    const next = ORDER[(i + 1) % ORDER.length];
+    const nav = document.querySelector("nav.pager");
+    if (!nav) return;
+    const prevLink = nav.querySelector("[data-pager-prev]");
+    const nextLink = nav.querySelector("[data-pager-next]");
+    if (prevLink) {
+      prevLink.href = projectHref(prev.id);
+      prevLink.onclick = (e) => {
+        e.preventDefault();
+        window.location.assign(projectHref(prev.id));
+      };
+    }
+    if (nextLink) {
+      nextLink.href = projectHref(next.id);
+      nextLink.onclick = (e) => {
+        e.preventDefault();
+        window.location.assign(projectHref(next.id));
+      };
+    }
+  }
+
+  placeChat() {
+    const body = this.chatBodyEl;
+    if (!body) return;
+    const target = this.state.panelOpen ? this.dockSlotEl : this.heroSlotEl;
+    if (target && body.parentElement !== target) target.appendChild(body);
+    const log = body.querySelector("#chatLog");
+    if (log) {
+      log.style.height = this.state.panelOpen ? "300px" : "300px";
+      log.style.padding = this.state.panelOpen ? "16px" : "20px";
+      log.scrollTop = log.scrollHeight;
+    }
+  }
+
+  fillSlots() {
+    for (const el of document.querySelectorAll("[data-slot]")) {
+      const slot = el.getAttribute("data-slot");
+      const src = ARTIFACTS[slot];
+      if (!src) continue;
+
+      const isVideo = /\.(mp4|webm)$/i.test(src);
+      const tag = isVideo ? "video" : "img";
+      const existing = el.querySelector(tag);
+      const existingSrc = existing && (existing.getAttribute("src") || "");
+      const srcMatches = existingSrc && (
+        existingSrc === src ||
+        existingSrc.endsWith("/" + src.replace(/^\.\//, "")) ||
+        existingSrc.endsWith(src)
+      );
+      if (existing && srcMatches) continue;
+
+      if (existing) existing.remove();
+      el.dataset.filled = "1";
+      el.textContent = "";
+
+      const media = document.createElement(tag);
+      if (isVideo) {
+        media.src = src;
+        media.controls = true;
+        media.muted = true;
+        media.loop = true;
+        media.playsInline = true;
+        media.autoplay = true;
+        media.preload = "auto";
+        media.style.width = "100%";
+        media.style.maxWidth = el.classList.contains("gp-animation-slot") ? "360px" : "100%";
+        media.style.height = "auto";
+        media.style.objectFit = "contain";
+        media.style.objectPosition = "center";
+        media.style.display = "block";
+        media.style.background = "#171717";
+        if (el.classList.contains("gp-animation-slot")) {
+          media.setAttribute("aria-label", slot === "gp-open"
+            ? "Guest pass unlock success animation"
+            : "Guest pass unlock error animation");
+        }
+        media.addEventListener("error", () => {
+          el.dataset.filled = "";
+          media.remove();
+          el.style.display = "flex";
+          el.style.alignItems = "center";
+          el.style.justifyContent = "center";
+          el.style.minHeight = "120px";
+          el.textContent = "Video could not be loaded";
+          el.style.color = "#737373";
+          el.style.fontSize = "13px";
+        });
+      } else {
+        media.setAttribute("style", "width:100%; height:auto; object-fit:contain; object-position:center; display:block; border-radius:inherit");
+        media.src = src;
+        media.alt = "";
+        media.loading = "lazy";
+        media.addEventListener("error", () => {
+          el.dataset.filled = "";
+          media.remove();
+          el.style.display = "flex";
+          el.style.alignItems = "center";
+          el.style.justifyContent = "center";
+          el.textContent = "Artifact not yet copied into this project";
+          el.style.color = "#737373";
+          el.style.fontSize = "13px";
+        });
+      }
+      el.style.overflow = "hidden";
+      el.appendChild(media);
+    }
+  }
+
+  async initChat() {
+    try {
+      const core = await import("./chat-core.js");
+      const projects = await core.loadProjects();
+      this.core = core;
+      this.projects = projects;
+      this.wireChat();
+    } catch (err) {
+      console.warn("Chat unavailable", err);
+      const log = document.getElementById("chatLog");
+      if (log && !log.childElementCount) {
+        const w = document.createElement("div");
+        w.className = "msg bot";
+        w.innerHTML = '<div class="avatar" aria-hidden="true">JS</div><div class="bubble">The assistant is offline right now. The case study below covers the same ground.</div>';
+        log.appendChild(w);
+      }
+    }
+  }
+
+  wireChat() {
+    if (this.chatWired || !this.core) return;
+    if (!document.getElementById("chatLog")) return;
+    const controller = this.core.createChatController({
+      projects: this.projects,
+      initialContextProjectId: this.currentId()
+    });
+    this.core.wireChatUI({ controller });
+    this.chatWired = true;
+  }
+
+  renderVals() {
+    const id = this.currentId();
+    const i = ORDER.findIndex((p) => p.id === id);
+    const safeIndex = i >= 0 ? i : 0;
+    const prev = ORDER[(safeIndex - 1 + ORDER.length) % ORDER.length];
+    const next = ORDER[(safeIndex + 1) % ORDER.length];
+    const current = ORDER[safeIndex];
+    return {
+      crumb: current.label + " case study",
+      isGuestPass: id === "guest-pass",
+      isVcg: id === "vendor-client-gateway-redesign",
+      isJrcs: id === "jrcs-command-task",
+      prevHref: projectHref(prev.id),
+      prevLabel: prev.label,
+      nextHref: projectHref(next.id),
+      nextLabel: next.label,
+      panelOpen: this.state.panelOpen,
+      shortLabel: current.label,
+      heroSlotRef: (el) => { this.heroSlotEl = el; },
+      dockSlotRef: (el) => { this.dockSlotEl = el; this.placeChat(); },
+      chatBodyRef: (el) => { this.chatBodyEl = el; },
+      togglePanel: () => this.setState({ panelOpen: !this.state.panelOpen }, () => {
+        if (this.state.panelOpen) {
+          const input = document.getElementById("chatPrompt");
+          if (input) setTimeout(() => input.focus(), 60);
+        }
+      }),
+      closePanel: () => this.setState({ panelOpen: false }),
+      returnHere: () => this.setState({ panelOpen: false }, () => {
+        requestAnimationFrame(() => {
+          const card = this.heroSlotEl;
+          if (!card) return;
+          const se = document.scrollingElement || document.documentElement;
+          const target = Math.max(0, se.scrollTop + card.getBoundingClientRect().top - 140);
+          if (typeof se.scrollTo === "function") se.scrollTo({ top: target, behavior: "smooth" });
+          else se.scrollTop = target;
+        });
+      }),
+      slot1: () => {}, slot2: () => {}, slot3: () => {}, slot4: () => {},
+      slot5: () => {}, slot6: () => {}, slot7: () => {}, slot8: () => {}
+    };
+  }
+}
+
+</script>
+</body>
 </html>

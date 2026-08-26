@@ -1,0 +1,130 @@
+/* Consumption-side aliases over the generated Figma variables.
+   fig-tokens.css stores FLOAT tokens unitless (radius, spacing, type sizes), so
+   everything numeric is wrapped in calc(var(--x) * 1px) here. Values are the
+   file's own — nothing rounded. */
+
+:root {
+  /* Brand ramp — the file's custom purple */
+  --brand-50: var(--colors-brand-50);
+  --brand-100: var(--colors-brand-100);
+  --brand-200: var(--colors-brand-200);
+  --brand-300: var(--colors-brand-300);
+  --brand-400: var(--colors-brand-400);
+  --brand-500: var(--colors-brand-500);
+  --brand-600: var(--colors-brand-600);
+  --brand-700: var(--colors-brand-700);
+  --brand-800: var(--colors-brand-800);
+  --brand-900: var(--colors-brand-900);
+  --brand-950: var(--colors-brand-950);
+
+  /* Surfaces */
+  --surface-primary: var(--colors-background-bg-primary);
+  --surface-secondary: var(--colors-background-bg-secondary);
+  --surface-tertiary: var(--colors-background-bg-tertiary);
+  --surface-brand: var(--colors-background-bg-brand-primary);
+  --surface-brand-solid: var(--colors-background-bg-brand-solid);
+  --surface-overlay: var(--colors-background-bg-overlay);
+  --surface-card: var(--colors-background-bg-primary);
+
+  /* Text */
+  --text-primary: var(--colors-text-text-primary-900);
+  --text-secondary: var(--colors-text-text-secondary-700);
+  --text-tertiary: var(--colors-text-text-tertiary-600);
+  --text-quaternary: var(--colors-text-text-quaternary-500);
+  --text-brand: var(--colors-text-text-brand-primary-900);
+  --text-placeholder: var(--colors-text-text-placeholder);
+  --text-error: var(--colors-text-text-error-primary-600);
+  --text-white: var(--colors-text-text-white);
+
+  /* Borders */
+  --border-primary: var(--colors-border-border-primary);
+  --border-secondary: var(--colors-border-border-secondary);
+  --border-tertiary: var(--colors-border-border-tertiary);
+  --border-brand: var(--colors-border-border-brand);
+  --border-error: var(--colors-border-border-error);
+
+  /* Radii (px) */
+  --r-none: 0; /* @kind radius */
+  --r-xxs: calc(var(--radius-xxs) * 1px);
+  --r-xs: calc(var(--radius-xs) * 1px);
+  --r-sm: calc(var(--radius-sm) * 1px);
+  --r-md: calc(var(--radius-md) * 1px);
+  --r-lg: calc(var(--radius-lg) * 1px);
+  --r-xl: calc(var(--radius-xl) * 1px);
+  --r-2xl: calc(var(--radius-2xl) * 1px);
+  --r-3xl: calc(var(--radius-3xl) * 1px);
+  --r-4xl: calc(var(--radius-4xl) * 1px);
+  --r-full: 9999px;
+
+  /* Spacing (px) */
+  --sp-none: 0; /* @kind spacing */
+  --sp-xxs: calc(var(--spacing-xxs) * 1px);
+  --sp-xs: calc(var(--spacing-xs) * 1px);
+  --sp-sm: calc(var(--spacing-sm) * 1px);
+  --sp-md: calc(var(--spacing-md) * 1px);
+  --sp-lg: calc(var(--spacing-lg) * 1px);
+  --sp-xl: calc(var(--spacing-xl) * 1px);
+  --sp-2xl: calc(var(--spacing-2xl) * 1px);
+  --sp-3xl: calc(var(--spacing-3xl) * 1px);
+  --sp-4xl: calc(var(--spacing-4xl) * 1px);
+  --sp-5xl: calc(var(--spacing-5xl) * 1px);
+  --sp-6xl: calc(var(--spacing-6xl) * 1px);
+  --sp-7xl: calc(var(--spacing-7xl) * 1px);
+  --sp-8xl: calc(var(--spacing-8xl) * 1px);
+  --sp-9xl: calc(var(--spacing-9xl) * 1px);
+  --sp-10xl: calc(var(--spacing-10xl) * 1px);
+  --sp-11xl: calc(var(--spacing-11xl) * 1px);
+
+  /* Layout */
+  --container-max: calc(var(--container-max-width-desktop) * 1px);
+  --container-pad-desktop: calc(var(--container-padding-desktop) * 1px);
+  --container-pad-mobile: calc(var(--container-padding-mobile) * 1px);
+  --paragraph-max: calc(var(--paragraph-max-width) * 1px);
+
+  /* Elevation — composed from the file's effect-style colors */
+  --shadow-xs: 0 1px 2px 0 var(--colors-effects-shadows-shadow-xs);
+  --shadow-sm: 0 1px 3px 0 var(--colors-effects-shadows-shadow-sm-01), 0 1px 2px -1px var(--colors-effects-shadows-shadow-sm-02);
+  --shadow-md: 0 4px 6px -1px var(--colors-effects-shadows-shadow-md-01), 0 2px 4px -2px var(--colors-effects-shadows-shadow-md-02);
+  --shadow-lg: 0 12px 16px -4px var(--colors-effects-shadows-shadow-lg-01), 0 4px 6px -2px var(--colors-effects-shadows-shadow-lg-02), 0 2px 2px -1px var(--colors-effects-shadows-shadow-lg-03);
+  --shadow-xl: 0 20px 24px -4px var(--colors-effects-shadows-shadow-xl-01), 0 8px 8px -4px var(--colors-effects-shadows-shadow-xl-02), 0 3px 3px -1.5px var(--colors-effects-shadows-shadow-xl-03);
+  --shadow-2xl: 0 24px 48px -12px var(--colors-effects-shadows-shadow-2xl-01), 0 4px 4px -2px var(--colors-effects-shadows-shadow-2xl-02);
+  --shadow-3xl: 0 32px 64px -12px var(--colors-effects-shadows-shadow-3xl-01), 0 5px 5px -2.5px var(--colors-effects-shadows-shadow-3xl-02);
+  --shadow-skeuomorphic: inset 0 0 0 1px var(--colors-effects-shadows-shadow-skeumorphic-inner-border), inset 0 -2px 0 0 var(--colors-effects-shadows-shadow-skeumorphic-inner);
+  --focus-ring: 0 0 0 4px color-mix(in srgb, var(--colors-effects-focus-rings-focus-ring) 24%, transparent);
+
+  /* Type scale (px / px) */
+  --type-display-2xl: calc(var(--font-size-display-2xl) * 1px) / calc(var(--line-height-display-2xl) * 1px);
+  --type-display-xl: calc(var(--font-size-display-xl) * 1px) / calc(var(--line-height-display-xl) * 1px);
+  --type-display-lg: calc(var(--font-size-display-lg) * 1px) / calc(var(--line-height-display-lg) * 1px);
+  --type-display-md: calc(var(--font-size-display-md) * 1px) / calc(var(--line-height-display-md) * 1px);
+  --type-display-sm: calc(var(--font-size-display-sm) * 1px) / calc(var(--line-height-display-sm) * 1px);
+  --type-display-xs: calc(var(--font-size-display-xs) * 1px) / calc(var(--line-height-display-xs) * 1px);
+  --type-text-xl: calc(var(--font-size-text-xl) * 1px) / calc(var(--line-height-text-xl) * 1px);
+  --type-text-lg: calc(var(--font-size-text-lg) * 1px) / calc(var(--line-height-text-lg) * 1px);
+  --type-text-md: calc(var(--font-size-text-md) * 1px) / calc(var(--line-height-text-md) * 1px);
+  --type-text-sm: calc(var(--font-size-text-sm) * 1px) / calc(var(--line-height-text-sm) * 1px);
+  --type-text-xs: calc(var(--font-size-text-xs) * 1px) / calc(var(--line-height-text-xs) * 1px);
+
+  /* Motion — the kit ships static states; these are the house defaults for prototypes */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast: 100ms; /* @kind other */
+  --dur-base: 150ms; /* @kind other */
+  --dur-slow: 240ms; /* @kind other */
+}
+
+/* Type helpers */
+.t-display-2xl{font:600 var(--type-display-2xl) var(--font-display);letter-spacing:-0.02em}
+.t-display-xl{font:600 var(--type-display-xl) var(--font-display);letter-spacing:-0.02em}
+.t-display-lg{font:600 var(--type-display-lg) var(--font-display);letter-spacing:-0.02em}
+.t-display-md{font:600 var(--type-display-md) var(--font-display);letter-spacing:-0.02em}
+.t-display-sm{font:600 var(--type-display-sm) var(--font-display)}
+.t-display-xs{font:600 var(--type-display-xs) var(--font-display)}
+.t-text-xl{font:400 var(--type-text-xl) var(--font-body)}
+.t-text-lg{font:400 var(--type-text-lg) var(--font-body)}
+.t-text-md{font:400 var(--type-text-md) var(--font-body)}
+.t-text-sm{font:400 var(--type-text-sm) var(--font-body)}
+.t-text-xs{font:400 var(--type-text-xs) var(--font-body)}
+.t-mono{font-family:var(--font-mono)}
+
+a{color:var(--text-brand);text-decoration:none}
+a:hover{color:var(--colors-text-text-brand-secondary-700);text-decoration:underline}
