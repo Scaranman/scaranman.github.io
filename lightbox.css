@@ -212,7 +212,7 @@
   max-width: 720px;
   margin: 0 auto;
   padding: 16px 24px 26px;
-  text-align: center;
+  text-align: left;
 }
 
 .lb-caption[hidden] {
@@ -261,7 +261,7 @@
   }
 
   .lb-caption {
-    padding: 14px 76px 22px;
+    padding: 14px 16px 76px;
   }
 
   .lb-caption-title {
