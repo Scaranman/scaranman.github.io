@@ -156,6 +156,7 @@ video[style*="width: 100%"] {
   section > div,
   footer,
   footer > div,
+  nav.pager,
   nav.pager > div,
   .crumb-bar > div {
     padding-left: 24px !important;
@@ -417,6 +418,8 @@ video[style*="width: 100%"] {
   section > div,
   footer,
   footer > div,
+  nav.pager,
+  nav.pager > div,
   .crumb-bar > div {
     padding-left: 16px !important;
     padding-right: 16px !important;
