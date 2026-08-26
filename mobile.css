@@ -366,7 +366,8 @@ video[style*="width: 100%"] {
     left: 11px !important;
   }
 
-  .timeline > div:not([aria-hidden]) {
+  .timeline > div:not([aria-hidden]),
+  .timeline-row {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 12px !important;
@@ -374,7 +375,8 @@ video[style*="width: 100%"] {
     position: relative;
   }
 
-  .timeline > div:not([aria-hidden]) > div {
+  .timeline > div:not([aria-hidden]) > div,
+  .timeline-row > div {
     flex: 1 1 auto !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -382,7 +384,18 @@ video[style*="width: 100%"] {
     text-align: left !important;
   }
 
+  /* Dates/meta above the card regardless of desktop left/right alternation */
+  .timeline-meta {
+    order: 1 !important;
+  }
+
+  .timeline-card {
+    order: 3 !important;
+  }
+
+  .timeline-marker,
   .timeline > div:not([aria-hidden]) > div:nth-child(2) {
+    order: 2 !important;
     position: absolute !important;
     left: 2px !important;
     top: 4px !important;
