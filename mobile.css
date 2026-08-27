@@ -71,7 +71,7 @@ video[style*="height: auto"] {
   gap: 4px;
   max-width: 360px;
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
 
 .media-slot {
@@ -287,10 +287,6 @@ video[style*="width: 100%"] {
   .media-row {
     grid-template-columns: 1fr;
     gap: 40px;
-  }
-
-  .media-caption {
-    text-align: left;
   }
 
   [style*="gap:80px"],
