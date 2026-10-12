@@ -20,6 +20,47 @@
     return true;
   }
 
+  // Pin every image/video box to its natural ratio so it can never stretch,
+  // whatever the zoom level or flex sizing quirks of the browser.
+  function lockAspectRatio(media) {
+    const w = media.naturalWidth || media.videoWidth;
+    const h = media.naturalHeight || media.videoHeight;
+    if (!w || !h) return;
+    const ratio = w + " / " + h;
+    // Only write on change: the observer below watches style attributes.
+    if (media.style.aspectRatio !== ratio) media.style.aspectRatio = ratio;
+    if (media.style.objectFit !== "contain") media.style.objectFit = "contain";
+  }
+
+  function initAspectRatioLock() {
+    const onLoad = (e) => {
+      const t = e.target;
+      if (t && (t.tagName === "IMG" || t.tagName === "VIDEO")) lockAspectRatio(t);
+    };
+    document.addEventListener("load", onLoad, true);
+    document.addEventListener("loadedmetadata", onLoad, true);
+    const sweep = () => document.querySelectorAll("img, video").forEach(lockAspectRatio);
+    sweep();
+    // The Design Component runtime remounts markup and rewrites inline styles;
+    // cached images re-rendered that way never fire another load event.
+    let queued = false;
+    new MutationObserver(() => {
+      if (queued) return;
+      queued = true;
+      queueMicrotask(() => {
+        queued = false;
+        sweep();
+      });
+    }).observe(document, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "src"]
+    });
+  }
+
+  initAspectRatioLock();
+
   function initHashScroll() {
     if (!window.location.hash || window.location.hash === "#top") return;
     let tries = 0;
