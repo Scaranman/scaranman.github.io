@@ -8,37 +8,11 @@
  * Per project the fields consumed by the site chrome are:
  *   order       — position in the grid and in the prev/next pager
  *   shortTitle  — label used on cards, breadcrumbs, and the pager
- *   card        — { eyebrow, summary, cover?, keywords? } for the homepage grid
+ *   card        — { eyebrow, summary, cover? } for the homepage grid
  *   artifacts[] — entries with a `slot` are injected into that data-slot element
  */
 
 let pending = null;
-
-export function normalizeForSearch(value) {
-  return String(value == null ? "" : value)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-function searchBlob(project) {
-  const card = project.card || {};
-  return normalizeForSearch(
-    [
-      project.shortTitle,
-      project.title,
-      project.type,
-      project.year,
-      card.eyebrow,
-      card.summary,
-      ...(project.tags || []),
-      ...(project.skills || []),
-      ...(card.keywords || [])
-    ]
-      .filter(Boolean)
-      .join(" ")
-  );
-}
 
 export function projectHref(id) {
   return "project.html?id=" + encodeURIComponent(id);
@@ -54,12 +28,10 @@ export function toCards(projects) {
       href: projectHref(p.id),
       title: p.shortTitle || p.title || "",
       eyebrow: card.eyebrow || p.type || "",
-      meta: [p.type, p.year].filter(Boolean).join(" · "),
+      meta: p.year ? String(p.year) : "",
       summary: card.summary || p.problem || "",
       coverSrc: cover.src || "",
-      coverAlt: cover.alt || "",
-      tags: (p.tags || []).join(" "),
-      search: searchBlob(p)
+      coverAlt: cover.alt || ""
     };
   });
 }
@@ -91,8 +63,7 @@ export function loadCaseStudies() {
       .then((json) => ({
         projects: (Array.isArray(json.projects) ? json.projects : [])
           .slice()
-          .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER)),
-        filters: Array.isArray(json.filters) ? json.filters : []
+          .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER))
       }))
       .catch((err) => {
         pending = null;

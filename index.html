@@ -35,8 +35,6 @@
   a { color: #69349c; }
   a:hover { color: #522979; }
   ::placeholder { color: #737373; }
-  .tag-chip { padding: 9px 16px; border: 1px solid #e5e5e5; border-radius: 24px; background: #fff; font-family: inherit; font-size: 14px; font-weight: 500; color: #404040; cursor: pointer; }
-  .tag-chip[data-active="true"] { border-color: #69349c; background: #69349c; color: #fff; }
   /* chat-core.js injects these nodes at runtime, so they cannot be inline-styled */
   .msg { display: flex; gap: 10px; align-items: flex-start; }
   .msg + .msg { margin-top: 14px; }
@@ -119,24 +117,6 @@
           </div>
         </sc-if>
       </div>
-
-      <div style="display:flex; flex-direction:column; align-items:center; gap:20px">
-        <span style="font-size:12px; font-weight:600; letter-spacing:.10em; color:#737373">SUGGESTED PROMPTS</span>
-        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; max-width:1000px">
-          <button class="chip" type="button" data-prompt="Show me high-impact UX work" style="display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border:1px solid #e5e5e5; border-radius:9999px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#171717; cursor:pointer" style-hover="border-color:#c5a8e2; background:#f3eef9">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#69349c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            Show me high-impact UX work
-          </button>
-          <button class="chip" type="button" data-prompt="What is your design process?" style="display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border:1px solid #e5e5e5; border-radius:9999px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#171717; cursor:pointer" style-hover="border-color:#c5a8e2; background:#f3eef9">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#69349c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            What is your design process?
-          </button>
-          <button class="chip" type="button" data-prompt="What tools do you work in?" style="display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border:1px solid #e5e5e5; border-radius:9999px; background:#fff; font-family:inherit; font-size:14px; font-weight:500; color:#171717; cursor:pointer" style-hover="border-color:#c5a8e2; background:#f3eef9">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#69349c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            What tools do you work in?
-          </button>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -197,22 +177,9 @@
         <h2 style="margin:0; font-size:36px; line-height:44px; font-weight:600; letter-spacing:-0.02em; color:#171717">Case studies</h2>
       </div>
 
-      <div class="project-filters" style="display:flex; align-items:center; gap:24px">
-        <div class="project-search" style="flex:0 0 480px; display:flex; align-items:center; gap:12px; padding:12px 16px; background:#fff; border:1px solid #e5e5e5; border-radius:12px">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-          <label for="projectFilter" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)">Filter projects</label>
-          <input id="projectFilter" type="search" placeholder="Search keywords (e.g., 'security', 'enterprise', 'forms')..." onInput="{{ onFilter }}" style="flex:1; min-width:0; border:none; outline:none; background:transparent; font-family:inherit; font-size:14px; line-height:20px; color:#171717">
-        </div>
-        <div class="project-chips" onClick="{{ onChip }}" style="display:flex; flex-wrap:wrap; gap:10px">
-          <sc-for list="{{ filters }}" as="filter">
-            <button type="button" class="tag-chip" data-tag="{{ filter.tag }}" data-active="{{ filter.active }}">{{ filter.label }}</button>
-          </sc-for>
-        </div>
-      </div>
-
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
         <sc-for list="{{ cards }}" as="card">
-          <a href="{{ card.href }}" data-card="1" data-tags="{{ card.tags }}" data-search="{{ card.search }}" style="display:flex; flex-direction:column; gap:20px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:24px; color:inherit" style-hover="border-color:#c5a8e2; box-shadow:0 12px 28px -12px rgba(10,10,10,.14)">
+          <a href="{{ card.href }}" data-card="1" style="display:flex; flex-direction:column; gap:20px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:24px; color:inherit" style-hover="border-color:#c5a8e2; box-shadow:0 12px 28px -12px rgba(10,10,10,.14)">
             <!-- sc-camel-src compiles to src; a literal src= would make the browser's
                  preload scanner request the uninterpolated "{{ card.coverSrc }}" path -->
             <img sc-camel-src="{{ card.coverSrc }}" alt="{{ card.coverAlt }}" style="width:100%; height:auto; object-fit:contain; border-radius:16px; background:#f5f5f5; display:block">
@@ -229,13 +196,6 @@
             </span>
           </a>
         </sc-for>
-
-        <sc-if value="{{ noMatches }}">
-          <div style="grid-column:1 / -1; padding:32px; background:#fff; border:1px solid #e5e5e5; border-radius:24px">
-            <p style="margin:0 0 6px; font-size:16px; font-weight:600; color:#171717">No matches.</p>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040">Try searching for "security", "enterprise", or "workflows".</p>
-          </div>
-        </sc-if>
       </div>
     </div>
   </section>
@@ -511,10 +471,8 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showFloatingChat&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#69349c&quot;,&quot;options&quot;:[&quot;#69349c&quot;,&quot;#1d4ed8&quot;,&quot;#0f766e&quot;,&quot;#b91c1c&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
-const normalizeQuery = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-
 class Component extends DCLogic {
-  state = { activeTag: "", query: "", cards: [], filters: [], docked: false, pastHero: false };
+  state = { cards: [], docked: false, pastHero: false };
 
   onScroll = () => {
     const card = this.heroSlotEl;
@@ -563,8 +521,8 @@ class Component extends DCLogic {
   async loadCaseStudies() {
     try {
       const registry = await import("./case-studies.js");
-      const { projects, filters } = await registry.loadCaseStudies();
-      this.setState({ cards: registry.toCards(projects), filters });
+      const { projects } = await registry.loadCaseStudies();
+      this.setState({ cards: registry.toCards(projects) });
     } catch (err) {
       console.warn("Case studies unavailable", err);
     }
@@ -588,32 +546,10 @@ class Component extends DCLogic {
     }
   }
 
-  visibleCards() {
-    const q = normalizeQuery(this.state.query);
-    const tag = this.state.activeTag;
-    return this.state.cards.filter(
-      (c) => (!q || c.search.includes(q)) && (!tag || c.tags.includes(tag))
-    );
-  }
-
   renderVals() {
-    const cards = this.visibleCards();
     return {
       floatingChat: this.props.showFloatingChat ?? true,
-      cards,
-      noMatches: this.state.cards.length > 0 && cards.length === 0,
-      filters: this.state.filters.map((f) => ({
-        tag: f.tag || "",
-        label: f.label,
-        active: String((f.tag || "") === this.state.activeTag)
-      })),
-      onFilter: (e) => this.setState({ query: e.target.value }),
-      onChip: (e) => {
-        const btn = e.target.closest("button[data-tag]");
-        if (!btn) return;
-        const tag = btn.getAttribute("data-tag") || "";
-        this.setState({ activeTag: this.state.activeTag === tag ? "" : tag });
-      },
+      cards: this.state.cards,
       docked: this.state.docked,
       showFab: (this.props.showFloatingChat ?? true) && (this.state.pastHero || this.state.docked),
       heroSlotRef: (el) => { this.heroSlotEl = el; },

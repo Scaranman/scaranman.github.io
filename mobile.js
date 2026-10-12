@@ -117,18 +117,6 @@
       root.style.width = "100%";
     }
 
-    const filterInput = document.getElementById("projectFilter");
-    if (filterInput) {
-      const search = filterInput.closest("div");
-      const row = search && search.parentElement;
-      if (search) search.classList.add("project-search");
-      if (row) {
-        row.classList.add("project-filters");
-        const chips = row.querySelector("div:last-child");
-        if (chips && chips !== search) chips.classList.add("project-chips");
-      }
-    }
-
     const crumb = document.querySelector("header + div");
     if (crumb && crumb.textContent.includes("Projects")) crumb.classList.add("crumb-bar");
 

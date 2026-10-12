@@ -294,28 +294,6 @@ video[style*="width: 100%"] {
     gap: 32px !important;
   }
 
-  /* Project filter toolbar — search full-width, tags wrap beneath */
-  .project-filters {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 14px !important;
-  }
-
-  .project-search,
-  [style*="flex:0 0 480px"],
-  [style*="flex: 0 0 480px"] {
-    flex: 1 1 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .project-chips {
-    width: 100% !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
-  }
-
   /* Case study meta row (role / timeline / team) */
   [style*="justify-content:space-between"][style*="padding:24px 0"],
   [style*="justify-content: space-between"][style*="padding: 24px 0"] {
@@ -453,8 +431,7 @@ video[style*="width: 100%"] {
   }
 
   [style*="border-radius:24px"],
-  [style*="border-radius: 24px"],
-  .tag-chip {
+  [style*="border-radius: 24px"] {
     border-radius: 16px !important;
   }
 }

@@ -29,8 +29,7 @@ chat assistant's knowledge of the project, and the case study page itself.
      "heroImage": { "src": "./assets/projects/Mine.png", "alt": "…" },
      "card": {
        "eyebrow": "Enterprise UX · Redesign",
-       "summary": "One paragraph shown on the homepage card.",
-       "keywords": ["extra search terms not already in the fields below"]
+       "summary": "One paragraph shown on the homepage card."
      },
      "role": ["…"], "team": "…", "problem": "…",
      "constraints": [], "process": [], "impact": [],
@@ -42,8 +41,6 @@ chat assistant's knowledge of the project, and the case study page itself.
    }
    ```
 
-   Card search text is built from the title, summary, type, year, tags, and
-   skills, so `keywords` only needs terms none of those already cover.
    Homepage cards use `heroImage` unless you add an optional `card.cover`.
    The assistant reads every string in `sections`, plus the short
    `role` / `team` / `problem` / `constraints` / `process` / `impact` fields
@@ -86,6 +83,5 @@ Content blocks:
 Every `slot` must match a `slot` on one of the project's `artifacts`; that
 artifact is injected into the placeholder and becomes zoomable in the lightbox.
 
-The tags offered as homepage filter chips are listed in `filters` at the top of
-`data/projects.json`. The `projectId` enum in the `data-props` attribute of
+The `projectId` enum in the `data-props` attribute of
 `project.html`'s logic script only feeds the visual editor's dropdown.
