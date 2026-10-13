@@ -1,4 +1,4 @@
-import { loadCaseStudies } from "./case-studies.js";
+import { loadCaseStudies, loadExperience } from "./case-studies.js";
 import { sectionsToText } from "./case-study-sections.js";
 
 export function escapeHtml(s) {
@@ -27,11 +27,6 @@ export async function loadProjects() {
   return projects;
 }
 
-export async function loadExperience() {
-  const res = await fetch("./data/experience.json", { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load experience.json (${res.status})`);
-  return await res.json();
-}
 
 const RESUME_PLAIN_TEXT_MAX_CHARS = 14000;
 
@@ -964,11 +959,11 @@ export function wireChatUI({ controller }) {
 
       try {
         const expData = await loadExperience();
-        const entries = Array.isArray(expData?.entries) ? expData.entries : [];
+        const entries = (Array.isArray(expData?.entries) ? expData.entries : []).filter((e) => e.kind !== "education");
         if (entries.length) {
           homeContext.experience = {
             roles: entries.map((e) => `${String(e.roleTitle || "").trim()} — ${String(e.company || "").trim()}`),
-            timeline: entries.map((e) => String(e.datesAndLocation || "").trim()),
+            timeline: entries.map((e) => [e.dates, e.location].filter(Boolean).join(" • ")),
             highlights: entries.flatMap((e) => (Array.isArray(e.bullets) ? e.bullets : []).map((b) => String(b).trim()))
           };
           if (expData.resumeDownloadHref) {

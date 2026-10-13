@@ -3,11 +3,15 @@
   "resumeDownloadLabel": "Download My Resume",
   "entries": [
     {
+      "id": "cayuse",
+      "kind": "work",
       "logoSrc": "./assets/logos/cayuse.svg",
       "logoAlt": "Cayuse logo",
       "roleTitle": "Contract UX Designer",
       "company": "Cayuse",
-      "datesAndLocation": "Nov 2025 – Present • Remote",
+      "dates": "Nov 2025 – Present",
+      "location": "Remote",
+      "summary": "Collaborating with a senior designer on the iRIS redesign across hundreds of workflow screens on a legacy research-administration product, while expanding the component library.",
       "bullets": [
         "Collaborating with a senior designer on the iRIS redesign across hundreds of workflow screens on a legacy research-administration product, while expanding the component library.",
         "Creating wireframes, high-fidelity designs, and prototypes in Figma to support iterative design and stakeholder alignment.",
@@ -15,11 +19,16 @@
       ]
     },
     {
+      "id": "cobblestone",
+      "kind": "work",
       "logoSrc": "./assets/logos/cobblestone.svg",
-      "logoAlt": "Cobblestone Software logo",
+      "logoAlt": "CobbleStone Software logo",
       "roleTitle": "UX Designer",
-      "company": "Cobblestone Software",
-      "datesAndLocation": "Nov 2023 – Oct 2025 • Lindenwold, NJ",
+      "company": "CobbleStone Software",
+      "dates": "Nov 2023 – Oct 2025",
+      "location": "Lindenwold, NJ",
+      "summary": "Designed new features and reworked existing flows in Contract Insights, and led the Vendor Client Gateway redesign.",
+      "caseStudies": ["vendor-client-gateway-redesign"],
       "bullets": [
         "Designed new features and reworked existing flows in Contract Insights, a contract management and procurement platform.",
         "Led the Vendor Client Gateway redesign with responsive layouts, clearer information architecture, and reduced client-side configuration.",
@@ -27,11 +36,15 @@
       ]
     },
     {
+      "id": "buxton",
+      "kind": "work",
       "logoSrc": "./assets/logos/buxton.svg",
       "logoAlt": "Buxton logo",
       "roleTitle": "Product Designer",
       "company": "Buxton",
-      "datesAndLocation": "Jun 2022 – Oct 2022 • Remote",
+      "dates": "Jun – Oct 2022",
+      "location": "Remote",
+      "summary": "Delivered three retail-analytics products with more than 100 screens in three months, and consolidated the design system to reduce duplicate component work.",
       "bullets": [
         "Designed data-driven product experiences across multiple platforms.",
         "Delivered three retail-analytics products with more than 100 screens in three months.",
@@ -39,11 +52,16 @@
       ]
     },
     {
+      "id": "lenels2",
+      "kind": "work",
       "logoSrc": "./assets/logos/lenels2.svg",
       "logoAlt": "LenelS2 logo",
       "roleTitle": "UX Designer Co-op/Intern",
       "company": "LenelS2",
-      "datesAndLocation": "Jun 2021 – Dec 2021 • Pittsford, NY",
+      "dates": "Jun – Dec 2021",
+      "location": "Pittsford, NY",
+      "summary": "Led end-to-end design for Guest Pass on Elements. Conducted user research including interview scripts, A/B tests, and ProtoPie prototypes.",
+      "caseStudies": ["guest-pass"],
       "bullets": [
         "Designed features for Elements, LenelS2's cloud-managed security platform.",
         "Led end-to-end design for Guest Pass, a temporary access feature from concept through delivery.",
@@ -51,16 +69,54 @@
       ]
     },
     {
+      "id": "rit-graduated",
+      "kind": "education",
+      "logoSrc": "./assets/logos/rit.png",
+      "logoAlt": "Rochester Institute of Technology logo",
+      "roleTitle": "B.S. Human-Centered Computing · Minor in Japanese",
+      "company": "Rochester Institute of Technology",
+      "dates": "Aug 2021",
+      "location": "Graduated",
+      "summary": "Rochester, NY · GPA 3.11 / 4.00"
+    },
+    {
+      "id": "tamagodb",
+      "kind": "work",
       "logoSrc": "./assets/logos/tamagodb.svg",
       "logoAlt": "Tamago DB logo",
       "roleTitle": "Front-end Development Intern",
       "company": "Tamago DB K.K.",
-      "datesAndLocation": "Jun 2019 – Aug 2020 • Shinagawa, Tokyo, JP",
+      "dates": "Jun 2019 – Aug 2020",
+      "location": "Shinagawa, Tokyo, JP",
+      "summary": "Modernized analytics visualizations by replacing a legacy charts library with C3.js, and improved UI quality across a Symfony codebase.",
       "bullets": [
         "Modernized analytics visualizations by replacing a legacy charts library with C3.js.",
         "Tested and debugged locally using Laragon to improve iteration speed.",
         "Improved UI quality across a Symfony codebase with HTML, CSS, and JavaScript updates."
       ]
+    },
+    {
+      "id": "nanzan",
+      "kind": "education",
+      "logoSrc": "./assets/logos/nanzan.png",
+      "logoAlt": "Nanzan University logo",
+      "roleTitle": "Japanese language & culture",
+      "company": "Nanzan University",
+      "dates": "Jan 2019 – May 2019",
+      "location": "Study Abroad - Nagoya, Japan",
+      "summary": "Semester abroad in Nagoya that developed practical language skills and led to the Tokyo internship."
+    },
+    {
+      "id": "rit-enrolled",
+      "kind": "education",
+      "logoSrc": "./assets/logos/rit.png",
+      "logoAlt": "Rochester Institute of Technology logo",
+      "logoWidth": 52,
+      "roleTitle": "Started B.S. Human-Centered Computing",
+      "company": "Rochester Institute of Technology",
+      "dates": "Aug 2016",
+      "location": "Enrolled",
+      "summary": "Rochester, NY"
     }
   ]
 }

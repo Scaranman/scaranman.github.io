@@ -10,9 +10,14 @@
  *   shortTitle  — label used on cards, breadcrumbs, and the pager
  *   card        — { eyebrow, summary, cover? } for the homepage grid
  *   artifacts[] — entries with a `slot` are injected into that data-slot element
+ *
+ * The homepage experience timeline is rendered from `data/experience.json`
+ * (see toTimeline); an entry links to case studies by listing their ids in
+ * `caseStudies`.
  */
 
 let pending = null;
+let pendingExperience = null;
 
 export function projectHref(id) {
   return "project.html?id=" + encodeURIComponent(id);
@@ -34,6 +39,30 @@ export function toCards(projects) {
       coverAlt: cover.alt || ""
     };
   });
+}
+
+/**
+ * Experience timeline rows, in `data/experience.json` order. Cards alternate
+ * sides starting on the right. Each entry's `caseStudies` ids become link
+ * cards built from the homepage card data; unknown ids are skipped.
+ */
+export function toTimeline(entries, projects) {
+  const cards = new Map(toCards(projects).map((c) => [c.id, c]));
+  return (entries || []).map((e, i) => ({
+    id: e.id || String(i),
+    company: e.company || "",
+    roleTitle: e.roleTitle || "",
+    dates: e.dates || "",
+    location: e.location || "",
+    summary: e.summary || "",
+    logoSrc: e.logoSrc || "",
+    logoWidth: e.logoWidth || 36,
+    // DOM order is meta, marker, card; odd rows reverse it to put the card left.
+    direction: i % 2 ? "row-reverse" : "row",
+    metaAlign: i % 2 ? "flex-start" : "flex-end",
+    metaTextAlign: i % 2 ? "left" : "right",
+    links: (e.caseStudies || []).map((id) => cards.get(id)).filter(Boolean)
+  }));
 }
 
 /** Prev/next pager entries, in registry order. */
@@ -71,4 +100,20 @@ export function loadCaseStudies() {
       });
   }
   return pending;
+}
+
+/** Resolves once per page load to `data/experience.json`. */
+export function loadExperience() {
+  if (!pendingExperience) {
+    pendingExperience = fetch("./data/experience.json")
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to load experience.json (${res.status})`);
+        return res.json();
+      })
+      .catch((err) => {
+        pendingExperience = null;
+        throw err;
+      });
+  }
+  return pendingExperience;
 }

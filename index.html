@@ -13,6 +13,7 @@
   gtag('config', 'G-QM6YRRRJ5F');
 </script>
 <link rel="preload" href="./data/projects.json" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="./data/experience.json" as="fetch" crossorigin="anonymous">
 <link rel="modulepreload" href="./case-studies.js">
 <script src="./support.js"></script>
 <script src="./mobile.js" defer></script>
@@ -208,182 +209,39 @@
 
       <div class="timeline" style="position:relative; width:1000px; margin:0 auto; display:flex; flex-direction:column; gap:48px">
         <div aria-hidden="true" style="position:absolute; left:489px; top:10px; bottom:10px; width:2px; background:#d4d4d4"></div>
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; align-items:flex-end; text-align:right">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Nov 2025 – Present</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Remote</span>
-          </div>
-          <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div>
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/cayuse.svg" alt="" style="width:36px; height:36px; object-fit:contain">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Cayuse</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">Contract UX Designer</span>
-              </span>
+        <sc-for list="{{ timeline }}" as="item">
+          <div style="display:flex; flex-direction:{{ item.direction }}; align-items:stretch; gap:40px">
+            <div style="flex:0 0 440px; display:flex; flex-direction:column; align-items:{{ item.metaAlign }}; text-align:{{ item.metaTextAlign }}">
+              <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">{{ item.dates }}</span>
+              <span style="font-size:14px; line-height:20px; color:#404040">{{ item.location }}</span>
             </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040; text-wrap:pretty">Collaborating with a senior designer on the iRIS redesign across hundreds of workflow screens on a legacy research-administration product, while expanding the component library.</p>
-          </div>
-        </div>
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/cobblestone.svg" alt="" style="width:36px; height:36px; object-fit:contain">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">CobbleStone Software</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">UX Designer</span>
-              </span>
+            <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
+              <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
             </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040; text-wrap:pretty">Designed new features and reworked existing flows in Contract Insights, and led the Vendor Client Gateway redesign.</p>
-            <a href="project.html?id=vendor-client-gateway-redesign" style="display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #e5e5e5; border-radius:12px; background:#fff; color:inherit" style-hover="border-color:#c5a8e2; background:#fafafa">
-              <img src="assets/projects/VCG.png" alt="" style="width:48px; height:48px; border-radius:8px; object-fit:contain; background:#f5f5f5; flex-shrink:0">
-              <span style="flex:1; display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:14px; line-height:20px; font-weight:600; color:#171717">Vendor-Client Gateway</span>
-                <span style="font-size:13px; line-height:18px; color:#737373">View case study</span>
-              </span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-            </a>
-          </div>
-          <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div>
-          <div style="flex:0 0 440px; display:flex; flex-direction:column">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Nov 2023 – Oct 2025</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Lindenwold, NJ</span>
-          </div>
-        </div>
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          
-          <div style="flex: 0 0 440px; display: flex; flex-direction: column; align-items: flex-end; text-align: right">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Jun – Oct 2022</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Remote</span>
-          </div><div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div><div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/buxton.svg" alt="" style="width:36px; height:36px; object-fit:contain">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Buxton</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">Product Designer</span>
-              </span>
+            <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+              <div style="display:flex; align-items:center; gap:12px">
+                <img sc-camel-src="{{ item.logoSrc }}" alt="" style="width:{{ item.logoWidth }}px; height:36px; object-fit:contain; object-position:left center; flex-shrink:0">
+                <span style="display:flex; flex-direction:column; gap:2px">
+                  <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">{{ item.company }}</span>
+                  <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">{{ item.roleTitle }}</span>
+                </span>
+              </div>
+              <sc-if value="{{ item.summary }}">
+                <p style="margin:0; font-size:14px; line-height:22px; color:#404040; text-wrap:pretty">{{ item.summary }}</p>
+              </sc-if>
+              <sc-for list="{{ item.links }}" as="link">
+                <a href="{{ link.href }}" style="display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #e5e5e5; border-radius:12px; background:#fff; color:inherit" style-hover="border-color:#c5a8e2; background:#fafafa">
+                  <img sc-camel-src="{{ link.coverSrc }}" alt="" style="width:48px; height:48px; border-radius:8px; object-fit:contain; background:#f5f5f5; flex-shrink:0">
+                  <span style="flex:1; display:flex; flex-direction:column; gap:2px">
+                    <span style="font-size:14px; line-height:20px; font-weight:600; color:#171717">{{ link.title }}</span>
+                    <span style="font-size:13px; line-height:18px; color:#737373">View case study</span>
+                  </span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                </a>
+              </sc-for>
             </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040; text-wrap:pretty">Delivered three retail-analytics products with more than 100 screens in three months, and consolidated the design system to reduce duplicate component work.</p>
           </div>
-          
-        </div>
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/lenels2.svg" alt="" style="width:36px; height:36px; object-fit:contain">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">LenelS2</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">UX Designer Co-op/Intern</span>
-              </span>
-            </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040; text-wrap:pretty">Led end-to-end design for Guest Pass on Elements. Conducted user research including interview scripts, A/B tests, and ProtoPie prototypes.</p>
-            <a href="project.html?id=guest-pass" style="display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #e5e5e5; border-radius:12px; background:#fff; color:inherit" style-hover="border-color:#c5a8e2; background:#fafafa">
-              <img src="assets/projects/GuestPass.png" alt="" style="width:48px; height:48px; border-radius:8px; object-fit:contain; background:#f5f5f5; flex-shrink:0">
-              <span style="flex:1; display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:14px; line-height:20px; font-weight:600; color:#171717">Guest Pass</span>
-                <span style="font-size:13px; line-height:18px; color:#737373">View case study</span>
-              </span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-            </a>
-          </div><div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div><div style="flex: 0 0 440px; display: flex; flex-direction: column; align-items: flex-start">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Jun – Dec 2021</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Pittsford, NY</span>
-          </div>
-          
-        </div><div style="display:flex; align-items:stretch; gap:40px">
-          <div style="flex: 0 0 440px; display: flex; flex-direction: column; align-items: flex-end">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Aug 2021</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Graduated</span>
-          </div>
-          <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div><div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/rit.png" alt="" style="width:52px; height:36px; object-fit:contain; object-position:left center">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Rochester Institute of Technology</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">B.S. Human-Centered Computing · Minor in Japanese</span>
-              </span>
-            </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040">Rochester, NY · GPA 3.11 / 4.00</p>
-          </div>
-          
-        </div>
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/tamagodb.svg" alt="" style="width:36px; height:36px; object-fit:contain">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Tamago DB K.K.</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">Front-end Development Intern</span>
-              </span>
-            </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040; text-wrap:pretty">Modernized analytics visualizations by replacing a legacy charts library with C3.js, and improved UI quality across a Symfony codebase.</p>
-          </div><div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div><div style="flex: 0 0 440px; display: flex; flex-direction: column; align-items: flex-start; text-align: right">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Jun 2019 – Aug 2020</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Shinagawa, Tokyo, JP</span>
-          </div>
-          
-          
-        </div>
-
-        
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; align-items:flex-end; text-align:right">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Jan 2019 – May 2019</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Study Abroad - Nagoya, Japan</span>
-          </div>
-          <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div>
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:8px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/nanzan.png" alt="" style="width:36px; height:36px; object-fit:contain">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Nanzan University</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">Japanese language &amp; culture</span>
-              </span>
-            </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040">Semester abroad in Nagoya that developed practical language skills and led to the Tokyo internship.</p>
-          </div>
-        </div>
-
-        <div style="display:flex; align-items:stretch; gap:40px">
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
-            <div style="display:flex; align-items:center; gap:12px">
-              <img src="assets/logos/rit.png" alt="" style="width:52px; height:36px; object-fit:contain; object-position:left center">
-              <span style="display:flex; flex-direction:column; gap:2px">
-                <span style="font-size:20px; line-height:28px; font-weight:600; color:#171717">Rochester Institute of Technology</span>
-                <span style="font-size:14px; line-height:20px; font-weight:500; color:#69349c">Started B.S. Human-Centered Computing</span>
-              </span>
-            </div>
-            <p style="margin:0; font-size:14px; line-height:22px; color:#404040">Rochester, NY</p>
-          </div>
-          <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
-            <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
-          </div>
-          <div style="flex:0 0 440px; display:flex; flex-direction:column; align-items:flex-start">
-            <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">Aug 2016</span>
-            <span style="font-size:14px; line-height:20px; color:#404040">Enrolled</span>
-          </div>
-        </div>
+        </sc-for>
       </div>
     </div>
   </section>
@@ -472,7 +330,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showFloatingChat&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#69349c&quot;,&quot;options&quot;:[&quot;#69349c&quot;,&quot;#1d4ed8&quot;,&quot;#0f766e&quot;,&quot;#b91c1c&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
 class Component extends DCLogic {
-  state = { cards: [], docked: false, pastHero: false };
+  state = { cards: [], timeline: [], docked: false, pastHero: false };
 
   onScroll = () => {
     const card = this.heroSlotEl;
@@ -497,6 +355,7 @@ class Component extends DCLogic {
     const accent = this.props.accentColor;
     if (accent) document.documentElement.style.setProperty("--accent", accent);
     this.loadCaseStudies();
+    this.loadTimeline();
     this.initChat();
     this.scroller = document.scrollingElement || document.documentElement;
     this.scrollHost = this.scroller === document.documentElement || this.scroller === document.body ? window : this.scroller;
@@ -528,6 +387,20 @@ class Component extends DCLogic {
     }
   }
 
+  async loadTimeline() {
+    try {
+      const registry = await import("./case-studies.js");
+      // Without projects the timeline still renders, just without case study links.
+      const [{ entries }, projects] = await Promise.all([
+        registry.loadExperience(),
+        registry.loadCaseStudies().then((r) => r.projects, () => [])
+      ]);
+      this.setState({ timeline: registry.toTimeline(entries, projects) });
+    } catch (err) {
+      console.warn("Experience unavailable", err);
+    }
+  }
+
   async initChat() {
     try {
       const core = await import("./chat-core.js");
@@ -550,6 +423,7 @@ class Component extends DCLogic {
     return {
       floatingChat: this.props.showFloatingChat ?? true,
       cards: this.state.cards,
+      timeline: this.state.timeline,
       docked: this.state.docked,
       showFab: (this.props.showFloatingChat ?? true) && (this.state.pastHero || this.state.docked),
       heroSlotRef: (el) => { this.heroSlotEl = el; },

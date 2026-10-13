@@ -49,6 +49,34 @@ chat assistant's knowledge of the project, and the case study page itself.
 2. Drop the images in `assets/projects/<Name>/` and list them under `artifacts`.
    Any artifact with a `slot` can be placed in the body by naming that slot.
 
+3. Optional: to link the case study from a role in the experience timeline,
+   add its `id` to that entry's `caseStudies` array in `data/experience.json`.
+   The link card's title and thumbnail come from the homepage card.
+
+## Editing the experience timeline
+
+The "How I got here" timeline on the homepage is rendered entirely from
+`entries` in `data/experience.json`, top to bottom in array order, with cards
+alternating sides automatically. No HTML needs editing.
+
+```jsonc
+{
+  "id": "acme",                      // unique key
+  "kind": "work",                    // "work" or "education"
+  "logoSrc": "./assets/logos/acme.svg",
+  "logoWidth": 52,                   // optional; defaults to 36 (px) for square logos
+  "company": "Acme",
+  "roleTitle": "UX Designer",
+  "dates": "Jan 2026 – Present",     // large purple line beside the dot
+  "location": "Remote",              // small line under the dates
+  "summary": "Text shown on the timeline card.",
+  "caseStudies": ["my-case-study"],  // optional; project ids from projects.json
+  "bullets": ["…"]                   // work only; used by the chat assistant, not shown on the timeline
+}
+```
+
+The chat assistant reads `work` entries only.
+
 ## The `sections` schema
 
 A case study body is an ordered list of sections. Padding, the alternating
