@@ -335,8 +335,8 @@ video[style*="width: 100%"] {
   }
 
   .timeline > [aria-hidden="true"],
-  #experience [style*="left:489px"],
-  #experience [style*="left: 489px"] {
+  #experience [style*="left:499px"],
+  #experience [style*="left: 499px"] {
     left: 11px !important;
   }
 

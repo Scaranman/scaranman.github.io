@@ -208,17 +208,17 @@
       </div>
 
       <div class="timeline" style="position:relative; width:1000px; margin:0 auto; display:flex; flex-direction:column; gap:48px">
-        <div aria-hidden="true" style="position:absolute; left:489px; top:10px; bottom:10px; width:2px; background:#d4d4d4"></div>
+        <div aria-hidden="true" style="position:absolute; left:499px; top:10px; bottom:10px; width:2px; background:#d4d4d4"></div>
         <sc-for list="{{ timeline }}" as="item">
           <div style="display:flex; flex-direction:{{ item.direction }}; align-items:stretch; gap:40px">
-            <div style="flex:0 0 440px; display:flex; flex-direction:column; align-items:{{ item.metaAlign }}; text-align:{{ item.metaTextAlign }}">
+            <div style="flex:0 0 450px; display:flex; flex-direction:column; align-items:{{ item.metaAlign }}; text-align:{{ item.metaTextAlign }}">
               <span style="font-size:22px; line-height:30px; font-weight:600; color:#69349c">{{ item.dates }}</span>
               <span style="font-size:14px; line-height:20px; color:#404040">{{ item.location }}</span>
             </div>
             <div style="position:relative; z-index:1; flex:0 0 20px; display:flex; justify-content:center">
               <span style="width:20px; height:20px; border-radius:9999px; background:#69349c; border:4px solid #f5f5f5; box-shadow:0 0 0 1px #d4d4d4"></span>
             </div>
-            <div style="flex:0 0 440px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
+            <div style="flex:0 0 450px; display:flex; flex-direction:column; gap:16px; padding:24px; background:#fff; border:1px solid #e5e5e5; border-radius:16px">
               <div style="display:flex; align-items:center; gap:12px">
                 <img sc-camel-src="{{ item.logoSrc }}" alt="" style="width:{{ item.logoWidth }}px; height:36px; object-fit:contain; object-position:left center; flex-shrink:0">
                 <span style="display:flex; flex-direction:column; gap:2px">
