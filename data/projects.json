@@ -11,7 +11,7 @@
         "alt": "Guest Pass project cover image"
       },
       "card": {
-        "eyebrow": "Redesign",
+        "eyebrow": "Feature",
         "summary": "Designed temporary door access for LenelS2's Elements platform. Hosts create a pass, guests unlock from their phone, and credentials expire automatically. Shipped Q4 2021."
       },
       "sections": [
